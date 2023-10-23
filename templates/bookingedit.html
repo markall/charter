@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+        <script src='scripts/jquery/jquery.min.js'></script>
+		<script src='styles/bootstrap/js/bootstrap.min.js'></script>
+		<link rel="stylesheet" type="text/css" href='styles/bootstrap/css/bootstrap.min.css'>
+		<script type="text/javascript" src="scripts/tinymce/js/tinymce/tinymce.min.js"></script>
+		
+<script type="text/javascript" src="scripts/moment.js"></script>
+<script src="scripts/bootstrap-datetimepicker-master/src/js/bootstrap-datetimepicker.js"></script>
+
+
+<!-- link rel="stylesheet" type="text/css" media="screen" href="http://hotlink.jquery.com/jqueryui/themes/base/jquery.ui.all.css" / -->
+
+<script language="javascript">
+
+var ridx=0;
+var def_rateid = Math.round('0<%bookingrateid%>');
+
+var def_locationpickupid = Math.round('0<%bookingpickuplocationid%>');
+var def_locationdropoffid = Math.round('0<%bookingdropofflocationid%>');
+var def_menuid = Math.round('0<%bookingmenuid%>');
+var def_maxpersons=Math.round('0<%rentalobjmaxpersons%>');
+
+
+
+function checkavailability() {
+
+   dte = document.getElementById('dtestart').value;
+   tim = document.getElementById('timstart').value;
+
+   dte.replace('/','-');
+   dte.replace('.','-');
+   da = dte.split('/');
+      
+   adte = da[1]+'/'+da[0]+'/'+da[2];
+
+   dattim = adte+" "+tim;
+   
+
+   fd = Date.parse(dattim);
+
+   a = document.getElementById('duration').value;
+
+   var td= new Date();
+
+   var minutes=1000*60;
+   var hours=minutes*60;
+
+   hm = eval(eval(a)*hours);
+   td.setTime( hm+eval(fd) );
+
+   dd=(eval(td.getDate()));
+   if (dd<10) {
+       dd='0'+dd;
+   }
+
+   mm= (eval(td.getMonth())+1);
+        if (mm<10) {
+                mm='0'+mm;
+        }
+
+        hh=(eval(td.getHours()));
+        if (hh<10) {
+                hh='0'+hh;
+        }
+
+        mn=(eval(td.getMinutes()));
+        if (mn<10) {
+                mn='0'+mn;
+        }
+
+        todte = dd+'/'+mm+'/'+td.getFullYear()+' '+hh+':'+mn;
+
+        document.getElementById('bookingrentto').value=todte;
+        document.getElementById('bookingrentfrom').value=document.getElementById('dtestart').value+' '+document.getElementById('timstart').value;
+                
+                var url = "content.php?action=checkavailability&fromdate="+document.getElementById('bookingrentfrom').value+"&todate="+document.getElementById('bookingrentfrom').value;
+                var r=Math.random();
+                url=url+'?rnd='+r;
+                document.getElementById("available_s").innerHTML='';
+
+//              $("#available").load(url);
+                 $.get(url, function(xml) {
+
+                        if (xml=="true") {                                                      
+                            document.getElementById("frmbooking").submit();
+                        } else {
+                           document.getElementById("available_s").innerHTML='Not available for the given period';
+                        }
+                });
+
+
+}
+
+function printit() {
+        url = "content.php?template=templates/booking4.html&bookingid=<%bookingid%>";
+        document.location = url;
+}
+
+function invoice() {
+        url = "content.php?template=templates/invoice_create.html&bookingid=<%bookingid%>";
+        document.location = url;
+}
+
+function getrentalobj() {
+        rentalobj = document.getElementById('rentalobj');
+
+    rentalid = rentalobj.options[rentalobj.selectedIndex].value;
+    var url="content.php?action=fetchrentalrate&ratetype=boat&id="+rentalid;
+        ajaxload('#rateobj',url);
+
+
+//
+        // maxpersons
+            var url="content.php?action=fetchrentalmaxpersons&id="+rentalid;
+            ajaxload('#maxpersons',url);
+                
+
+//
+        // menu
+            var url="content.php?action=fetchrentalrate&ratetype=menu&id="+rentalid;
+                ajaxload('#menuobj',url);
+                                
+
+
+        // get locations
+        var url = "content.php?action=fetchrentallocation&locationtype=dropoff&id="+rentalid;
+        ajaxload('#pickuplocation',url);
+        ajaxload('#dropofflocation',url);
+        // get
+
+
+}
+
+function ajaxload ( obj , url )  {
+
+            var r=Math.random();
+        url=url+'?rnd='+r;
+
+                document.body.style.cursor = 'wait';
+            $(obj).load(url ,function() {
+                        document.body.style.cursor = 'default';
+                                //setrate();
+                             //   setdefault('rateobj',def_rateid);
+
+                            //    setdefault('pickuplocation',def_locationpickupid);
+                            //    setdefault('dropofflocation',def_locationdropoffid);
+                                //setmenu();
+                               // setdefault('menuobj',def_menuid);
+                                                
+                });
+}
+
+function setrate() {
+        document.getElementById('s_rate').innerHTML=' ';
+                dur = document.getElementById('duration').value;
+                r=0;
+
+                if (isNaN(dur)) {
+                        document.getElementById('duration').value=0;
+                }
+
+        rateobj = document.getElementById('rateobj');
+        ratedetails = rateobj.options[rateobj.selectedIndex].value;
+
+        ratearr = ratedetails.split('|');
+                //0 - id
+                //1 - baseprice
+                //2 - baseunit          
+                //3 - priceperunit
+                
+                if (eval(ratearr[2])>dur) {
+                        r=eval(ratearr[1]);
+                } else {
+                        d1=eval(dur)-eval(ratearr[2]);
+                        r = eval(ratearr[1])+(eval(ratearr[3])*d1);
+                }
+
+        document.getElementById('s_rate').innerHTML=' Amount &pound;'+r; 
+        document.getElementById("boatcost").innerHTML=r;
+        document.getElementById('rateid').value=ratearr[0];
+                
+                                        settotal();
+                                                        
+
+}
+
+function refreshcontacts() {
+	setcontacts(-1);                                      
+}
+
+function addcontact() {
+        categoryobj = document.getElementById('category');
+        contactobj = document.getElementById('contacts');
+        pdx = categoryobj.selectedIndex;
+        tdx = contactobj.selectedIndex;
+ 
+    tableid = 'additionalcontacts';     
+        tblobj = document.getElementById('additionalcontacts');
+        var newrow = tblobj.insertRow(tblobj.rows.length );
+        newrow.id="nr"+ridx;
+
+        var c1=newrow.insertCell(0);
+        var c2=newrow.insertCell(1);
+        var c3=newrow.insertCell(2);    
+        
+
+        c1.innerHTML= contactobj.options[tdx].text;
+        c2.innerHTML= categoryobj.options[pdx].text;
+        
+        c3.innerHTML= "<a href=\"javascript:removerow('"+tableid+"','"+newrow.id+"');\">remove</a>"+
+              "<input type=\"hidden\" value=\""+categoryobj.options[pdx].value+"\" id=\"nri"+ridx+"\" name=\"booking_categoryidlist[]\" />"+
+              "<input type=\"hidden\" value=\""+contactobj.options[tdx].value+"\" id=\"nri"+ridx+"\" name=\"booking_contactidlist[]\" />"+
+              "<input type=\"hidden\" value=\""+"-1"+"\" id=\"nri"+ridx+"\" name=\"booking_contactlinkid[]\" />"+
+              "<input type=\"hidden\" value=\""+"0"+"\" id=\"nri"+ridx+"\" name=\"contactlinkdeleteflag[]\" />"                                                                   
+                          ;
+        ridx++;
+}
+
+function removerow( tableid, id ) {
+ tblobj = document.getElementById(tableid);
+ 
+ did = 'd'+id;
+  
+ if (id.substr(0,2)=='nr') {
+   tblobj.deleteRow(document.getElementById(id).rowIndex);
+ } else {
+   if (document.getElementById(did).value=='1') {
+                tblobj.rows[document.getElementById(id).rowIndex].style.backgroundColor="";  
+                document.getElementById(did).value='0';          
+   } else {
+                tblobj.rows[document.getElementById(id).rowIndex].style.backgroundColor="#FF0000";
+ //  tblobj.rows[document.getElementById(id).rowIndex].disabled=true;
+                document.getElementById(did).value='1';
+   }
+
+ }
+  
+}
+
+function setcontacts(categoryid) {
+        var con = document.getElementById("contacts");
+        
+    var url = "content.php?action=getcontactsbycategory&categoryid="+categoryid;
+    var r=Math.random();
+    url=url+'?rnd='+r;
+
+	document.body.style.cursor = 'wait';
+
+    $("#contacts").load(url ,function() {
+                document.body.style.cursor = 'default';
+        });
+}
+
+function checkmax() {
+  m=eval(def_maxpersons);
+  if (m=="") {
+        m=1;
+  }
+  i=document.getElementById("noofpeople").value;
+  if ((eval(i)>m) || (i="") || (eval(i)<1) ) {
+     alert("Invalid no of people");
+     document.getElementById("noofpeople").value="1";
+  }
+}
+function setmenu() {
+    menu = document.getElementById('menuobj');
+    if (menu.length>0) {
+        menuchosen = menu.options[menu.selectedIndex].value;
+        menuarr = menuchosen.split("|");
+
+//id, basecost,baseunit,costperunit
+
+        amt = menuarr[3]* document.getElementById("noofpeople").value;
+
+        if   (eval(amt)<eval(menuarr[1])) {
+           amt=menuarr[1];
+        }
+
+        document.getElementById("menuid").value=menuarr[0];
+        document.getElementById("menucost").innerHTML=amt;
+        settotal();
+    }
+
+}
+
+function settotal() {
+          mcost = eval( document.getElementById("menucost").innerHTML );
+          acost =document.getElementById('additionalcharge').value;
+                  bcost =eval(document.getElementById('boatcost').innerHTML);
+                  
+                  v_deposit =document.getElementById('deposit').value;
+                  
+                  document.getElementById("totaldeposit").innerHTML=v_deposit;
+                                  
+          document.getElementById("additionalcost").innerHTML=acost;
+          document.getElementById("additionalamt").value=acost;
+
+          document.getElementById("boatcost").innerHTML=bcost;
+
+          document.getElementById("boatamt").value=bcost;
+          document.getElementById("baseamt").value=bcost;                 
+
+          document.getElementById("menucost").innerHTML=mcost;
+          document.getElementById("menuamt").value=mcost;
+
+          tcost=eval(acost)+eval(mcost)+eval(bcost);
+          document.getElementById("totalcost").innerHTML=tcost;
+          document.getElementById("totalamt").value=tcost;
+                 
+   
+          document.getElementById("balance").innerHTML=eval(tcost-v_deposit);         
+		  document.getElementById("cdbalance").value=eval(acost-v_deposit);    
+                  
+
+                
+}
+
+function setdefault(objname,def) {
+// default rate
+        if (def=="") {
+          def="0";
+        }
+        def=parseInt(def);
+        var obj=document.getElementById(objname);
+        var i;
+        for (i=0;i<obj.length;i++)
+        {
+
+            if (obj.options[i].value.indexOf('|')>0) {
+                   v = obj.options[i].value.substr(0,obj.options[i].value.indexOf('|'));
+                } else {
+                        v=      obj.options[i].value;
+                }
+
+            if (def==v) {
+                   obj.selectedIndex=i;
+                }
+        }
+
+}
+
+$(document).ready(function() {
+
+
+
+
+
+        s= "<%bookingstartdatetime%>";
+		
+
+   //document.getElementById("dtestart").value=s.substr(0, 10);;
+
+  // document.getElementById("timstart").value=s.substr(11,5);
+
+
+    if (document.getElementById('rentalobj').value>0) {         
+                getrentalobj();
+          //      setrate();
+    }
+    settotal();    
+	
+                $('textarea').tinymce({
+                        // Location of TinyMCE script
+                        script_url : 'scripts/tiny_mce/tiny_mce.js',
+
+                        // General options
+                        theme : "advanced",
+                        plugins : "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,advlist",
+
+                        // Theme options
+                        theme_advanced_buttons1 : "bold,italic,underline,|,forecolor,backcolor",
+                        theme_advanced_buttons2 : "justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,fontselect,fontsizeselect",
+                        theme_advanced_buttons3 : "",
+                        theme_advanced_buttons4 : "",
+        //              theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
+//                      theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+//                      theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
+//                      theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,pagebreak",
+                        theme_advanced_toolbar_location : "bottom",
+                        theme_advanced_toolbar_align : "left",
+                        theme_advanced_statusbar_location : "bottom",
+                        theme_advanced_resizing : true,
+                        theme_advanced_font_sizes: "10px,12px,13px,14px,16px,18px,20px",
+                        font_size_style_values : "10px,12px,13px,14px,16px,18px,20px",
+
+                        // Example content CSS (should be your site CSS)
+                        content_css : "styles/stylesheet.css",
+
+                        // Drop lists for link/image/media/template dialogs
+                        template_external_list_url : "lists/template_list.js",
+                        external_link_list_url : "lists/link_list.js",
+                        external_image_list_url : "lists/image_list.js",
+                        media_external_list_url : "lists/media_list.js",
+
+
+                        });
+
+		$(document).on('focusin', function(e) {
+			if ($(e.target).closest(".mce-window").length) {
+				e.stopImmediatePropagation();
+			}
+		});
+
+
+
+
+
+});
+
+
+
+</script>
+
+
+
+<%header%>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-2">
+			
+			<div id="sidenav" > 
+				<div id="sidemenu">
+					
+						<%sidemenu%>
+					
+				</div> <!-- side menu -->
+
+
+			</div> <!-- side nav --> 
+
+		</div> <!-- col-md-2 -->
+		
+		<div class="col-md-8">
+
+<h2>Confirmed Booking ID: <%bookingid%> </h2>
+ <div id="bookingheader"  >
+        <form action="content.php" id="frmbooking" method="post" >      
+        <input type="hidden" name="action" value="updatebooking" />
+		
+		
+       <p>
+          <%client_contacttitledisplay%> <%client_contactfirstname%> <%client_contactlastname%>      <br/>
+          <%client_contactcompany%> <br/>
+          <%client_contactaddress1%> <br/>
+          <%client_contactaddress2%> <br/>
+          <%client_contacttown%> <br/>
+          <%client_contactpostcode%><br/>
+          <br/>
+          <br/><a href="content.php?template=templates/admin/managemembers.html&action=adminedit&prefix=p_&pid=<%client_encryptedcontactid%>" target="_blank()" >Edit Client</a> (Close the new window then refresh to show change or wait to next screen)
+       </p>
+       
+	   <p>
+          Telephone: <%client_contacttelephone1%> <br/>
+          Mobile: <%client_contactmobile%>  <br/>
+          Email: <%client_contactemail%>  <br/>
+       </p>
+
+	<fieldset>
+		<p>
+			<label for="rentalobj">Boat </label>
+			<select class="form-control" id="rentalobj" name="rentalobjid" onchange="getrentalobj();"  >   <!-- onblur="setrate();" removed due to rate no longer being set -->
+					<option value="-1">Please select a boat ...</option>
+					<%rentalobjasoptionsbyuser|id=<%bookingrentalobjid%> %>
+			</select>
+        </p>
+	</fieldset>
+	
+	<fieldset>
+		
+<p>
+	<label>Choose a date and time to start:</label><br/>
+            <div class="form-group">
+                <div class='input-group date' >
+                    <input type='text' class="form-control"  id="dtestart" name="dtestart"  value="<%bookingstartdate%>" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+		
+		<script type="text/javascript">
+            $(function () {
+                $('#dtestart').datetimepicker({
+                    format: 'DD/MM/YYYY'
+                });
+            });
+        </script>
+	
+	        <div class="form-group">
+                <div class='input-group date' >
+                    <input type='text' class="form-control" id="timstart" name="timstart"  value="<%bookingstarttime%>"/>
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-time"></span>
+                    </span>
+					<span id="available_s"></span>
+                </div>
+            </div>
+			
+        <script type="text/javascript">
+            $(function () {
+                $('#timstart').datetimepicker({
+                    format: 'LT'
+                });
+            });
+        </script>
+		
+	
+  </p>
+                
+		<p>
+			  <label>Enter the duration in hours:</label>
+			  <input class="form-control" type="text" id="duration" name="bookingduration" size="10" value="<%bookingduration%>" /> <!-- onblur="setrate();" onchange="setrate();" -->
+		</p> 
+						 <!-- p>
+						  <label>Rate:</label>
+								  <select class="form-control" id="rateobj" name="rateobj"  ><!-- onblur="setrate();" onchange="setrate();" -->
+								  <option value="-1|0|0"  >Please select</option>
+								  </select><span id="s_rate"></span>
+						</p -->  
+						<input class="form-control" type="hidden" id="rateobj" name="rateobj" value="-1" />
+    </fieldset>
+	<fieldset>
+		<p>		
+		 <label>No of people:</label><input class="form-control" type="text"  id="noofpeople" name="noofpeople" size="4" value="<%bookingnoofpeople%>" onchange="checkmax();setmenu();" /> ( <span id="maxpersons"><%rentalobjmaxpersons%></span> )<br/>
+		 <label>Type of party:</label><input class="form-control" type="text" id="rentaltype" name="rentaltype" size="20" value="<%bookingrentaltype%>" /><br/>
+		</p>
+        <p>
+          <label>Pickup</label><input class="form-control" type="text" id="pickuplocationtext" name="pickuplocationtext" value="<%bookingpickuplocationtext%>" size="60" /><input type="hidden" name="pickuplocation" value="<%bookingpickuplocationid%>" /><br/>
+          <label>Dropoff</label><input class="form-control" type="text" id="dropofflocationtext" name="dropofflocationtext" value="<%bookingdropofflocationtext%>" size="60" /><input type="hidden" name="dropofflocation" value="<%bookingdropofflocationid%>" /><br/>
+        </p>
+        <p>
+          <label for="transport" >Transport : </label><input type="checkbox" name="transport" id="transport" <%bookingtransportflag%> />
+        </p>
+    </fieldset>                           
+        <!-- p>
+                   <label>Menu</label>
+                   <select class="form-control" id="menuobj" name="menuobj" onchange="setmenu();" onblur="setmenu();" >
+                                   <%rentalobjs_ratebytype=menu%>
+                     <!-- option value="1|0|0|None" >None</option>
+                     <option value="2|39.50|0|English Summer menu" >English Summer menu (&pound;39.50)</option>
+                     <option value="15|20.00|100|8 Canapes" >8 Canapes(&pound;20.00)</option -->
+                   </select>        
+                </p -->
+				
+				
+				<input type="hidden" name="menuobj" value="-1" />
+    <fieldset>            
+								<p>
+                                   <label>Catering Notes</label>
+										<textarea class="form-control" id="cateringnotes" name="cateringnotes" ><%bookingcateringnotes%></textarea>
+								</p> 
+                                <p>
+                                <label>Drinks Notes</label>
+                                <textarea class="form-control" id="drinknotes" name="drinknotes"><%bookingdrinknotes%></textarea>
+                                </p>
+                                <p>
+                                <label>Other Notes</label>
+                                <textarea class="form-control" id="othernotes" name="othernotes"><%bookingothernotes%></textarea>
+                                </p>
+	</fieldset>
+	<fieldset>
+                                <p>
+                                <label>Admin Notes</label>
+                                <textarea class="form-control" id="adminnotes" name="adminnotes"><%bookingadminnotes%></textarea>
+                                </p>
+	</fieldset>
+	<fieldset>
+                                <p>
+                                <label>Cost</label>
+                                <input class="form-control" type="text" id="additionalcharge" name="additionalcharge" value="<%bookingadditionalcost%>" onchange="settotal();" style="text-align:right"  />
+								</p>
+                                <p>
+                                <label>Deposit</label>
+                                <input class="form-control"t type="text" id="deposit" name="deposit" value="<%bookingdeposit%>" onchange="settotal();" style="text-align:right" />
+                                Paid <input type="checkbox" name="depositpaid" id="depositpaid" value="1" <%bookingdepositpaid%> />                                
+								</p>
+                                <p>
+                                <label>Balance</label>
+                                <input class="form-control" type="text" id="cdbalance" name="cdbalance" value="0" readonly style="text-align:right" />
+                                Paid <input type="checkbox" name="balancepaid" id="balancedpaid" value="1" <%bookingbalancepaid%> />
+								</p>
+								<p>
+                                <label>Invoice Number</label>
+                                <input class="form-control" type="text" id="invoicenumber" name="invoicenumber" value="<%invoicenumber%>"  />
+                                </p>
+	</fieldset>
+	<fieldset>
+                                <ul style="list-style-type:none" >
+                                    <li style="display:inline-block;margin-right:20px;" >Email skipper <input type="checkbox" value="1" <%bookingemailskipper%> name="emailskipper" id="emailskipper" /></li>
+                                    <li style="display:inline-block;margin-right:20px;">Email crew <input type="checkbox" value="1" <%bookingemailmate%> name="emailmate" id="emailmate" /></li>
+                                    <li style="display:inline-block;margin-right:20px;">Email caterer <input type="checkbox" value="1" <%bookingemailcaterer%> name="emailcaterer" id="emailcaterer" /></li>
+                                    <li style="display:inline-block;margin-right:20px;">Email client <input type="checkbox" value="1" <%bookingemailclient%> name="emailclient" id="emailclient" /></li>
+                                    <li style="display:inline-block;margin-right:20px;">Email owner <input type="checkbox" value="1" <%bookingemailowner%> name="emailowner" id="emailowner" /></li>
+                                </ul>
+								
+									<p>
+									Contact (
+									<a href="http://charter/members/content.php?template=templates/admin/managemembers.html&prefix=p_&action=adminedit&pid=-1" target="_blank">Create new contact</a>&nbsp;
+									<a href="javascript:refreshcontacts()">refresh</a> )Category
+									</p>
+									<p>
+									   <select class="form-control" id="category" onchange="setcontacts(this.value);" >
+									   <option value="-1">All</option>
+									   <%categorylist%>
+									   </select><br/>
+									   
+										<select class="form-control" id="contacts">
+									   <%contactsasoptions%>
+										</select><br/>
+																	
+
+									
+									
+											<input type="button" onclick="javascript:addcontact()" value="Add Contact To Booking Sheet" /><br/>
+									</p>
+									
+									
+									
+                                <table id="additionalcontacts">
+                                        <%booking_contacts_tbl%>
+                                </table>   									
+	</fieldset>
+
+                                
+           
+                                
+                                                             
+                                                                                        <!-- %booking_contacts%><br/ -->
+
+                                <!-- div id="invoicelist" >
+                                   <h2>Invoices</h2>
+                                      <%bookinginvoices%>
+                                </div -->
+
+ </div>
+
+
+
+        <div style="float:right">
+        <table id="total" style="margin-left:20px" >
+        <tr>
+        <th class="span6" >Boat Cost </th><td id="boatcost" class="text-right col-md-3" ><%bookingbasecost%><td>
+        </tr>
+        <tr>
+        <th class="span6" >Menu Cost </th><td id="menucost" class="text-right col-md-3" ><%bookingmenucost%><td>
+        </tr>
+        <tr>
+        <th class="span6" >Additional Cost </th><td id="additionalcost" class="text-right col-md-3" ><%bookingadditionalcost%><td>
+        </tr>
+        <tr>
+        <th  class="span6" >Total Cost </th><td id="totalcost" class="text-right col-md-3" ><%bookingtotalcost%> <td>
+        </tr>
+        <tr>
+        <th  class="span6">Deposit </th><td id="totaldeposit" class="text-right col-md-3" ><%bookingdeposit%> <td>
+        </tr>
+        <tr>
+        <th  class="span6">Balance </th><td id="balance" class="text-right col-md-3" >0<td>
+        </tr>           
+        </table>
+        </div>
+
+        <input type="hidden" id="template" name="template"  value="templates/bookingedit.html" />
+        <input type="hidden" id="customerid" name="customerid" value="<%bookingcustomerid%>" />
+        <input type="hidden" id="bookingid" name="bookingid" value="<%bookingid%>" />
+        <input type="hidden" id="rateid" name="rateid" value="<%bookingrateid%>" />
+        <input type="hidden" id="menuid" name="menuid" value="<%bookingmenuid%>" />
+        <input type="hidden" id="bookingrentfrom" name="bookingrentfrom" value="<%bookingrentfrom%>" />
+        <input type="hidden" id="bookingrentto" name="bookingrentto" value="<%bookingrentto%>"   />
+        <input type='hidden' name='action' id="action" value='updatebooking' />
+        <input type="hidden" name="prefix" id="prefix" value="p_" />
+        <input type="hidden" name="pid" id="pid" value="< %p_encryptedcontactid% >" />
+        <input type="hidden" id="baseamt" name="baseamt" value="<%bookingbasecost%>" />
+        <input type="hidden" id="boatamt" name="boatamt" value="<%bookingbasecost%>" />
+        <input type="hidden" id="menuamt" name="menuamt" value="<%bookingmenucost%>" />
+        <input type="hidden" id="additionalamt" name="additionalamt" value="<%bookingadditionalcost%>" />
+        <input type="hidden" id="totalamt" name="totalamt" value="" />
+        <p style="text-align:right;">
+        <input type="button" value="Update Booking" onclick="checkavailability();"/>
+        <input type="button" value="Print Booking" onclick="printit();"/><br/>  <br/>
+        <!-- input type="button" value="Add Invoice" onclick="invoice();"/ -->
+        <input type="button" value="View Function Sheet" onclick="javascript:document.location='content.php?template=templates/func_edit.html&bookingid=<%bookingid%>'" />
+        </p>
+ </form>
+ 
+		</div> <!-- col-md-8 -->
+		
+	</div> <!-- row -->
+
+<%content%>
+
+<%footer%>

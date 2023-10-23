@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<script src="scripts/ajax.js" ></script>
+
+
+<script src='scripts/jquery/jquery.min.js'></script>
+<script src='styles/bootstrap/js/bootstrap.min.js'></script>
+<link rel="stylesheet" type="text/css" href='styles/bootstrap/css/bootstrap.min.css'>
+<script type="text/javascript" src="scripts/tinymce/js/tinymce/tinymce.min.js"></script>
+<script>
+
+var ridx=0;
+
+function category_update() {
+
+ categoryid = document.getElementById('categoryid').options[document.getElementById('categoryid').selectedIndex].value;
+
+ loc = 'content.php?categoryid='+categoryid+'&template=templates/admin/managecategories.html&prefix=p';
+
+  document.location = loc;
+
+ if (categoryid>0) {
+    document.getElementById('categorytitle').value = document.getElementById('categoryid').options[categoryid].innerHTML;
+ }
+
+}
+
+function toggle(id) {
+   obj = document.getElementById(id);
+   btnobj= document.getElementById('togglebtn');
+   hide=false;
+   if ((obj.style.display=='block')   )  {     
+		hide=true;
+   } 
+
+   if (!hide) {
+      obj.style.display='block';
+	  btnobj.innerHTML='<a href="javascript:toggle(\'advanced\')">Simple</a>';   
+   } else {
+      obj.style.display='none';   
+	  btnobj.innerHTML='<a href="javascript:toggle(\'advanced\')">Advanced</a>';	     
+   }
+}
+
+function checkcategory(categoryid,parentid) {
+        res='0';
+        if (categoryid!=parentid) {
+	        url="content.php?action=isparent&categoryid="+categoryid+"&parentid="+parentid+"&rand="+Math.random(100)+1;
+    	        res = " "+ajaxget(url,0) ;
+		} else {
+			res='1';
+		}
+
+		
+		return res;	
+
+}
+
+function addrow(tableid,parentobjid) {
+
+ categoryobj = document.getElementById('categoryid');
+ cdx = categoryobj.selectedIndex;
+categoryid=categoryobj.options[cdx].value;
+ 
+ parentobj = document.getElementById(parentobjid);
+ pdx = parentobj.selectedIndex;
+ parentid=parentobj.options[pdx].value;
+ res=0; //checkcategory(categoryid,parentid).substr(1,1);
+
+ if (res=='0') {
+
+	 tblobj = document.getElementById(tableid);
+	 var newrow = tblobj.insertRow(tblobj.rows.length );
+	 newrow.id="nr"+ridx;
+
+	var c1=newrow.insertCell(0);
+	var c2=newrow.insertCell(1);
+	parentobj.options[pdx].text; 
+
+	c1.innerHTML= parentobj.options[pdx].text;
+	c2.innerHTML= "<a href=\"javascript:removerow('"+tableid+"','"+newrow.id+"');\">remove</a>"+
+              "<input type=\"hidden\" value=\""+parentobj.options[pdx].value+"\" id=\"nri"+ridx+"\" name=\"categoryparentidlist[]\" />";
+
+
+	ridx++;
+ }
+
+}
+
+function removerow( tableid, id ) {
+ tblobj = document.getElementById(tableid);
+ did = 'd'+id;
+ if (id.substr(0,2)=='nr') {
+   tblobj.deleteRow(document.getElementById(id).rowIndex);
+ } else {
+   if (document.getElementById(did).value=='1') {
+   		tblobj.rows[document.getElementById(id).rowIndex].style.backgroundColor="";  
+   		document.getElementById(did).value='0';		 
+   } else {
+   		tblobj.rows[document.getElementById(id).rowIndex].style.backgroundColor="#FF0000";
+ //  tblobj.rows[document.getElementById(id).rowIndex].disabled=true;
+   		document.getElementById(did).value='1';
+   }
+   
+ }
+  
+}
+
+function showtab(id) {
+
+	document.getElementById('tab-1').style.display='none';
+	document.getElementById('tab-2').style.display='none';	
+	document.getElementById('tab-3').style.display='none';	
+	document.getElementById('tab-4').style.display='none';
+	
+	document.getElementById(id).style.display='block';
+
+}
+
+
+var bkColor = "FFAAAA";
+
+function getEvent(e){  
+	if(window.event != null) {    
+		return event;  }  
+return e;
+}
+function setBKColor(e){
+ e = getEvent(e); var src =  e.srcElement || e.target; if(src != null) {
+   src.style.bkColor = src.style.backgroundColor;
+   src.style.backgroundColor = bkColor;
+ }
+}
+function reSetBKColor(e){
+ e = getEvent(e); var src =  e.srcElement || e.target; if(src != null) {
+   src.style.backgroundColor = src.style.bkColor;
+ }
+}
+
+function attachEvent(name,element,callBack) {
+    if (element.addEventListener) {
+      element.addEventListener(name, callBack,false);
+    } else if (element.attachEvent) {
+      element.attachEvent('on' + name, callBack);
+    }
+  }
+
+function setListner(eve,func) {
+   var ele = document.forms[0].elements;
+   for(var i = 0; i <ele.length;i++) {
+    element = ele[i];
+    if (element.type) {
+      switch (element.type) {
+        case 'checkbox':
+        case 'radio':
+        case 'password':
+        case 'text':
+        case 'textarea':
+        case 'select-one':
+        case 'select-multiple':
+           attachEvent(eve,element,func);
+       }
+     }
+  }
+}
+
+$(document).ready(function() {
+
+		tinymce.init({
+			selector:   "textarea",
+			width:      '100%',
+			height:     270,
+			plugins:    "link",
+			statusbar:  false,
+			menubar:    false,
+			toolbar:    [
+				"newdocument bold italic underline strikethrough alignleft aligncenter alignright alignjustify styleselect formatselect fontselect fontsizeselect cut",
+				"copy paste bullist numlist outdent indent blockquote undo redo removeformat subscript superscript"
+				]
+				
+		});
+
+		$(document).on('focusin', function(e) {
+			if ($(e.target).closest(".mce-window").length) {
+				e.stopImmediatePropagation();
+			}
+		});
+     		
+		
+		
+		
+
+}
+
+$(document).ready(function() {
+
+    var d=new Date();
+
+        mm=(d.getMonth()+1);
+        if (mm<10) {
+          mm='0'+mm;
+        }
+
+        dd = d.getDate();
+        if (dd<10) {
+           dd='0'+dd;
+        }
+
+        yy = d.getFullYear();
+        hh = d.getHours();
+        if (hh<10) {
+                hh='0'+hh;
+        }
+        mn = d.getMinutes();
+        if (mn<10) {
+                mn='0'+mn;
+        }
+
+
+        s= dd+'-'+mm+'-'+yy;
+
+   document.getElementById("dtestart").value=s;
+   s = hh+':'+mn;
+   document.getElementById("timstart").value=s;
+
+   // $( "#dtestart" ).datepicker( { dateFormat: 'dd-mm-yy', defaultDate: +7,autoSize: true, changeYear: true }  );
+   // $('#timstart').timepicker({defaultTime: '11:00'});
+
+    if (document.getElementById('rentalobj').value>0) {
+                getrentalobj();
+           // removed as rate no longer picked     setrate();
+        }
+
+
+
+
+});
+
+</script>
+
+<%header%>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-2">
+			<%sidemenu%>
+		</div> <!-- col-md-2 -->
+		
+		<div id="contentleft" class="col-md-2">
+
+			<script type="text/javascript" src="scripts/dtree/dtree.js"></script>
+			<%navtree%>
+
+		</div>	
+		
+		<div class="col-md-8">
+
+			<h1>Manage Categories</h1>
+
+			<form action="content.php" enctype="multipart/form-data" method="post" id="dataform">
+
+	<p>
+	<label for="categoryid">Select: </label> <select class="form-control" id="categoryid" name="categoryid" onchange="category_update();" >
+		<option value="-1">New ....................</option>
+		<%categorylist%>
+	</select>
+	</p>
+	<p>
+		<label>Code: </label><input class="form-control" type="text" id="categorycode" name="categorycode" size="30" value="<%category_code%>"/> <small><%category_id%></small>
+	</p>
+
+	<p>
+		<label>Title:</label><input class="form-control" type="text" id="categorytitle" name="categorytitle" size="30" value="<%category_title%>"/>
+	</p>
+
+
+
+
+    <ul class="nav nav-tabs">
+		<li class="active"><a data-toggle="tab" href="#home">Description</a></li>
+		<li><a data-toggle="tab" href="#menu1">Categories</a></li>
+		<li><a data-toggle="tab" href="#menu2">Images</a></li>
+		<li><a data-toggle="tab" href="#menu3">Detail</a></li>
+	</ul>
+
+<div class="tab-content">
+	<div id="home" class="tab-pane fade in active">
+		<label>Description:</label><br/>
+		<textarea class="form-control" name="categorydescription" id="categorydescription" ><%category_description%></textarea>
+	</div> <!-- home -->
+	
+	<div id="menu1" class="tab-pane fade">
+        <div id="manageparents" > 
+          <table id="tblparents" >
+            <caption>
+            Parents 
+            </caption>
+            <%category_parentsadmin%>
+          </table>
+          <br/>
+        </div>
+  <!-- end manageparents -->
+	<p>
+		<label>Choose</label><select class="form-control" id="addcategoryparent" name="addcategoryparent" >
+				<option value="-1">Choose.......</option>
+						<%categorylist%>
+					</select><input type="button" value="Add To Parents" onclick="addrow('tblparents','addcategoryparent' )" />	
+	</p>
+	</div> <!-- menu1 -->
+	
+	<div id="menu2" class="tab-pane fade">
+  			
+        <div id="managemedia" > 
+          <table id="tblmedia" >
+            <caption>
+            Images &amp; Media 
+            </caption>
+            <%category_mediaadmin%>
+          </table>
+          <br/>
+          <input type="file" name="upload[0]"  id="upload" />
+        </div> <!-- manage media -->
+	</div> <!-- menu2 -->
+	
+	<div id="menu3" class="tab-pane fade">
+	
+			<label>Header:</label><input class="form-control" type="text" id="categoryheader" name="categoryheader" size="30" value="<%category_header%>"/><br/>
+			<label>Footer:</label><input class="form-control" type="text" id="categoryfooter" name="categoryfooter" size="30" value="<%category_footer%>"/><br/>
+			<label>Position Order:</label><input class="form-control" type="text" id="categoryorderstr" name="categoryorderstr" size="30" value="<%category_orderstr%>"/><br/>
+			<label>Type:</label><select class="form-control" id="categorytype" name="categorytype" >
+				<%category_ctypeasoption%>
+			</select><br/>
+			<label>Status:</label><select class="form-control" id="categorystatus" name="categorystatus" >
+				<%category_statusasoption%>
+			</select><br/>	
+			
+	</div> <!-- menu3 -->
+</div>
+
+		
+		
+
+		
+		
+
+<br/>
+    
+    <div style="clear:both;position:relative;text-align:right;"> 
+      <hr/>
+    </div>
+	<p style="text-align:right;width:90%" >
+	<input type="submit" value="Update" id="btnupdate" />
+	<input type="hidden" value="templates/admin/managecategories.html" name="template" />
+	<input type="hidden" value="updatecategories" name="action" />	
+        </p>
+	</form>
+
+		</div> <!-- col-md-8 -->
+		
+	</div> <!-- row -->
+</div> <!-- container -->
+
+<%footer%>
+<script language="JavaScript">
+setListner("focus",setBKColor);
+setListner("blur",reSetBKColor);
+</script>
+</html>

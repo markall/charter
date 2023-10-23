@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.8/jquery-ui.min.js"></script>
+<script type="text/javascript" src="scripts/datetime/jquery-ui-timepicker-addon.js"></script>
+<link rel="stylesheet" type="text/css" media="screen" href="http://hotlink.jquery.com/jqueryui/themes/base/jquery.ui.all.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.8/themes/flick/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="scripts/datetime/jquery-ui-timepicker-addon.css" />
+<script language="javascript">
+var ridx=0;
+
+$(document).ready(function() {
+       // ready code goes here
+
+});
+
+</script>
+<style type="text/css" media="screen">
+
+#invdte {
+        text-align: right;
+        padding-left: 60%;
+}
+#invdte table {
+        border: medium solid #333333;
+}
+#invdte table th, #invdte table td {
+        border: thin solid #333333;
+        margin: 0px;
+        padding: 0px;
+}
+
+#total th,#total td {
+ text-align:right;
+ width:100px;
+}
+.rightj {
+        width:120px;
+        text-align:right;
+}
+
+.total {
+        border: thin solid #000000;
+}
+
+#costs th {
+        text-align:right;
+        width:130px
+}
+
+
+</style>
+<%header%>
+<h2>Invoice</h2>
+
+
+<div id="invdte">
+<table style="width:200px;text-align:right;" >
+<tr>
+<th>Tax Date</th>
+<th>Invoice Number.</th>
+</tr><tr>
+<td><%invoicedate%></td>
+<td><%invoicenumber%></td>
+</tr>
+</table></p>
+</div> <!-- date -->
+
+<div style="text-align:left;">
+<table>
+<tr><th>Invoice To:</th></tr>
+<tr><td>
+           <%invoiceclient_contacttitledisplay%> <%invoiceclient_contactfirstname%> <%invoiceclient_contactlastname%>      <br/>
+          <%invoiceclient_contactcompany%> <br/>
+          <%invoiceclient_contactaddress1%> <br/>
+          <%invoiceclient_contactaddress2%> <br/>
+          <%invoiceclient_contacttown%> <br/>
+          <%invoiceclient_contactpostcode%><br/>
+</td></tr>
+</table>
+</div> <!-- client details -->
+<table>
+<tr>
+<th>Description </th>
+<th>Amount</th>
+<th>VAT</th>
+
+</tr>
+<tr>
+<td>
+ <%invoicedescription%>
+
+</td>
+      <td  class="rightj"><u>&pound;
+        <%invoicenettamount%></u>
+      </td>
+      <td class="rightj"><u>&pound;
+        <%invoicevatamount%></u>
+      </td>
+</tr>
+
+</table>
+
+<div>
+
+
+</div> <!-- booking details -->
+
+
+
+
+
+<div id="buttonsection">
+<form action="content.php?template=templates/calender.html" id="frmbooking" method="post" >
+        <p style="text-align:right;">
+        <input type="button" value="Print" onclick="print();"/>
+        <input type="submit" value="Finish...." />
+        </p>
+ </form>
+</div>
+
+<%content%>
+
+<%footer%>

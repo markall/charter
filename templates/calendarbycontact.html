@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.8/jquery-ui.min.js"></script>
+<script type="text/javascript" src="scripts/datetime/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="scripts/tiny_mce/jquery.tinymce.js"></script>
+
+<link rel="stylesheet" type="text/css" media="screen" href="http://hotlink.jquery.com/jqueryui/themes/base/jquery.ui.all.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.8/themes/flick/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="scripts/datetime/jquery-ui-timepicker-addon.css" />
+
+<script>
+
+function checkavailability() {
+
+   dte = document.getElementById('dtestart').value;
+   tim = document.getElementById('timstart').value;
+   dte.replace('/','-');
+   dte.replace('.','-');
+   da = dte.split('-');
+   adte = da[1]+'/'+da[0]+'/'+da[2];
+   dattim = adte+" "+tim;
+
+
+   fd = Date.parse(dattim);
+
+   a = document.getElementById('duration').value;
+
+   var td= new Date();
+
+   var minutes=1000*60;
+   var hours=minutes*60;
+   hm = eval(eval(a)*hours);
+   alert(hm);
+   alert(fd);
+   td.setTime( hm+eval(fd) );
+   alert(td);
+        dd=(eval(td.getDate()));
+        if (dd<10) {
+                dd='0'+dd;
+        }
+
+        mm= (eval(td.getMonth())+1);
+        if (mm<10) {
+                mm='0'+mm;
+        }
+
+        hh=(eval(td.getHours()));
+        if (hh<10) {
+                hh='0'+hh;
+        }
+
+        mn=(eval(td.getMinutes()));
+        if (mn<10) {
+                mn='0'+mn;
+        }
+
+        todte = dd+'/'+mm+'/'+td.getFullYear()+' '+hh+':'+mn;
+            
+        document.getElementById('bookingrentto').value=todte;
+        document.getElementById('bookingrentfrom').value=document.getElementById('dtestart').value+' '+document.getElementById('timstart').value;
+                
+                var url = "content.php?action=checkavailability&fromdate="+document.getElementById('bookingrentfrom').value+"&todate="+document.getElementById('bookingrentfrom').value;
+                var r=Math.random();
+                url=url+'?rnd='+r;
+                document.getElementById("available_s").innerHTML='';
+
+//              $("#available").load(url);
+                 $.get(url, function(xml) {
+
+                        if (xml=="true") {                              
+                            document.getElementById("frmbooking").submit();
+                        } else {
+                           document.getElementById("available_s").innerHTML='Not available for the given period';
+                        }
+                });
+
+  
+
+
+
+
+
+
+}
+
+function getrentalobj() {
+        rentalobj = document.getElementById('rentalobj');
+
+    rentalid = rentalobj.options[rentalobj.selectedIndex].value;
+    var url="content.php?action=fetchrentalrate&ratetype=boat&id="+rentalid;
+        $("#rateobj").load(url);
+
+}
+
+function setrate() {
+        document.getElementById('s_rate').innerHTML=' ';
+                dur = document.getElementById('duration').value;
+                r=0;
+
+                if (isNaN(dur)) {
+                        document.getElementById('duration').value=0;
+                }
+        rateobj = document.getElementById('rateobj');
+        ratedetails = rateobj.options[rateobj.selectedIndex].value;
+        ratearr = ratedetails.split('|');
+                //0 - id
+                //1 - baseprice
+                //2 - baseunit          
+                //3 - priceperunit
+                
+                if (eval(ratearr[2])>dur) {
+                        r=eval(ratearr[1]);
+                } else {
+                        d1=eval(dur)-eval(ratearr[2]);
+                        r = eval(ratearr[1])+(eval(ratearr[3])*d1);
+                }
+                
+        document.getElementById('s_rate').innerHTML=' Amount &pound;'+r; 
+        document.getElementById('maincost').value=r;
+        document.getElementById('rateid').value=ratearr[0];             
+
+ 
+}
+
+$(document).ready(function() {
+
+    var dte = "<%datefrom%>";
+
+    if (dte.length<1)    {
+
+        var d=new Date();
+
+        mm=(d.getMonth()+1);
+        if (mm<10) {
+          mm='0'+mm;
+        }
+
+        dd = d.getDate();
+        if (dd<10) {
+           dd='0'+dd;
+        }
+
+        yy = d.getFullYear();
+
+        hh = d.getHours();
+        if (hh<10) {
+                hh='0'+hh;
+        }
+        mn = d.getMinutes();
+        if (mn<10) {
+                mn='0'+mn;
+        }
+
+
+        s= dd+'-'+mm+'-'+yy;
+    
+        document.getElementById("datefrom").value=s;
+
+        yy = d.getFullYear()+1;
+        s= dd+'-'+mm+'-'+yy;
+
+        document.getElementById("dateto").value=s;
+    }
+
+
+
+    $( "#datefrom" ).datepicker( { dateFormat: 'dd-mm-yy', defaultDate: +7,autoSize: true, changeYear: true }  );
+
+    $( "#dateto" ).datepicker( { dateFormat: 'dd-mm-yy', defaultDate: +7,autoSize: true, changeYear: true }  );
+
+
+});
+
+
+</script>
+<%header%>
+<style type="text/css" media="screen">
+label {
+        text-align:left;
+        width:250px;
+}
+#calendar th {
+        text-align:left;
+}
+
+td #starttime {
+        width:220px;
+}
+td #endtime {
+        width:220px;
+}
+td #duration {
+        width:100px;
+}
+.odd {
+ background-color:#FFAAFF;
+}
+.even {
+ background-color:#FFFFAA;
+}
+.css_bookingid {
+        text-align:center;
+        width:30px;
+}
+.css_bookingid a {
+        text-decoration: none;
+}
+.css_bookingid a:hover {
+        width:100%;
+        background-color:black;
+        color:white;
+}
+
+.css_duration {
+        text-align:center;
+}
+
+</style>
+<h1>calendar</h1>
+
+<div id="daterange">
+<p>
+
+<form action="content.php" method="post" >
+<input type="hidden" name="template" value="templates/calendarbycontact.html" />
+<input type="hidden" name="editoptions" value="<%calendareditoptions%>" />
+
+
+From <input type="text" name="datefrom" id="datefrom" value="<%datefrom%>" /> To <input type="text" name="dateto" id="dateto" value="<%dateto%>" />
+&nbsp; Boat         <select id="rentalobj" name="rentalobjid" onchange="getrentalobj();" onblur="setrate();" >
+                <option value="-1">All ...</option>
+                <%rentalobjasoptionsall%>
+        </select>&nbsp;
+		<input type="submit" value="Refresh" />
+</form>
+</p>
+</div>
+<div style="relative">
+        <table id="calendar" >
+        <th style="width:30px;" >ID</th>
+        <th>Boat</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Duration <br/>(hours)</th>  
+        <%bookingcalendar|contactid=<%p_contactid%> %>
+        </table>
+        
+</div>
+
+
+<%footer%>

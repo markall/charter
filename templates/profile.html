@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<script language="JavaScript">
+function validate() {
+    va = new Array();
+        va[0] = "fromname";
+        va[1] = "subject";
+        
+        valid=true;
+        msg="";
+
+        for (i=0;i<va.length;i++)
+        {
+                if (document.getElementById( va[i] ).value<' ') {
+                        document.getElementById( va[i] ).style.backgroundColor="#FFCC80";
+                        msg=msg+va[i]+" - Required field needs completing\n";
+                        valid=false;
+                }
+        }
+                                                
+
+        if (document.getElementById("seccode").value!=fcode) {
+                        document.getElementById( "seccode" ).style.backgroundColor="#FFCC80";
+                        msg=msg+"The security code does not match that shown\n";                                
+                        valid=false;
+        }
+        
+
+        if (valid) {
+                document.getElementById("sendmessagef").submit();
+        } else {
+                alert(msg);
+        }
+        
+}
+</script>
+
+<%header%>
+                <h1>Company Profile</h1>
+    <p class="back"><a href="javascript:history.go(-1)"><<< Back</a></p>
+    <table id="profiletable">
+      <tr> 
+        <td> 
+          <%p_contact_mediaimg[profile]%>
+        </td>
+        <td> 
+          <%p_contactcompany%>
+          <br/> 
+          <%p_contactaddress1%>
+          <br/> 
+          <%p_contactaddress2%>
+          <br/> 
+          <%p_contacttown%>
+          <br/> 
+          <%p_contactcounty%>
+          <br/> 
+          <%p_contactpostcode%>
+          <br/> 
+          <%p_contacttelephone1%>
+          <br/> 
+          <%p_contacthyperlink%>
+        </td>
+      </tr>
+      <tr> 
+        <td colspan="2">
+                                        <strong>Description</strong><br /> 
+          <%p_contactdescription%>
+        </td>
+      </tr>
+    </table>
+<%feedback_list_approved%><br/>
+
+
+    <div id="sendmessage"> 
+      <form action="" enctype="multipart/form-data" id="sendmessagef" title="Send a message" >
+        <fieldset>
+        <legend> Leave A Testimonial </legend>
+        <input type="hidden" name="action" value="addfeedback" />
+        <input type="hidden" name="mcontactid" value="<%p_contactid%>" />
+
+                                <p>
+        <label for="fromname">Name</label>
+        <input type="text" name="fromname" id="fromname" value="<%contactfirstname%> <%contactlastname%>" size="40" />
+        </p>
+        <p>
+        <label for="fromemail">Email</label>
+        <input type="text" name="fromemail" id="fromemail" value="<%contactemail%>" size="40" />
+        </p>
+                                <p>
+        <label for="fromtelephone">Telephone</label>
+        <input type="text" name="fromtelephone" id="fromtelephone" value="<%contacttelephone1%>" size="40" />
+        </p>
+
+        <input type="hidden" name="subject" id="subject" value="Testimonial for <%p_contactfirstname%> <%p_contactlastname%>" size="40" />
+
+                                <p>
+        <label for="message">Testimonial</label>
+        <textarea name="message" id="message" cols="25" ></textarea>
+        </p>
+		<p>
+			Rating &nbsp;&nbsp;Low 
+		        <input type="radio" name="rating" value="0" />      
+		        <input type="radio" name="rating" value="1" />    
+		        <input type="radio" name="rating" value="2" />    
+		        <input type="radio" name="rating" value="3" />    
+		        <input type="radio" name="rating" value="4" /> High
+		</p>
+                                <p>
+        <label>Please enter the security code:<br/>
+        <img id="rcode" src="code.php?code=abcde" alt="code" /></label>
+        <script type="text/JavaScript">
+<!--
+        var im1 = document.getElementById("rcode");
+        var cdes = "abcdefghijklmnopqrstuvwxwzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        var fcode = cdes.substr( Math.random()* cdes.length, 1)+cdes.substr( Math.random()* cdes.length, 1)+cdes.substr( Math.random()* cdes.length, 1)+cdes.substr( Math.random()* cdes.length, 1);
+        im1.src="code.php?code="+fcode;
+//-->
+</script>
+        <input type="text" name="seccode" id="seccode" size="6" value="" />
+        </p>
+                                <p>
+        <label for id="submit"></label>
+        <input type="button" value="Send Message" onclick="validate();"  />
+                                </p>
+        </fieldset>
+      </form>
+    </div>
+ <%footer%>
+</html>

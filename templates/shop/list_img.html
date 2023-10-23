@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<script type="text/javascript"><!--//--><![CDATA[//><!--
+
+sfHover = function() {
+        var sfEls = document.getElementById("sidemenu").getElementsByTagName("LI");
+        for (var i=0; i<sfEls.length; i++) {
+                sfEls[i].onmouseover=function() {
+                        this.className+=" sfhover";
+                }
+                sfEls[i].onmouseout=function() {
+                        this.className=this.className.replace(new RegExp(" sfhover\\b"), "");
+                }
+        }
+}
+if (window.attachEvent) window.attachEvent("onload", sfHover);
+
+sfHover1 = function() {
+        var sfEls = document.getElementById("menu").getElementsByTagName("LI");
+        for (var i=0; i<sfEls.length; i++) {
+                sfEls[i].onmouseover=function() {
+                        this.className+=" sfhover1";
+                }
+                sfEls[i].onmouseout=function() {
+                        this.className=this.className.replace(new RegExp(" sfhover1\\b"), "");
+                }
+        }
+}
+if (window.attachEvent) window.attachEvent("onload", sfHover1);
+//--><!]]></script>
+
+
+<title>Dynasty Doors Direct</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="refresh" content="105;URL=" />
+
+<link href="../styles/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<div class="center">
+<div id="container">
+
+<div id="header">
+        <img src="../images/3dbar.png" alt="Dynasty Doors " /><br />
+        <img src="../images/topimages.png" alt="Gargage Doors Direct" style="float:left;display:inline;" />
+        <div class="toptext" >A better place to buy your garage doors</div>
+</div> <!-- header -->
+<%menu%>
+ <!-- menu -->
+<div style="clear:both;"></div>
+<div id="main">
+<%sidemenu%>
+<!-- side menu -->
+
+        <div id="content">
+                <div id="contenttop">
+          <div id="nav1"><div style="float:left;display:inline;"> <a href="javascript:history.go(-1)">Go Back | </a></div>You are here : <%category_parentnav%> <%category_title%> (<%category_id%> <%category_code%>) </div>; 
+                        <%childlist%>						
+                </div> <!-- content top -->
+				<div id="cattextimg">
+					<%categorytext_1%>
+				</div>
+                <div id="productlist">
+                     <%productlist%>
+                </div>
+
+        </div> <!-- content --><br />
+</div> <!-- main -->
+
+<div id="footer" >
+<img src="../images/3dbar.png" alt="Dynasty Doors" /><br />
+<div id="footertext">
+        <a href="../tandc.html#privacy" >Privacy Statement</a> &middot;
+        <a href="../tandc.html#tandc">Terms and conditions</a>
+</div> <!-- footer text -->
+
+</div> <!-- footer -->
+
+
+</div> <!-- container -->
+</div> <!-- div class center -->
+</body>
+</html>

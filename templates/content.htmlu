@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<%headerpre%>
+
+<script src='scripts/moment.js'></script>
+<script type="text/javascript" src="scripts/fullcalendar/fullcalendar.js"></script>
+<link rel='stylesheet' type='text/css' href='scripts/fullcalendar/fullcalendar.css' />
+<link rel='stylesheet' type='text/css' href='scripts/fullcalendar/fullcalendar.print.css' media='print' />
+
+
+<script type="text/javascript">
+
+function find() {
+
+s = document.getElementById('searchstr');
+
+document.location="content.php?template=templates/calendar.html&searchstr="+s.value;
+
+}
+
+</script>
+
+<script>
+
+$(document).ready(function() {
+
+
+    var date = new Date();
+                var d = date.getDate();
+                var m = date.getMonth();
+                var y = date.getFullYear();
+
+                $('#calendar').fullCalendar({
+                        editable: false,
+                        events: [
+                                <%bookingcalendar|fullcalendarevents=yes%>   
+                        ]
+                });
+				
+			eventRender: function(event, element) {
+				element.qtip({
+				content: event.title
+			});
+
+});
+
+</script>
+
+
+<%header%>
+
+ <div class="container">
+	<div class="row">
+		<div class="col-md-2">
+			
+			<div id="sidenav" > 
+				<div id="sidemenu">
+					
+						<%sidemenu%>
+					
+				</div> <!-- side menu -->
+
+
+			</div> <!-- side nav --> 
+
+		</div> <!-- col-md-2 -->
+		
+		<div class="col-md-8">
+				<div id="content">
+<div id="navmenu">
+<ul class="list-unstyled list-inline">
+<li><a href="content.php?template=templates/booking1.html" title="Bookings"><img src="images/icons/bookings.png" alt="Bookings"></a></li>
+<li><a href="content.php?template=templates/calendar.html&editoptions=function|booking" title="Calendar"><img src="images/icons/calendar.png" alt="Calendar"></a></li>
+<!-- li><a href="#" title="Invoices"><img src="images/icons/invoices.png" alt="Invoices"></a></li>
+<li><a href="#" title="Reports"><img src="images/icons/reports.png" alt="Reports"></a></li>
+<li><a href="#" title="Settings"><img src="images/icons/settings.png" alt="Settings"></a></li -->
+</ul>
+</div>
+<div id="search" >
+<p>
+<label style="width:400px" >Search Bookings for Surname </label><input type="text" name="searchstr" id="searchstr" value=""size="30" /><input type="button" onclick="find()" value="Find" />
+</p>
+</div>
+
+<div id='calendar'></div>
+				</div>
+		</div> <!-- col-md-8 -->
+		
+	</div> <!-- row -->
+	
+ </div> <!-- Container -->
+
+<%footer%>
+
+
+

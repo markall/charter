@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%headerpre%>
+<title> 
+<%SITE_NAME%>
+</title>
+
+
+		<script type="text/javascript" src="scripts/moment.js"></script>
+		<script src="scripts/bootstrap-datetimepicker-master/src/js/bootstrap-datetimepicker.js"></script>
+
+<script>
+
+    var user_rates = false;
+	
+	function checkavailability() {
+
+		   dte = document.getElementById('dtestart').value;
+		   tim = document.getElementById('timstart').value;
+		   
+		   dte.replace( '-','/' );
+		   dte.replace( '.','/' );
+
+		   da = dte.split('/');
+
+		   adte = da[1]+'/'+da[0]+'/'+da[2];
+		   dattim = adte+" "+tim;
+
+		   fd = Date.parse(dattim);
+
+		   a = document.getElementById('duration').value;
+   
+		   if (isNaN(a) || (a.length==0) ) {
+			alert('Please enter a valid duration');
+		   } else {
+			   var td= new Date();
+
+			   var minutes=1000*60;
+			   var hours=minutes*60;
+			   hm = eval(eval(a)*hours);
+
+				td.setTime( hm+eval(fd) );
+
+				dd=(eval(td.getDate()));
+				if (dd<10) {
+						dd='0'+dd;
+				}
+
+				mm= (eval(td.getMonth())+1);
+				if (mm<10) {
+						mm='0'+mm;
+				}
+
+				hh=(eval(td.getHours()));
+				if (hh<10) {
+						hh='0'+hh;
+				}
+
+				mn=(eval(td.getMinutes()));
+				if (mn<10) {
+						mn='0'+mn;
+				}
+
+				todte = dd+'/'+mm+'/'+td.getFullYear()+' '+hh+':'+mn;
+			  
+			  
+				document.getElementById('timerentto').value=todte;
+				document.getElementById('timerentfrom').value=document.getElementById('dtestart').value+' '+document.getElementById('timstart').value;
+						
+				var url = "content.php?action=checkavailability&fromdate="+document.getElementById('timerentfrom').value+"&todate="+document.getElementById('timerentto').value+"&rentalobjid="+document.getElementById('rentalobj').value;
+				document.getElementById("available_s").innerHTML = url;
+				var r=Math.random();
+				url=url+'&rnd='+r;
+				document.getElementById("available_s").innerHTML='';
+				
+
+				$.get(url, function(xml) {
+
+						if (xml=="true") {                              
+							document.getElementById("frmbooking").submit();
+						} else {
+						   document.getElementById("available_s").innerHTML='Sorry the booking is not available for the given period';
+						   $('#available_s').toggle();
+						}
+				});
+
+			}
+
+
+
+
+
+
+}
+
+function getrentalobj() {
+        rentalobj = document.getElementById('rentalobj');
+
+    rentalid = rentalobj.options[rentalobj.selectedIndex].value;
+    var url="content.php?action=fetchrentalrate&ratetype=boat&id="+rentalid;
+        $("#rateobj").load(url);
+
+}
+
+function setrate() {
+        
+        document.getElementById('s_rate').innerHTML=' ';
+                dur = document.getElementById('duration').value;
+                r=0;
+
+                if (isNaN(dur)) {
+                        document.getElementById('duration').value=0;
+                }
+
+                if (use_rates) {
+                    rateobj = document.getElementById('rateobj');
+                    ratedetails = rateobj.options[rateobj.selectedIndex].value;
+                    ratearr = ratedetails.split('|');
+                    //0 - id
+                    //1 - baseprice
+                    //2 - baseunit          
+                    //3 - priceperunit
+
+                    if (eval(ratearr[2]) > dur) {
+                        r = eval(ratearr[1]);
+                    } else {
+                        d1 = eval(dur) - eval(ratearr[2]);
+                        r = eval(ratearr[1]) + (eval(ratearr[3]) * d1);
+                    }
+
+                    document.getElementById('s_rate').innerHTML = ' Amount &pound;' + r;
+                    document.getElementById('maincost').value = r;
+                    document.getElementById('rateid').value = ratearr[0];
+                } else {
+                    document.getElementById('s_rate').innerHTML = ' ' ;
+                    document.getElementById('maincost').value = 0;
+                    document.getElementById('rateid').value = -1;
+                }
+
+ 
+}
+
+var contacts =  [{label:'New', value:'-1'},<%contactasarray%>];
+
+$(document).ready(function() {
+
+		$('#contact').autocomplete({
+			source: contacts,
+			select: function( event, ui ) {
+				event.preventDefault();
+				$("#contact").val(ui.item.label);
+				id = ui.item.value;
+				$("#pid").val(id);
+				//setcontact(id);
+				//$("#selected-customer").val(ui.item.label);
+			},
+			focus: function(event, ui) {
+				event.preventDefault();
+				$("#contact").val(ui.item.label);
+			}
+			
+							
+		});
+		
+
+    var d=new Date();
+
+        mm=(d.getMonth()+1);
+        if (mm<10) {
+          mm='0'+mm;
+        }
+
+        dd = d.getDate();
+        if (dd<10) {
+           dd='0'+dd;
+        }
+
+        yy = d.getFullYear();
+        hh = d.getHours();
+        if (hh<10) {
+                hh='0'+hh;
+        }
+        mn = d.getMinutes();
+        if (mn<10) {
+                mn='0'+mn;
+        }
+
+
+        s= dd+'-'+mm+'-'+yy;
+
+   document.getElementById("dtestart").value=s;
+   s = hh+':'+mn;
+   document.getElementById("timstart").value=s;
+
+   // $( "#dtestart" ).datepicker( { dateFormat: 'dd-mm-yy', defaultDate: +7,autoSize: true, changeYear: true }  );
+   // $('#timstart').timepicker({defaultTime: '11:00'});
+
+		if (document.getElementById('rentalobj').value>0) {
+                getrentalobj();
+           // removed as rate no longer picked     setrate();
+        }
+
+
+
+
+});
+        
+
+
+</script>
+
+
+<%header%>
+
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-2">
+			
+			<div id="sidenav" > 
+				<div id="sidemenu">
+					
+						<%sidemenu%>
+					
+				</div> <!-- side menu -->
+
+
+			</div> <!-- side nav --> 
+
+		</div> <!-- col-md-2 -->
+		
+		<div class="col-md-8">
+
+<h1>Booking Form</h1>
+<div  id="booking" class="container" >
+
+	<form action="content.php?template=templates/booking2.html" id="frmbooking" method="post" >
+
+		<div class="row">
+			<div class="col-md-12" >
+				<div id="selectboat">
+						
+						<label for="rentalobj">Please choose a boat</label>  <br/>
+						<select class="form-control" id="rentalobj" name="rentalobjid" onchange="getrentalobj();"  >   <!-- onblur="setrate();" removed due to rate no longer being set -->
+								<option value="-1">Please select a boat ...</option>
+								<%rentalobjasoptionsbyuser%>
+						</select>
+					
+				</div>
+			</div>
+		</div>
+
+		<div id="selectdate" >		
+
+			<div class="row">
+				<div class="col-md-12">
+						<label>Choose a date and time to start:</label><br/>
+						<div class="form-group">
+							<div class='input-group date' >
+								<input type='text' class="form-control" id='dtestart' />
+								<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+								</span>
+							</div>
+						</div>
+				</div>
+			</div>
+
+
+			<div class="row" >
+				<div class="col-md-12" >
+					<div class="form-group">
+						<div class='input-group date'>
+							<input type='text' class="form-control"  id='timstart' />
+							<span class="input-group-addon">
+								<span class="glyphicon glyphicon-time"></span>
+							</span>
+							
+						</div>
+					</div>
+				</div>
+			</div>	
+			
+			<script type="text/javascript">
+				$(function () {
+					$('#dtestart').datetimepicker({
+						format: 'DD/MM/YYYY'
+					});
+				});
+
+				$(function () {
+					$('#timstart').datetimepicker({
+						format: 'HH:mm'
+					});
+				});
+			</script>
+		
+		</div> <!-- select date -->
+
+
+		<div class="row" >
+			<div class="col-md-12">
+				<div class="form-group" >
+					<label>Enter the duration in hours:</label><br/>
+					<input class="form-control" type="number" id="duration" name="bookingduration" size="10" value="4"  /> 
+				</div>
+			</div>
+		
+		</div>
+		
+		
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form-group" >
+					<label for="contact">Customer Surname</label>
+					<input type="text" id="contact" name="contact" class="form-control"  />
+					<input type="hidden" id="pid" name="pid"   />
+				</div>		
+			</div>
+		
+		</div>
+	 
+
+		<input type="button" value="Check Availability" onclick="checkavailability();"/>
+		<div id="available_s" class="alert alert-warning" role="alert" style="display:none" ></div>
+
+
+
+        <input type="hidden" id="action" name="action" value="adminedit" />
+        <input type="hidden" id="maincost" name="maincost" value="" />
+        <input type="hidden" id="rateid" name="rateid" value="" />
+        <input type="hidden" id="available" value="" />
+        <input type="hidden" name="prefix" value="p_" />
+        <input type="hidden" id="timerentfrom" name="timerentfrom" value="<%timerentfrom%>" />
+        <input type="hidden" id="timerentto" name="timerentto" value="<%timerentto%>"   />
+		<input type="hidden" id="s_rate" value="" />
+		<input type="hidden" id="use_rates" value="" />
+
+	</form>
+
+</div>
+
+		</div> <!-- col-md-8 -->
+		
+	</div> <!-- row -->
+	
+ </div> <!-- Container -->
+
+<%footer%>

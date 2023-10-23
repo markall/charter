@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Traders Directory Registration</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="content-language" content="en-GB" />
+<meta name="description" content="Careers Springboard Bracknell" />
+<meta name="owner" content="Careers Springboard Bracknell" />
+<meta name="copyright" content="Careers Springboard Bracknell" />
+<meta name="author" content="Careers Springboard Bracknell" />
+<meta name="robots" content="noindex, nofollow" />
+<link href="styles/csb-styles.css" rel="stylesheet" type="text/css" />
+<!--[if lte IE 6]>
+<link href="styles/csb-styles-ie6.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+<script language="JavaScript" src="scripts/ajax.js"></script>
+
+<script language="javascript" type="text/javascript" src="scripts/datetimepicker.js"> </script>
+<script language="javascript" type="text/javascript" src="scripts/dateunit.js"> </script>
+
+<script language="JavaScript">
+var userexists=true;
+var frows=0;
+
+function loaded() {
+	document.getElementById('upload').disabled=false;	
+}
+function testconfirm() {
+	document.getElementById('register').disabled=true;
+	if (document.getElementById('charter').checked) {
+		if (document.getElementById('privacy').checked) {
+		   if (userexists==false) {
+			document.getElementById('register').disabled=false;
+		   }
+		}
+	}
+}
+
+function addfile() {
+   ft = document.getElementById('ftable');
+   if1 = document.getElementById('ifile');
+ 
+   nrow = ft.insertRow();
+   rid = ft.rows.length-1;
+   ncell = nrow.insertCell(0);
+   ncell.innerHTML= '<input type="file" id="'+rid+'" value="'+ if1.value+'" />';   
+   ncell1 = nrow.insertCell(1);
+   ncell1.innerHTML='<a href=javascript:deleterow('+rid+')>remove</a>';
+   document.getElementById(rid).value=if1.value;
+   
+}
+
+function deleterow(rid) {
+	alert( rid );
+	document.getElementById(rid).value='lll';
+}
+
+function validate() {
+    va = new Array();
+	va[0] = "firstname";
+	va[1] = "lastname";
+	va[2] = "email";
+
+	
+	valid=true;
+	msg="";
+
+	for (i=0;i<va.length;i++)
+	{
+		if (document.getElementById( va[i] ).value<' ') {
+			document.getElementById( va[i] ).style.backgroundColor="#FFCC80";
+			msg=msg+va[i]+" - Required field needs completing\n";
+			valid=false;
+		}
+	}
+	
+
+	if (valid) {
+		document.getElementById("memberregisterform").submit();
+	} else {
+		alert(msg);
+	}
+	
+}
+
+function setpicture() {
+	document.getElementById("dyna").innerHTML="<img src=\""+document.getElementById("picture").value+"\" height='100px' />";
+}
+
+
+
+
+</script>
+</head><noscript>
+
+</noscript>
+
+
+<link href="../../styles/style.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body id="visitorspage" onload="loaded();">
+
+<div id="container"> 
+  <div id="header"> 
+    <h1>TRADERS DIRECTORY</h1>
+  </div>
+  <%menu%>
+  <%sidemenu%>
+  <div id="content"> 
+    <div id="login"></div>
+	<div id="regform">
+		<fieldset>
+		<label for="fupload">Upload File</label>
+		<input type="file" id="ifile" name="ifile" />
+		<input type="button" value="Add" onclick="addfile()" />
+		</fieldset>	
+		
+		<table id="ftable">
+			
+		</table>
+		<input type="button" id="upload" value="Upload" />
+	</div>
+  </div>
+  <div id="footer" style="clear:both;"> 
+    <%footer%>
+  </div>
+</div>
+
+
+
+</body>
+</html>

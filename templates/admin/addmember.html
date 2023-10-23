@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script language="JavaScript" src="scripts/ajax.js"></script>
+
+<script language="javascript" type="text/javascript" src="scripts/datetimepicker.js"> </script>
+<script language="javascript" type="text/javascript" src="scripts/dateunit.js"> </script>
+
+<script language="JavaScript">
+var userexists=true;
+
+function loaded() {
+      document.getElementById('register').disabled=true;
+      document.getElementById('firstname').value='';
+      document.getElementById('lastname').value='';
+      document.getElementById('initials').value='';	  
+      document.getElementById('contactcompany').value='';	  
+      document.getElementById('contactaddress1').value='';
+      document.getElementById('contactaddress2').value='';
+      document.getElementById('contacttown').value='';	  
+      document.getElementById('contactcounty').value='';
+      document.getElementById('contactpostcode').value='';
+      document.getElementById('telephone').value='';
+      document.getElementById('email').value='';
+      document.getElementById('validemail').value='';
+      document.getElementById('username').value='';
+      document.getElementById('password').value='';
+      document.getElementById('parentcontactid').selectedIndex=0;	  	  		
+}
+
+
+function testconfirm() {
+	document.getElementById('register').disabled=true;
+		   if (userexists==false) {
+			document.getElementById('register').disabled=false;
+		   }
+}
+
+function validate() {
+    va = new Array();
+	va[0] = "firstname";
+	va[1] = "lastname";
+	va[2] = "email";
+	va[3] = "validemail";
+	va[4] = "referral";
+   	va[5] = "contactaddress1";	
+   	va[6] = "contactpostcode";
+   	va[7] = "telephone";		
+	va[8] = "password";
+	
+	valid=true;
+	msg="";
+
+	for (i=0;i<va.length;i++)
+	{
+		if (document.getElementById( va[i] ).value<' ') {
+			document.getElementById( va[i] ).style.backgroundColor="#FFCC80";
+			msg=msg+va[i]+" - Required field needs completing\n";
+			valid=false;
+		}
+	}
+	
+	if (document.getElementById("email").value!=document.getElementById("validemail").value) {
+			document.getElementById( va[2] ).style.backgroundColor="#FFCC80";	
+			document.getElementById( va[3] ).style.backgroundColor="#FFCC80";
+			msg=msg+"Your email address needs checking\n";
+			valid=false;
+	}						
+
+	if (document.getElementById("seccode").value!=fcode) {
+			document.getElementById( "seccode" ).style.backgroundColor="#FFCC80";
+			msg=msg+"The security code does not match that shown\n";				
+			valid=false;
+	}
+	
+
+	if (document.getElementById("password").value.length<6) {
+			document.getElementById( "password" ).style.backgroundColor="#FFCC80";
+			msg=msg+"The password must be at least 6 characters long \n";				
+			valid=false;
+	}
+
+
+	if (valid) {
+		document.getElementById("memberregisterform").submit();
+	} else {
+		alert(msg);
+	}
+	
+}
+
+function setpicture() {
+	document.getElementById("dyna").innerHTML="<img src=\""+document.getElementById("picture").value+"\" height='100px' />";
+}
+
+function checkuser() {
+	url="content.php?checkuser="+document.getElementById("username").value+"&rand="+Math.random(100)+1;
+	res = ajaxget(url,0) ;
+
+	if (res.indexOf("true")>0) {
+		document.getElementById("userwarning").innerHTML="Sorry this user exists try again";
+		userexists = true;
+	} else {
+		document.getElementById("userwarning").innerHTML="OK";	
+		userexists=false;
+	}
+	testconfirm();
+	
+}
+
+function setbusiness() {
+    document.getElementById('category').disabled=true;
+}
+
+function setprice() {
+	moption=document.getElementById('mclass').value;
+        if (moption=='A') { price = 40; }
+        if (moption=='B') { price = 70; }
+        if (moption=='C') { price = 95; }
+	document.getElementById('subprice').innerHTML="&pound;"+price+" per year (you will be charged to November pro Rata).";
+}
+
+function selectparent() {
+
+		document.getElementById('parentcontactid').disabled=true;
+	if ( (document.getElementById('mtype').options[document.getElementById('mtype').selectedIndex].value=='M2' ) || (document.getElementById('mtype').options[document.getElementById('mtype').selectedIndex].value=='S2' ) ) {
+		document.getElementById('parentcontactid').disabled=false;
+	} else {
+		document.getElementById('parentcontactid').selectedIndex=0;
+		//document.getElementById('contactparentid').value='None';		
+	}
+}
+
+</script>
+</head><noscript>
+
+</noscript>
+
+
+
+<%header%>
+
+    <h1>Join Maidenhead Chamber Of Commerce Here</h1>
+    <a name="regform" id="regform"></a> <a name="regform" id="regform"></a> 
+      <span class="warning"> 
+      <%regfailed%>
+      </span> 
+			<form method='post' action="content.php" enctype="multipart/form-data" id="memberregisterform" >
+
+        <input type='hidden' name='action' id="action" value='createuser' />
+
+        <p class="req2">* Required Field</p>
+
+
+        <fieldset>
+		  <p>
+		  <label for="mtype">Membership type:</label><select name='mtype' id="mtype" onchange="javascript:selectparent();">
+		  <option value="M">M</option>
+		  <option value="M2">M2</option>		  
+		  <option value="S2">S2</option>		  
+		  </select>
+		  </p>
+	    	  <p>
+		  <label for="contactparentid">Parent Contact:</label>
+                     <select name='parentcontactid' id="parentcontactid" disabled  >
+			         <option value="-1">None....</option>
+                     <%contactsasoptions%>
+                     </select>
+		  </p>
+		</fieldset>
+
+        <fieldset>
+        <legend>&nbsp;Main Contact&nbsp;</legend>
+
+        <p id='iname'> 
+          <label>Name<span>*</span>:</label><br/>
+        </p>
+
+	<p>
+          <select name='title' id='title' >
+            <option value='Mr'>Mr</option>
+            <option value='Mrs'>Mrs</option>
+            <option value='Miss'>Miss</option>
+            <option value='Ms'>Ms</option>
+            <option value='Sir'>Sir</option>
+            <option value='Dr'>Dr</option>
+          </select>
+          <input type="text" size="10" maxlength="20" name="firstname" id="firstname" value="<%contactfirstname%>" />
+          <input type="hidden" name="initials" id="initials" value="<%contactinitials%>" />
+          <input type='text' size='20' maxlength="20" name= "lastname" id="lastname" value="<%contactlastname%>"/>
+	</p>
+        </fieldset>
+
+        <fieldset>
+        <legend>&nbsp;Address Details&nbsp;</legend>
+        <p id="lblcompany"> 
+          <label>Company Name:</label>
+          <input type="text" size="30" name="company" id="contactcompany" value="<%contactcompany%>" />
+        </p>
+        <p id="lbladdress1"> 
+          <label>Address 1<span>*</span></label>
+          <input type="text" size="30" name="address1" id="contactaddress1" value="<%contactadddress1%>" />
+        </p>
+        <p id="lbladdress2"> 
+          <label>Address 2</label>
+          <input type="text" size="30" name="address2" id="contactaddress2" value="<%contactadddress2%>" />
+        </p>
+        <p id="lbltown"> 
+          <label>Town</label>
+          <input type="text" size="30" name="town" id="contacttown" value="<%contacttown%>" />
+        </p>
+        <p id="lblcounty"> 
+          <label>County</label>
+          <input type="text" size="20" name="county" id="contactcounty" value="<%contactcounty%>" />
+        </p>
+        <p id="lblpostcode"> 
+          <label>Post Code<span>*</span></label>
+          <input type="text" size="10" name="postcode" id="contactpostcode" value="<%contactpostcode%>" />
+        </p>
+        </fieldset>
+        <fieldset>
+        <legend>&nbsp;Contact&nbsp;</legend>
+        <p id='lbltelephone'> 
+          <label>Telephone<span>*</span>:</label>
+          <input type='text' size='40' name='telephone' id="telephone" value='<%contacttelephone%>'/>
+        </p>
+        <p id='lblemail'> 
+          <label>Admin Email Address<span>*</span>:</label>
+          <input type='text' size='40' name='email' id="email" value='<%contactemail%>'/>
+        </p>
+        <p id='lblvalidemail'> 
+          <label>Confirm Admin Email Address<span>*</span>:</label>
+          <input type='text' size='40' name='validemail' id="validemail" value='<%contactemail%>' />
+        </p>
+        </fieldset>
+        <fieldset>
+        <legend>&nbsp;Membership&nbsp;</legend>
+        <p id='lblcategory'> 
+          <label>Membership Category<span>*</span>:</label>
+          <select name="category" id="category" >
+            <%categorylist%>
+          </select>
+        </p>
+        <p id='lblreferralsource'> 
+          <label>Referral Source:</label>
+          <select name="referralsource" id="referral">
+            <option value="Search Engine">Search engine</option>
+            <option value="Business colleague">Business colleague</option>
+            <option value="Chamber member">Chamber member</option>
+            <option value="Chamber info.website">Chamber info.website</option>
+            <option value="other">Other</option>
+          </select>
+        </p>
+        <p id="lblemployees"> 
+          <label>No. Of Employees</label>
+          <select  name="mclass" id="mclass" onchange=javascript:setprice();>
+            <option value="A" >1 to 20</option>
+            <option value="B" >21 to 50</option>
+            <option value="C" >50+</option>
+          </select>
+          <br/>
+	<label>&nbsp;</label><span id="subprice"> &pound;40 per year (you will be charged to November 
+          pro Rata).</span> <br/>
+        </p><p><br/>
+          Registration is subject to approval you will need to approve the member added in order or them to have access.<br/.
+          We also accept cash and cheques.</p>
+        </fieldset>
+        <fieldset>
+        <legend>User Details</legend>
+        <p id='lbluseride'> 
+          <label>Please enter and check a user name<span>*</span>:</label>
+          <input type="text" size="20" maxlength="20" name="username" id="username" value="<%contactusername%>" onchange="javascript:checkuser();" />
+          <input type="button" value="Check"  onclick="javascript:checkuser();" />
+          <span id="userwarning"></span> 
+          <input type="hidden" id="userexists" name="userexists" value="false" />
+        </p>
+	<p>
+          <label>Please enter a password</label>
+          <input type="password" size="20" maxlength="20" name="password" id="password" value="<%contactpassword%>" />
+        </p>
+        <p>
+          <label>Please enter the shown security code <img id="rcode" src="code.php?code=abcde" alt="code" /></label>
+
+          <script type="text/JavaScript">
+<!--
+	var im1 = document.getElementById("rcode");
+	var cdes = "abcdefghijklmnopqrstuvwxwzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+	var fcode = cdes.substr( Math.random()* cdes.length, 1)+cdes.substr( Math.random()* cdes.length, 1)+cdes.substr( Math.random()* cdes.length, 1)+cdes.substr( Math.random()* cdes.length, 1);
+	im1.src="code.php?code="+fcode;
+//-->
+</script>
+          <input type="text" name="seccode" id="seccode" size="4" value="" />
+        </p>
+        </fieldset>
+
+
+          <input type='hidden'  name='charter' value='true' id='charter'  />
+          <input type='hidden'  name='privacy' value='true' id='privacy'  />
+	      <input type='hidden'  name='redirect2' value='content.php?template=templates/admin/addmember.html&prefix=p' id='redirect2' />
+
+
+
+        <p id='lblregsubmit'> 
+          <input type="button" name="register" id="register" value="Add Member" tabindex="32" onclick="validate();" />
+        </p>
+
+
+
+      </form>
+      <p class="top"><a href="#backtop">Back to the top</a></p>
+
+      <script language="javascript">
+		loaded();
+
+      </script>
+
+
+<%footer%>
+

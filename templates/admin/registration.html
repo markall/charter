@@ -1,0 +1,392 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<script language="JavaScript" src="scripts/ajax.js"></script>
+
+<script language="javascript" type="text/javascript" src="scripts/datetimepicker.js"> </script>
+<script language="javascript" type="text/javascript" src="scripts/dateunit.js"> </script>
+
+<script language="JavaScript">
+var userexists=true;
+
+function loaded() {
+        document.getElementById('register').disabled=true;
+        setprice();
+}
+
+
+function testconfirm() {
+        document.getElementById('register').disabled=true;
+        if (document.getElementById('charter').checked) {
+                if (document.getElementById('privacy').checked) {
+                   if (userexists==false) {
+                        document.getElementById('register').disabled=false;
+                   }
+                }
+        }
+}
+
+
+function calcamount() {
+
+
+ subto = new Date();
+ tday = new Date();  
+
+         d = '01';
+         m = '11';
+         y = tday.getFullYear();
+
+         currentmonth = tday.getMonth()+1;
+         currentdate = tday.getDate();
+         if (currentmonth<10) { currentmonth = '0'+currentmonth; }
+         if (currentdate<10) { currentdate = '0'+currentdate; }
+         tasstrday = tday.getFullYear()+''+currentmonth+''+currentdate;
+
+         if (tasstrday>(y+m+d)) {
+             y=y+1;
+         }
+
+         subto.setFullYear(y,m-1,d);
+
+ difdte = subto-tday;
+
+ partsub=Math.round( (difdte/1000/60/60/24/30) ) ;
+
+        mclassv = document.getElementById('mclass').value;
+
+var yearamount=0;
+switch (mclassv) {
+case 'A':
+    yearamount=40;
+        break;
+
+case 'B':
+    yearamount=70;
+        break;
+
+case 'C':
+    yearamount=95;
+        break;
+case 'Z':
+    yearamount=10;
+        break;
+}
+
+perc=(partsub/12)*100;
+
+partamt = (yearamount/100)*perc;
+
+partamt = Math.round(partamt*100)/100;
+
+d = tday.getDate();
+m = tday.getMonth()+1;
+
+if (d.length<1) {
+  d= '0'+d;
+}
+
+if (m<9) {
+  sm= '0'+m;
+} else {
+  sm=m;
+}
+
+
+document.getElementById('productid').value=1;
+document.getElementById('description').value='Maidenhead Chamber Of Commerce Membership'+' to '+subto.getFullYear();
+document.getElementById('price').value=partamt;
+
+document.getElementById('subscribefrom').value=d+'-'+sm+'-'+tday.getFullYear();
+
+document.getElementById('subscribeto').value='01-11-'+subto.getFullYear();
+
+return partamt;
+
+//document.getElementById('price').value=partamt;
+//document.getElementById('subscribefrom').value=d+'-'+sm+'-'+eday.getFullYear();
+//document.getElementById('subscribeto').value=todate;
+//document.getElementById('oderdesc').value=desc; 
+//document.getElementById('buildorder').submit();
+
+}
+
+function validate() {
+    va = new Array();
+        va[0] = "firstname";
+        va[1] = "lastname";
+        va[2] = "email";
+        va[3] = "validemail";
+        va[4] = "referral";
+        va[5] = "address1";
+        va[6] = "postcode";
+        va[7] = "telephone";            
+        va[8] = "password1";
+        
+        valid=true;
+        msg="";
+
+        for (i=0;i<va.length;i++)
+        {
+                if (document.getElementById( va[i] ).value<' ') {
+                        document.getElementById( va[i] ).style.backgroundColor="#FFCC80";
+                        msg=msg+va[i]+" - Required field needs completing\n";
+                        valid=false;
+                }
+        }
+        
+        if (document.getElementById("email").value!=document.getElementById("validemail").value) {
+                        document.getElementById( va[2] ).style.backgroundColor="#FFCC80";       
+                        document.getElementById( va[3] ).style.backgroundColor="#FFCC80";
+                        msg=msg+"Your email address needs checking\n";
+                        valid=false;
+        }                                               
+
+        if (document.getElementById("seccode").value!=fcode) {
+                        document.getElementById( "seccode" ).style.backgroundColor="#FFCC80";
+                        msg=msg+"The security code does not match that shown\n";                                
+                        valid=false;
+        }
+        
+
+        if (document.getElementById("password1").value.length<6) {
+                        document.getElementById( "password1" ).style.backgroundColor="#FFCC80";
+                        msg=msg+"The password must be at least 6 characters long \n";                           
+                        valid=false;
+        }
+
+
+        if (valid) {
+                document.getElementById("memberregisterform").submit();
+        } else {
+                alert(msg);
+        }
+        
+}
+
+function setpicture() {
+        document.getElementById("dyna").innerHTML="<img src=\""+document.getElementById("picture").value+"\" height='100px' />";
+}
+
+function checkuser() {
+        url="content.php?checkuser="+document.getElementById("usernameI").value+"&rand="+Math.random(100)+1;
+        res = " "+ajaxget(url,0) ;
+
+        if (res.indexOf("true")>0) {
+                document.getElementById("userwarning").innerHTML="Sorry this user exists try again";
+                userexists = true;
+        } else {
+                document.getElementById("userwarning").innerHTML="OK";  
+                userexists=false;
+        }
+        testconfirm();
+        
+}
+
+function setbusiness() {
+    document.getElementById('category').disabled=true;
+        if (document.getElementById('mtype').value=='Business' ) {
+                        document.getElementById('category').disabled=false;     
+        }
+}
+
+function setprice() {
+        moption=document.getElementById('mclass').value;
+        if (moption=='A') { price = 40; }
+        if (moption=='B') { price = 70; }
+        if (moption=='C') { price = 95; }
+        actual = calcamount();
+        document.getElementById('subprice').innerHTML="Cost &pound; "+actual+" to 30th October pro Rata.<br/>(&pound;"+price+" per year )<br/>";
+
+}
+
+</script>
+</head><noscript>
+
+</noscript>
+
+
+
+<%header%>
+
+    <h1>Join Maidenhead Chamber Of Commerce Here</h1>
+    <a name="regform" id="regform"></a> <a name="regform" id="regform"></a> 
+      <span class="warning"> 
+      <%regfailed%>
+      </span> 
+
+
+    <form method='post' action="content.php" enctype="multipart/form-data" id="memberregisterform">
+
+        <input type='hidden' name='action' value='createuser' />
+        <input type='hidden' name='mtype' value='M' />
+        <p class="req2">* Required Field</p>
+
+
+
+        <fieldset>
+        <legend>&nbsp;Personal Details&nbsp;</legend>
+
+        <p id='iname'> 
+          <label>Name<span>*</span>:</label><br/>
+        </p>
+
+        <p>
+          <select name='title' id='title' >
+            <option value='Mr'>Mr</option>
+            <option value='Mrs'>Mrs</option>
+            <option value='Miss'>Miss</option>
+            <option value='Ms'>Ms</option>
+            <option value='Sir'>Sir</option>
+            <option value='Dr'>Dr</option>
+          </select>
+          <input type="text" size="10" maxlength="20" name="firstname" id="firstname" value="<%contactfirstname%>" />
+          <input type="hidden" name="initials" id="initials" value="<%contactinitials%>" />
+          <input type='text' size='20' maxlength="20" name= "lastname" id="lastname" value="<%contactlastname%>"/>
+        </p>
+        </fieldset>
+
+        <fieldset>
+        <legend>&nbsp;Address Details&nbsp;</legend>
+        <p id="lblcompany"> 
+          <label>Company Name:</label>
+          <input type="text" size="30" name="company" id="company" value="<%contactcompany%>" />
+        </p>
+        <p id="lbladdress1"> 
+          <label>Address 1<span>*</span></label>
+          <input type="text" size="30" name="address1" id="address1" value="<%contactaddress1%>" />
+        </p>
+        <p id="lbladdress2"> 
+          <label>Address 2</label>
+          <input type="text" size="30" name="address2" id="address2" value="<%contactaddress2%>" />
+        </p>
+        <p id="lbltown"> 
+          <label>Town</label>
+          <input type="text" size="30" name="town" id="town" value="<%contacttown%>" />
+        </p>
+        <p id="lblcounty"> 
+          <label>County</label>
+          <input type="text" size="20" name="county" id="county" value="<%contactcounty%>" />
+        </p>
+        <p id="lblpostcode"> 
+          <label>Post Code<span>*</span></label>
+          <input type="text" size="10" name="postcode" id="postcode" value="<%contactpostcode%>" />
+        </p>
+        </fieldset>
+        <fieldset>
+        <legend>&nbsp;Contact&nbsp;</legend>
+        <p id='lbltelephone'> 
+          <label>Telephone<span>*</span>:</label>
+          <input type='text' size='40' name='telephone1' id="telephone" value='<%contacttelephone1%>'/>
+        </p>
+        <p id='lblemail'> 
+          <label>Admin Email Address<span>*</span>:</label>
+          <input type='text' size='40' name='email' id="email" value='<%contactemail%>'/>
+        </p>
+        <p id='lblvalidemail'> 
+          <label>Confirm Admin Email Address<span>*</span>:</label>
+          <input type='text' size='40' name='validemail' id="validemail" value='<%contactemail%>' />
+        </p>
+        </fieldset>
+        <fieldset>
+        <legend>&nbsp;Membership&nbsp;</legend>
+        <p id='lblcategory'> 
+          <label>Membership Category<span>*</span>:</label>
+          <select name="ctype" id="ctype" >
+            <%categorylist%>
+          </select>
+        </p>
+        <p id='lblreferralsource'> 
+          <label>Referral Source:</label>
+          <select name="referralsource" id="referral">
+            <option value="Search Engine">Search engine</option>
+            <option value="Business colleague">Business colleague</option>
+            <option value="Chamber member">Chamber member</option>
+            <option value="Chamber info.website">Chamber info.website</option>
+            <option value="other">Other</option>
+          </select>
+        </p>
+        <p id="lblemployees"> 
+          <label>No. Of Employees</label>
+          <select  name="mclass" id="mclass" onchange=javascript:setprice();>
+            <option value="A" >1 to 20</option>
+            <option value="B" >21 to 50</option>
+            <option value="C" >50+</option>
+          </select>
+          <br/>
+        <label>&nbsp;</label><span id="subprice"> &pound;40 per year (you will be charged to November 
+          pro Rata).</span> <br/>
+        </p><p><br/>
+          Your registration is subject to approval. On approval you will receive 
+          an email with the account details.  You can then sign in and pay your subscription online in the subscriptions section.<br/.
+          We also accept cash and cheques.</p>
+        </fieldset>
+        <fieldset>
+        <legend>User Details</legend>
+        <p id='lbluseride'> 
+          <label>Please enter and check a user name<span>*</span>:</label>
+          <input type="text" size="20" maxlength="20" name="username" id="usernameI" value="<%contactusername%>" onchange="javascript:checkuser();" />
+          <input type="button" value="Check"  onclick="javascript:checkuser();" />
+          <span id="userwarning"></span> 
+          <input type="hidden" id="userexists" name="userexists" value="false" />
+        </p>
+        <p>
+          <label>Please enter a password</label>
+          <input type="password" size="20" maxlength="20" name="password" id="password1" value="<%contactpassword%>" />
+        </p>
+        <p>
+          <label>Please enter the shown security code <img id="rcode" src="code.php?code=abcde" alt="code" /></label>
+
+          <script type="text/JavaScript">
+<!--
+        var im1 = document.getElementById("rcode");
+        var cdes = "abcdefghijklmnopqrstuvwxwzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        var fcode = cdes.substr( Math.random()* cdes.length, 1)+cdes.substr( Math.random()* cdes.length, 1)+cdes.substr( Math.random()* cdes.length, 1)+cdes.substr( Math.random()* cdes.length, 1);
+        im1.src="code.php?code="+fcode;
+//-->
+</script>
+          <input type="text" name="seccode" id="seccode" size="4" value="" />
+        </p>
+        </fieldset>
+
+
+        <p id='lblcharter'> 
+          <label>I confirm that I have read the <a href="content.php?template=templates/admin/terms.html" title="Link to Terms and Conditions " id="termslink">Terms 
+          and conditions</a> and confirm that I wish to register to Maidenhead Chamber Of Commerce.</label>
+          <br />
+          <input type='checkbox' class="radios" name='charter' value='yes' id='charter' onclick="testconfirm();" />
+          <span class="req2">Yes*</span> </p>
+
+
+        <p id='lblprivacy'> 
+          <label>I confirm that I have read the <a href="content.php?template=templates/admin/privacy.html" title="Link to privacy statement" id="privacylink">Privacy 
+          Statement</a> and confirm that I wish to register to  Maidenhead Chamber Of Commerce.</label>
+          <br /><br/>
+          <input type='checkbox' class="radios" name='privacy' value='yes' id='privacy' onclick="testconfirm();" />
+          <span class="req2">Yes*</span> </p>
+
+
+         <input type="hidden" name="paytype" id="paytype" value="S" />
+         <input type="hidden" name="paynow" id="paynow" value="1" />
+         <input type="hidden" name="price" id="price" value="" />
+         <input type="hidden" name="productid" id="productid" value="1" />
+         <input type="hidden" name="description" id="description" value="Maidenhead Chamber Of Commerce Membership" />
+         <input type="hidden" name="subscribefrom" id="subscribefrom" value="" />
+         <input type="hidden" name="subscribeto" id="subscribeto" value="" />
+
+
+        <p id='lblregsubmit'>
+          <input type="button" name="register" id="register" value="Register" tabindex="32" onclick="validate();" />
+        </p>
+
+
+
+      </form>
+      <p class="top"><a href="#backtop">Back to the top</a></p>
+      <script language="javascript">
+loaded();
+      </script>
+
+
+<%footer%>
+

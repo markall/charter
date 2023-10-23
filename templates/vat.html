@@ -1,0 +1,211 @@
+
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<script language="JavaScript">
+
+var fcode="abcde"
+
+function validate() {
+    va = new Array();
+
+        va[0] = "fullname";
+        va[1] = "address";
+        va[2] = "signature";            
+        va[3] = "date";
+        va[4] = "email";
+        va[5] = "telephone";
+
+        
+        valid=true;
+        msg="";
+
+        for (i=0;i<va.length;i++)
+        {
+                if (document.getElementById( va[i] ).value<' ') {
+                        document.getElementById( va[i] ).style.backgroundColor="#FFCC80";
+                        msg=msg+va[i]+" - Required field needs completing\n";
+                        valid=false;
+                }
+        }
+        
+                                     
+
+        if (document.getElementById("seccode").value!=fcode) {
+                        document.getElementById( "seccode" ).style.backgroundColor="#FFCC80";
+                        msg=msg+"The Anti Spam code does not match that shown\n";                                
+                        valid=false;
+        }
+        
+
+
+        if (valid) {
+		   	    writeCookie('customerexempt', 'yes', 24 );
+                document.getElementById("vatform").submit();
+        } else {
+                alert(msg);
+        }
+        
+}
+
+
+function checkcode() {
+        var thisform = document.getElementById("pcontact");
+        var typedcode = document.getElementById("secode" );
+
+        if (typedcode.value!=fcode) {
+                alert("Please type the matching code" );
+        } else {
+                thisform.submit();
+        }
+}
+// Example:
+// writeCookie("myCookie", "my name", 24);
+// Stores the string "my name" in the cookie "myCookie" which expires after 24 hours.
+function writeCookie(name, value, hours)
+{
+  var expire = "";
+  if(hours != null)
+  {
+    expire = new Date((new Date()).getTime() + hours * 3600000);
+    expire = "; expires=" + expire.toGMTString();
+  }
+  document.cookie = name + "=" + escape(value) + expire;
+}
+
+</script>
+
+
+<style type="text/css">
+
+#content #vanimg {
+	text-align:center;
+	height:300px;
+}
+</style>
+<%header%>
+
+<h2 align="center"><strong>VAT EXEMPTION </strong> </h2>
+                      <p><font face="Geneva, Arial, Helvetica, sans-serif">Who 
+                        can claim VAT Relief on purchases?</font></p>
+                      <p><font face="Geneva, Arial, Helvetica, sans-serif"> <strong>Individuals</strong>: 
+                        If you are chronically sick or disabled and the products 
+                        are for your personal use. Full details can be found at 
+                        HM Customs and Excise, Notice 701/7, Supplies to handicapped 
+                        people. </font></p>
+                      <p><font face="Geneva, Arial, Helvetica, sans-serif"><br />
+                        <strong>Charities</strong>: Where the goods are made available 
+                        by the charity to a disabled person for their personal 
+                        or domestic use. Full details can be found at HM Customs 
+                        and Excise, Notice 701/7, Supplies to charities<br />
+                        <strong><br />
+                        Non-eligible customers</strong>: If you are not eligible 
+                        for VAT relief, we are obliged to charge you the full 
+                        15.0% VAT on the whole of your order. Please contact us 
+                        so that we can re-calculate your bill.</font></p>
+                      <p><font face="Geneva, Arial, Helvetica, sans-serif">Which 
+                        products are eligible for VAT Relief?<br />
+                        If you are eligible you can buy most of the products in 
+                        our on-line shop without having to pay VAT.<br />
+                        Those products which are not eligible for VAT relief are 
+                        clearly marked 'Not eligible for VAT relief' and will 
+                        be shown in your shopping basket at the standard 15.0% 
+                        VAT rate. <br />
+                        Those products which are eligible for VAT relief will 
+                        be shown in your shopping basket at a 0% VAT rate. </font></p>
+                      <p><font face="Geneva, Arial, Helvetica, sans-serif"><strong>Declaration 
+                        Form</strong><br />
+                        The government requires that you complete a VAT declaration 
+                        form, and we are pleased to say that you can now do this 
+                        online using the form on this page.<br />
+                        Please Note: We cannot process your order until we receive 
+                        this form.</font></p>
+
+<p>
+
+	<form action="/cgi-bin/mailform.pl" method="post" name="vatform" id="vatform">
+                        <table width="75%" cellspacing="1" align="center" bgcolor="#000000" height="495">
+                          <tr> 
+                            <td bgcolor="#FFFFFF" height="97"> <table width="100%" cellspacing="1" bgcolor="#000000" height="97" cellpadding="5">
+                                <tr> 
+                                  <td bgcolor="#FFFFFF" width="48%"> <div align="right"><font face="Arial, Helvetica, sans-serif" size="-1" color="#666666"><b>I</b> 
+                                      (Full Name)</font></div></td>
+                                  <td bgcolor="#FFFFFF" width="52%"> <input type="text" name="fullname" id="fullname" size="30" /> 
+                                  </td>
+                                </tr>
+                                <tr> 
+                                  <td bgcolor="#FFFFFF" width="48%"> <div align="right"><font face="Arial, Helvetica, sans-serif" size="-1" color="#666666"><b>Of</b><br />
+                                      (Address or name &amp; address of charity)</font></div></td>
+                                  <td bgcolor="#FFFFFF" width="52%"> <textarea name="address" id="address" rows="6" cols="30"></textarea> 
+                                  </td>
+                                </tr>
+                                <tr> 
+                                  <td colspan="2" bgcolor="#FFFFFF"> <div align="center"><font face="Arial, Helvetica, sans-serif" size="-1" color="#666666"><b>Declare 
+                                      that</b>: I am chronically sick or have 
+                                      a disabling condition by reason of:<br />
+                                      <textarea name="condition" cols="70" rows="5">Please give a full and specific description of your condition (Charities leave blank)
+</textarea>
+                                      </font></div></td>
+                                </tr>
+                                <tr> 
+                                  <td colspan="2" bgcolor="#FFFFFF"> <div align="center"><font face="Arial, Helvetica, sans-serif" size="-1" color="#666666">And 
+                                      that I am receiving goods from Mobility 
+                                      Supplies for my domestic or personal use.<br />
+                                      OR: The goods will be made available through 
+                                      the above charity to a disabled person or 
+                                      persons for domestic or their personal use.<br />
+                                      I/we claim relief from Value Added Tax.</font></div></td>
+                                </tr>
+                                <tr> 
+                                  <td width="48%" bgcolor="#FFFFFF"> <div align="right"><font face="Arial, Helvetica, sans-serif" size="-1" color="#666666">Type 
+                                      your name here to 'sign' the declaration</font></div></td>
+                                  <td width="52%" bgcolor="#FFFFFF"> <input type="text" name="signature" id="signature" size="30" /> 
+                                  </td>
+                                </tr>
+                                <tr> 
+                                  <td width="48%" bgcolor="#FFFFFF"> <div align="right"><font face="Arial, Helvetica, sans-serif" size="-1" color="#666666">Today's 
+                                      Date:</font></div></td>
+                                  <td width="52%" bgcolor="#FFFFFF"> <input type="text" name="date" id="date" /> 
+                                  </td>
+                                </tr>
+                                <tr> 
+                                  <td bgcolor="#FFFFFF"> <div align="right"><font face="Arial, Helvetica, sans-serif" size="-1" color="#666666">E-mail 
+                                      : (In case we need to contact you)</font></div></td>
+                                  <td bgcolor="#FFFFFF"> <input type="text" name="email" size="30" id="email" /> 
+                                  </td>
+                                </tr>
+                                <tr> 
+                                  <td bgcolor="#FFFFFF"> <div align="right"><font face="Arial, Helvetica, sans-serif" size="-1" color="#666666">Telephone 
+                                      : (In case we need to contact you)</font></div></td>
+                                  <td bgcolor="#FFFFFF"> <input type="text" name="telephone" id="telephone" size="30" /> 
+                                  </td>
+                                </tr>
+<tr>
+<td bgcolor="#FFFFFF"> Please enter the Anti Spam Code             <img id="rcode" src="code.php?code=abcde" alt="code" /> </td>
+<td bgcolor="#FFFFFF">                <input type="text" name="seccode" id="seccode" size="4" value="" />            <script type="text/JavaScript">
+<!--
+        var im1 = document.getElementById("rcode");
+        var cdes = "abcdefghjkmnpqrstuvwxwzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        var fcode = cdes.substr( Math.random()* cdes.length, 1)+cdes.substr( Math.random()* cdes.length, 1)+cdes.substr( Math.random()* cdes.length, 1)+cdes.substr( Math.random()* cdes.length, 1);
+        im1.src="code.php?code="+fcode;
+//-->
+		  </script></td>
+</tr>
+                                <tr> 
+                                  <td colspan="2" bgcolor="#FFFFFF"> <div align="center"> 
+                                      <input type="button" onclick="validate()" name="Submit" value="SEND FORM" />
+                                      <input type="hidden" name="recipient" value="enquiries@mobilitysupplies.com" />
+                                      <input type="hidden" name="redirect" value="http://www.mobilitysupplies.com/content.php?template=templates/thankyou.html" />
+                                      <input type="hidden" name="subject" value="VAT Exemption Form" />
+                                    </div></td>
+                                </tr>
+                              </table></td>
+                          </tr>
+                        </table>
+                      </form>
+</p>
+
+
+<%footer%>

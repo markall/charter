@@ -1,0 +1,16 @@
+/* CSS Document */
+
+/* Start Global Form Styles */
+.req2 {
+	color:#CC3300;
+	font-weight: bold;
+}
+.button {
+	margin-left: 1em;
+}
+/* End Global Form Styles */
+
+#dataform label {
+	float:left;
+	width:150px;
+}

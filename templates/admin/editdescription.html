@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Charter System</title>
+
+<script language="JavaScript" src="scripts/ajax.js"></script>
+<script src='scripts/jquery/jquery.min.js'></script>
+<script src='styles/bootstrap/js/bootstrap.min.js'></script>
+<link rel="stylesheet" type="text/css" href='styles/bootstrap/css/bootstrap.min.css'>
+<script type="text/javascript" src="scripts/tinymce/js/tinymce/tinymce.min.js"></script>
+<script language="javascript" type="text/javascript" src="scripts/datetimepicker.js"> </script>
+<script language="javascript" type="text/javascript" src="scripts/dateunit.js"> </script>
+
+
+<script language="JavaScript">
+
+var userexists=true;
+
+function loaded() {
+        document.getElementById('register').disabled=false;     
+}
+function testconfirm() {
+        document.getElementById('register').disabled=true;
+        if (document.getElementById('charter').checked) {
+                if (document.getElementById('privacy').checked) {
+                   if (userexists==false) {
+                        document.getElementById('register').disabled=false;
+                   }
+                }
+        }
+}
+
+function validate() {
+    va = new Array();
+        
+        valid=true;
+        msg="";
+
+        for (i=0;i<va.length;i++)
+        {
+                if (document.getElementById( va[i] ).value<' ') {
+                        document.getElementById( va[i] ).style.backgroundColor="#FFCC80";
+                        msg=msg+va[i]+" - Required field needs completing\n";
+                        valid=false;
+                }
+        }
+        
+
+        if (valid) {
+                document.getElementById("memberregisterform").submit();
+        } else {
+                alert(msg);
+        }
+        
+}
+
+function setpicture() {
+        document.getElementById("dyna").innerHTML="<img src=\""+document.getElementById("picture").value+"\" height='100px' />";
+}
+
+function checkuser() {
+        url="content.php?checkuser="+document.getElementById("usernameI").value+"&rand="+Math.random(100)+1;
+        res = ajaxget(url,0) ;
+
+        if (res.indexOf("true")>0) {
+                document.getElementById("userwarning").innerHTML="Sorry this user exists try again";
+                userexists = true;
+        } else {
+                document.getElementById("userwarning").innerHTML="OK";  
+                userexists=false;
+        }
+        testconfirm();
+        
+}
+
+function setbusiness() {
+    document.getElementById('category').disabled=true;
+        if (document.getElementById('mtype').value=='Business' ) {
+                        document.getElementById('category').disabled=false;     
+        }
+}
+
+
+$(document).ready(function() {
+
+		tinymce.init({
+			selector:   "textarea",
+			width:      '100%',
+			height:     270,
+			plugins:    "link",
+			statusbar:  false,
+			menubar:    false,
+			toolbar:    [
+				"newdocument bold italic underline strikethrough alignleft aligncenter alignright alignjustify styleselect formatselect fontselect fontsizeselect cut",
+				"copy paste bullist numlist outdent indent blockquote undo redo removeformat subscript superscript"
+				]
+				
+		});
+
+		$(document).on('focusin', function(e) {
+			if ($(e.target).closest(".mce-window").length) {
+				e.stopImmediatePropagation();
+			}
+		});
+     		
+		
+		
+		
+
+});
+</script>
+</head><noscript>
+
+</noscript>
+
+
+<%header%>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-2">
+			
+			<div id="sidenav" > 
+				<div id="sidemenu">
+					
+						<%sidemenu%>
+					
+				</div> <!-- side menu -->
+
+
+			</div> <!-- side nav --> 
+
+		</div> <!-- col-md-2 -->
+		
+		<div class="col-md-8">
+
+                        <h1>Update Description</h1>
+      <form method='post' action="content.php" enctype="multipart/form-data" id="memberregisterform">
+        <input type='hidden' name='action' value='updateuser' />
+        <input type='hidden' name='template' value='<%template%>' />
+
+                <fieldset>
+                        <p><label>Logo</label><input type="file" name="upload[0]" id="upload" /><br/>
+                        <%contact_mediaimg[profile]%></p>
+<p>
+<ul>
+<%contactmedialist%>
+</ul>
+<small>
+Upload your logo to make your listing stand out. <br/>
+To upload your logo click on the browse button to select the image.
+<br/>The logo should be no more than 200px wide by 200px high pixels, jpg, gif or png format. <br/>
+
+</small>
+</p>
+                </fieldset>
+
+
+
+
+                <fieldset>
+                <legend>&nbsp;Description&nbsp;</legend>
+                <textarea name="description" id="description" cols="70" rows="10" ><%contactdescription%></textarea>
+                </fieldset>
+
+
+        <p id='lblregsubmit'> 
+          <input type="button" name="register" id="register" value="Update" tabindex="32" onclick="validate();" />
+        </p>
+      </form>
+                        <p>&nbsp;</p>
+                        <p>&nbsp;</p>
+                        <p>&nbsp;</p>
+						
+		</div> <!-- col-md-8 -->
+		
+	</div> <!-- row -->
+	
+ </div> <!-- Container -->
+
+<%footer%></html>

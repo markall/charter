@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+
+<%headerpre%>
+
+<script src='scripts/DataTables/media/js/jquery.dataTables.js' ></script>
+
+
+<link rel="stylesheet" type="text/css" href='scripts/DataTables/media/css/dataTables.bootstrap.css' ></link>
+
+<script type='text/javascript'>
+
+$(document).ready(function() {
+
+ $('#calendar').DataTable( {	"searching": false,
+	"autoWidth": true} )
+
+    $( "#datefrom" ).datepicker( { dateFormat: 'dd-mm-yy', defaultDate: +7,autoSize: true, changeYear: true }  );
+    $( "#dateto" ).datepicker( { dateFormat: 'dd-mm-yy', defaultDate: +7,autoSize: true, changeYear: true }  );
+
+var date = new Date();
+                var d = date.getDate();
+                var m = date.getMonth();
+                var y = date.getFullYear();
+
+    var dte = "<%datefrom%>";
+
+    if (dte.length<4)    {
+
+        var d=new Date();
+
+        mm=(d.getMonth()+1);
+        if (mm<10) {
+          mm='0'+mm;
+        }
+
+        dd = d.getDate();
+        if (dd<10) {
+           dd='0'+dd;
+        }
+
+        yy = d.getFullYear();
+
+        hh = d.getHours();
+        if (hh<10) {
+                hh='0'+hh;
+        }
+        mn = d.getMinutes();
+        if (mn<10) {
+                mn='0'+mn;
+        }
+
+
+        s= dd+'-'+mm+'-'+yy;
+
+        document.getElementById("datefrom").value=s;
+
+        yy = d.getFullYear()+1;
+        s= dd+'-'+mm+'-'+yy;
+
+        document.getElementById("dateto").value=s;
+    }
+
+
+
+});
+
+
+
+
+
+</script>
+                 <!-- %bookingcalendar|fullcalendarevents=yes% -->
+<%header%>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-2">
+			
+			<div id="sidenav" > 
+				<div id="sidemenu">
+					
+						<%sidemenu%>
+					
+				</div> <!-- side menu -->
+
+
+			</div> <!-- side nav --> 
+
+		</div> <!-- col-md-2 -->
+		
+		<div class="col-md-8">
+
+<div style="margin:10px;" >
+
+<h1>Calendar</h1>
+
+
+<div id="daterange">
+
+
+<form action="content.php" id="frmcal" method="post" enctype="multipart/form-data" >
+<input type="hidden" name="template" value="templates/calendar.html" />
+<input type="hidden" name="action" id="action" value="" />
+<input type="hidden" name="editoptions" value="<%calendareditoptions%> " />
+From <input class="form-control" type="text" name="datefrom" id="datefrom" value="<%datefrom%>" /> To <input class="form-control" type="text" name="dateto" id="dateto" value="<%dateto%>" />
+&nbsp; Boat <select class="form-control" id="rentalobj" name="rentalobjid" onchange="getrentalobj();" onblur="setrate();" >
+                <option value="-1">All ...</option>
+                <%rentalobjasoptionsall%>
+        </select>&nbsp;   Booking Id <input class="form-control" type="text" name="bookingid" id="bookingid" value="<%bookingid%>" size="5" />&nbsp;
+           <br/>  <br/>Please use the refresh to ensure all required bookings are shown &nbsp;   
+		   <input type="submit" value="Refresh"  onclick="$('#action').val('');" />
+		   <input type="button" value="Print" onclick="$('#action').val('printcalendar');$('#frmcal').submit();" />
+<br />
+
+
+</form>
+
+</div>
+<div style="relative">
+
+	<table width="100%" class="table table-striped table-bordered" id="calendar" cellspacing="0" >
+		<thead>
+			<tr>
+				<th>Edit</th>
+				<th>ID</th>
+				<th>Boat</th>
+				<th>Start Date</th>
+				<th>End Date</th>
+				<th>Duration <br/>(hours)</th>
+				<th>Status</th>
+				<th>Client</th>
+			</tr>
+		<thead>
+		<tbody>
+			<%bookingcalendar|fullcalendarevents=no%>
+		</tbody>
+    </table>
+		
+</div>
+ <br/>
+<div id='longcalendar'></div>
+</div>
+
+		</div> <!-- col-md-8 -->
+		
+	</div> <!-- row -->
+	
+ </div> <!-- Container -->
+
+<%footer%>

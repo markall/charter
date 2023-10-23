@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<script type="text/javascript" src="scripts/cart.js" ></script>
+<script type="text/javascript" src="scripts/common.js" ></script>
+<script type="text/javascript">
+<!--
+
+
+function validate() {
+   if ( checkCC(document.getElementById("cardnumber").value )==true) {
+           document.getElementById("orderf").submit();
+   }
+}
+
+-->
+
+</script>
+<style type="text/css">
+
+#content #vanimg {
+	text-align:center;
+	height:300px;
+}
+
+#orderf {
+	margin-left:50px;
+}
+
+
+
+#orderdescription {
+        height:210px;
+        overflow:auto;
+        text-align: left;
+}
+
+#orderform  {
+        width:100%;
+}
+
+
+#addresses {
+        display:block;
+}
+
+#contact {
+        display:block;
+        padding:10px;
+	width:400px;
+        
+}
+
+#delivery {
+        display:block;
+        padding:10px;
+        left-margin:20px;
+}
+
+#inotes {
+        left-margin:20px;
+        padding:10px;
+}
+
+
+
+.compulsory {
+        background-color: #DDFFFF;
+}
+
+.compulsoryalert {
+        background-color: #FF99FF;
+}
+
+
+</style>
+<%header%>
+
+                <div id="orderform" >
+                <form action="" method="post" id="orderf" >
+                                
+		<div id="detail">		
+			<p>
+			<strong>The total value of your order is</strong>: &pound;<%grossamount%>
+			</p>
+			<p>
+				
+			</p>
+
+
+		</div>
+                <div id="addresses" >						
+                                        <div id="contact">
+                                          <h4>Payment Details</h4>
+                                          <label for="title">Title</label><input type="text" size="10" id="title" name="title" value="<%title%>" /><br/>
+                                          <label for="firstname">First Name</label><input type="text" size="20" id="firstname" name="firstname" class="<%cl_firstname%>" value="<%firstname%>" /><br/>
+                                          <label for="surname">Surname</label><input type="text" size="30" id="surname" name="surname" class="<%cl_surname%>" value="<%surname%>" /><br/>
+                                          <br/>
+                                          <label for="address1">Address</label><input type="text" size="30" id="address1" name="address1" class="<%cl_address1%>" value="<%address1%>" /><br/>
+                                          <label for="address2">&nbsp;</label><input type="text" size="30" id="address2" name="address2" value="<%address2%>"/><br/>
+                                          <label for="town">Town</label><input type="text" size="30" id="town" name="town"  class="<%cl_town%>" value="<%town%>"/><br/>
+                                          <label for="county">County</label><input type="text" size="20" id="county" name="county"  class="<%cl_county%>" value="<%county%>" /><br/>
+	                                 	  <input type="hidden" name="country" value="UK" />
+					  					  <label for="postcode">PostCode</label><input type="text" size="10" id="postcode" name="postcode" class="<%cl_postcode%>" value="<%postcode%>" /><br/>
+                                          <label for="telephone">Telephone</label><input type="text" size="30" id="telephone" name="telephone" class="<%cl_telephone%>" value="<%telephone%>" /><br/>
+                                          <label for="email">Email</label><input type="text" size="30" id="email" name="email" class="<%cl_email%>" value="<%email%>" /><br/>
+										  <input type="hidden" id="country" name="country" value="UK" />
+                                        </div> <!-- contact -->
+                                        
+                                        <div id="delivery" style="border:medium;">
+                                          <h4>Delivery Address (if different to payment) </h4>
+                                          <label for="daddress1">Address</label><input type="text" size="30" id="daddress1" name="daddress1" value="<%daddress1%>" /><br/>
+                                          <label for="daddress2">&nbsp;</label><input type="text" size="30" id="daddress2" name="daddress2" value="<%daddress2%>" /><br/>
+                                          <label for="dtown">Town</label><input type="text" size="30" id="dtown" name="dtown" value="<%dtown%>" /><br/>
+                                          <label for="dcounty">County</label><input type="text" size="30" id="dcounty" name="dcounty" value="<%dcounty%>" /><br/>
+                                          <label for="dpostcode">PostCode</label><input type="text" size="10" id="dpostcode" name="dpostcode" value="<%dpostcode%>" /><br/>
+                                        </div> <!-- delivery -->
+
+                 </div> <!-- addresses -->
+                                 
+                <div id="inotes" style="padding:10px;" >
+                        <label for="tnotes">Notes:</label><br/>
+                        <textarea id="tnotes" cols="50"  name="tnotes" ><%tnotes%></textarea>
+                        <input type="hidden" name="idescription" value="<%description%>" />
+                        <input type="hidden" name="idescriptionxml" value="<%descriptionxml%>" />                                               
+                        <input type="hidden" name="cost" value="<%cost%>" />
+                        <input type="hidden" name="action" value="processorder" />
+
+                                        <br/><br/>
+                                        * Coloured fields are compulsory<br/>
+                                        ** Maestro cards need a start date or issue number<br/>
+                </div>
+<br/>
+                <div id="paymentmethod"  >
+                        <hr/>
+                        <table>
+                        <tr>
+                        <td>
+                        <label for="paymenttype">Payment type</label>
+                        <select id="paymenttype" name="paymenttype">
+                        <option value="Visa">Visa</option>
+                        <option value="Mastercard">Mastercard</option>
+                        <option value="Delta">Delta</option>
+                        <option value="Maestro">Maestro</option>
+                        <option value="Switch">Switch</option>
+                        <option value="Other">Other</option>
+                        </select>
+                        </td>
+                        <td>
+                        <label for="cardnumber">Card Number</label><input type="text" size="17"  id="cardnumber" name="cardnumber" maxlength="16" class="<%cl_cardnumber%>" value="<%cardnumber%>"/>
+                        </td>
+                                                <td rowspan="3">
+                                <div id="cost">
+                                <h3>Cost: &pound; <%grossamount%> </h3>
+                                <input type="button" id="payb" onclick="validate();" value="Pay" />
+                                                </div>                                          
+                                                </td>
+                                                <td rowspan="3">
+                                                </td>
+                        </tr>
+                        <tr>
+                        <td>
+                        <label for="startdate">Start Date</label><input type="text"   id="startdate" name="startdate" size="5" maxlength="5" value="<%startdate%>"/><br/>
+                        </td>
+                        <td>
+                        <label for="expirydate">Expiry Date</label><input type="text"   id="expirydate" name="expirydate" size="5" maxlength="5" value="<%expirydate%>" class="<%cl_expirydate%>"/><br/>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>
+                        <label for="issueno">Issue No.</label><input type="text"  id="issueno" name="issueno" value="<%issueno%>" /><br/>
+                        </td>
+                        <td>
+                        <label for="securitynumber">Security Code</label><input type="text"   id="securitynumber" name="securitynumber" size="3" maxlength="3" value="<%securitynumber%>" class="<%cl_securitynumber%>"/><br/>
+                        </td>
+                                                <td></td>
+                                                <td>
+                                                </td>
+                        </tr>
+                        </table>
+                        <hr/>
+                                                <br/>
+                </div>
+                        
+                                <!-- hidden fields -->
+                                        <input type='hidden' name='deliveryreference' value='GDD' />
+                                        <input type='hidden' name='orderreference' value='GDD' />
+                                        <input type='hidden' name='currency' value='GBP' />
+                                        <input type='hidden' name='netamount' value='0' />
+                                        <input type='hidden' name='deliveryamount' value='0' />                                 
+                                        <input type='hidden' name='grossamount' value='<%grossamount%>' />
+                                        <input type="hidden" name="shopid" id="shopid" value="1" />                                            
+                                                                                                                        
+                </form>
+
+                </div> <!-- orderform -->
+
+<%footer%>

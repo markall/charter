@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.8/jquery-ui.min.js"></script>
+<script type="text/javascript" src="scripts/datetime/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="scripts/tiny_mce/jquery.tinymce.js"></script>
+<link rel="stylesheet" type="text/css" media="screen" href="http://hotlink.jquery.com/jqueryui/themes/base/jquery.ui.all.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.8/themes/flick/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="scripts/datetime/jquery-ui-timepicker-addon.css" />
+<script language="javascript">
+var ridx=0;
+
+
+$(document).ready(function() {
+    var x = new Date();
+    dd = x.getDate();
+    if (dd<10) {
+        dd='0'+dd;
+    }
+    mm = x.getMonth()+1;
+    if (mm<10) {
+        mm='0'+mm;
+    }
+
+
+                
+                  
+
+
+
+
+});
+
+</script>
+
+<%header%>
+<form action="content.php" enctype="multipart/form-data" method="post" >
+<input type="hidden" value="<%bookingid%>" name="bookingid" />
+<input type="hidden" value="updatefunc" name="action" />
+<input type="hidden" value="templates/func_edit.html" name="template" />
+
+
+<h2>FUNCTION SHEET ( <%bookingid%> )</h2>
+<div id="booking">
+<p>
+Boat: <strong><%rentalobjtitle%></strong> Date: <%bookingstartdatetime%> Client: <%client_contactfirstname%> <%client_contactlastname%>
+</p>
+
+
+<fieldset id="crew" >
+<legend>CREW DETAILS</legend>
+<p>
+         <label>Skipper:</label> <%Skipper_contacttitledisplay%> <%Skipper_contacfirstname%> <%Skipper_contactlastname%>      <br/>
+         <label>Mate:</label> <%Mate_contacttitledisplay%> <%Mate_contacfirstname%> <%Mate_contactlastname%>      <br/>
+         <label>Steward:</label> <%Steward_contacttitledisplay%> <%Steward_contacfirstname%> <%Steward_contactlastname%>      <br/>
+</p>
+
+<p>
+<strong>Boarding</strong><br />
+<label>Boarding time:</label> 
+        <%funcobjcrewboardingtime%><br />
+<label>Location: </label>
+        <%funcobjcrewboardinglocationtext%><br />
+<label>Sail time:</label> 
+        <%funcobjcrewsailtime%><br />
+<label>Remarks:</label> 
+        <%funcobjcrewremarks%><br />
+
+</p>
+</fieldset>
+
+<fieldset id="caterer" >
+                
+<p>
+<legend>Caterer</legend><br />
+<label>Delivery Time:</label> 
+        <%funcobjcateringdeliverytime%><br />
+<label>Location:</label> 
+        <%funcobjcateringdeliverylocationtext%><br />
+<label>Contractor:</label> 
+        <%caterer_contacttitledisplay%> <%caterer_contactfirstname%> <%caterer_contactlastname%><br />
+</p>
+</fieldset>
+
+<fieldset id="guest" >
+<p>
+<legend>Guest Boarding Details</legend><br />
+<label>Principle Guest:</label> <%Principle_contacttitledisplay%> <%Principle_contactfirstname%> <%Principle_contactlastname%><br />
+<label>Event:</label> 
+        <%funcobjguestevent%><br />
+<label>Boarding time:</label>
+        <%funcobjguestboardingtime%><br />
+<label>Location:</label>
+        <%funcobjguestboardinglocationtext%><br />
+<label>Sail time:</label>
+        <%funcobjguestboardingsailtime%><br />
+<label>Remarks:</label>
+        <%funcobjguestboardingremarks%><br />
+<label>Welcome Drink:</label>
+        <%funcobjdrinkremarks%><br />
+<label>Welcome Meal:</label>
+        <%funcobjmeal1remarks%><br />
+
+</p>
+
+</fieldset>
+
+<fieldset id="Stopover1" >
+<p>
+<legend>Stopover 1</legend><br />
+<label>Time:</label>
+        <%funcobjgueststopover1time%><br />
+<label>Location:</label>
+        <%funcobjgueststopover1locationtext%><br />
+<label>Sail time:</label>
+        <%funcobjgueststopover1sailtime%><br />
+<label>Remarks:</label> 
+        <%funcobjgueststopover1remarks%><br />
+
+</p>
+</fieldset>
+
+<fieldset id="Stopover2" >
+<p>
+<legend>Stopover 2</legend><br />
+<label>Time:</label>
+        <%funcobjgueststopover2time%><br />
+<label>Location:</label>
+        <%funcobjgueststopover2locationtext%><br />
+<label>Sail time:</label>
+        <%funcobjgueststopover2sailtime%><br />
+<label>Remarks:</label>
+        <%funcobjgueststopover2remarks%><br />
+<label>Meal 2:</label>
+        <%funcobjmeal2remarks%><br />
+</p>
+</fieldset>
+
+<fieldset id="Guestdisembark" >
+<p>
+<legend>Guest Disembark</legend><br />
+<label>Time:</label> 
+        <%funcobjguestdisembarktime%><br />
+<label>Location:</label> 
+        <%funcobjguestdisembarklocationtext%><br />
+<label>Sail time:</label> 
+        <%funcobjguestdisembarksailtime%><br />
+<label>Remarks:</label>
+        <%funcobjguestdisembarkremarks%><br />
+
+</p>
+</fieldset>
+
+<fieldset id="crewdisembark">
+<p>
+<legend>Crew Disembark</legend><br />
+<label>Time:</label>
+        <%funcobjcrewdisembarktime%><br />
+<label>Location:</label>
+        <%funcobjcrewdisembarklocationtext%><br />
+<label>Remarks: </label>
+        <%funcobjcrewdisembarkremarks%><br />
+</p>
+</fieldset>
+
+
+
+<input type="hidden" name="bookingid" value="<%bookingid%>" />
+<input type="hidden" name="clientid" value="<%bookingclientid%>" />
+
+<div id="buttonsection">
+        <p style="text-align:right;">
+        <input type="submit" value="Edit Sheet" />
+        </p>
+
+</div>
+
+</form>
+
+
+
+
+<%content%>
+
+<%footer%>

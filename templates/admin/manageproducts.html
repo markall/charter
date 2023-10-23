@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>
+<%SITE_NAME%>
+</title>
+<script src="scripts/ajax.js" ></script>
+<!-- TinyMCE -->
+<script type="text/javascript" src="scripts/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript" src="scripts/tinymceinit.js"></script>
+<!-- /TinyMCE -->
+<script src="scripts/jquery/jquery-1.3.2.js" type="text/javascript"></script>
+<script src="scripts/jquery/jquery-ui-1.7.2.custom.min.js" type="text/javascript"></script>
+<script language="javascript">
+
+var ridx=0;
+
+var vatrate = new Array();
+<%vatrates%>
+
+function product_update() {
+
+productid = document.getElementById('productid').options[document.getElementById('productid').selectedIndex].value;
+
+loc = 'content.php?productid='+productid+'&action=manageproducts&prefix=p';
+
+
+  document.location = loc;
+
+ if (productid>0) {
+    document.getElementById('producttitle').value = document.getElementById('productid').options[productid].innerHTML;
+ }
+
+}
+
+
+
+function toggle(id) {
+   obj = document.getElementById(id);
+   btnobj= document.getElementById('togglebtn');
+   hide=false;
+   if ((obj.style.display=='block')   )  {     
+                hide=true;
+   } 
+
+   if (!hide) {
+      obj.style.display='block';
+          btnobj.innerHTML='<a href="javascript:toggle(\'advanced\')">Simple</a>';   
+   } else {
+      obj.style.display='none';   
+          btnobj.innerHTML='<a href="javascript:toggle(\'advanced\')">Advanced</a>';         
+   }
+}
+function addcategory(tableid) {
+
+ parentobj = document.getElementById('addproductcategory');
+
+ pdx = parentobj.selectedIndex;
+
+ tblobj = document.getElementById(tableid);
+ var newrow = tblobj.insertRow(tblobj.rows.length );
+ newrow.id="nr"+ridx;
+
+var c1=newrow.insertCell(0);
+var c2=newrow.insertCell(1);
+parentobj.options[pdx].text; 
+
+c1.innerHTML= parentobj.options[pdx].text;
+c2.innerHTML= "<a href=\"javascript:removerow('"+tableid+"','"+newrow.id+"');\">remove</a>"+
+              "<input type=\"hidden\" value=\""+parentobj.options[pdx].value+"\" id=\"nri"+ridx+"\" name=\"productcategoryid[]\" />";
+
+
+ ridx++;
+
+}
+
+function removerow( tableid, id ) {
+ tblobj = document.getElementById(tableid);
+ did = 'd'+id;
+ 
+ if (id.substr(0,2)=='nr') {
+   tblobj.deleteRow(document.getElementById(id).rowIndex);
+ } else {
+   if (document.getElementById(did).value=='1') {
+                tblobj.rows[document.getElementById(id).rowIndex].style.backgroundColor="";  
+                document.getElementById(did).value='0';          
+   } else {
+                tblobj.rows[document.getElementById(id).rowIndex].style.backgroundColor="#FF0000";
+ //  tblobj.rows[document.getElementById(id).rowIndex].disabled=true;
+                document.getElementById(did).value='1';
+   }
+   
+ }
+  
+}
+
+function showtab(id) {
+
+        document.getElementById('tab-1').style.display='none';
+        document.getElementById('tab-2').style.display='none';  
+        document.getElementById('tab-3').style.display='none';  
+        document.getElementById('tab-4').style.display='none';
+        document.getElementById('tab-5').style.display='none';  
+        document.getElementById('tab-6').style.display='none';          
+        document.getElementById(id).style.display='block';
+
+}
+
+
+
+function setprices(id) {
+
+ netobj = document.getElementById('productprice');
+ vatobj = document.getElementById('productvatcode');
+ vatratetexts = document.getElementById('vatratetext');
+ grossobj = document.getElementById('grossproductprice');
+
+ svatrate = vatrate[vatobj.options[vatobj.selectedIndex].value];
+ vatratetexts.innerHTML=' '+svatrate+'%';
+
+ if (id=='gross') {
+ 
+     grossamt = grossobj.value;
+
+     cvat = (1+(svatrate/100));
+
+
+     netamt =  ( grossamt / cvat );
+
+
+     netobj.value = Math.round(netamt*100)/100;
+
+
+ } else {
+
+   netamt = netobj.value;
+
+   grossamt = (netamt * (svatrate/100))+eval(netamt);
+
+   grossobj.value = Math.round(grossamt*100)/100;
+ }
+
+
+}
+
+</script>
+<link rel="stylesheet" href="scripts/jquery/css/ui-lightness/jquery-ui-1.7.2.custom.css" />
+<link rel="StyleSheet" href="scripts/dtree/dtree.css" type="text/css" />
+<style>
+
+#tblparents,#tblmedia {
+ font-size:80%;
+ width:200px;
+ border: thin solid #999999;
+ background-color:#EEEEEE;
+
+}
+
+#tblparents caption,#tblmedia caption {
+  background-color:#000000;
+  color:#FFFFFF;
+  width:200px;  
+}
+
+#manageparents {
+        position:relative;
+}
+
+#managemedia {
+        position:relative;
+        margin-left:30px;       
+}
+#topblock {
+        position:relative;
+        display:block;
+        clear: right;
+
+}
+#descriptionbox {
+ position:relative;
+ display:block;
+}
+
+#tabcontrol {
+
+}
+
+#tabcontrol ul {
+        display:block;
+}
+#tabcontrol ul li {
+        width:150px;
+        margin:2px;
+        padding:5px;
+        position:absolute;
+        display:inline;
+        list-type:none;
+        text-align:center;
+        position:relative;
+        border: medium solid #CCCCCC;
+}
+#tabcontrol ul li a{
+        background-color: #E8C70D;
+        text-decoration: none;
+        width:100%;
+}
+
+#tabcontrol ul li a:hover {
+        color: #FFFF9F;
+        background-color:blue;
+}
+
+#tabs {
+        background-color: #E8C70D;
+        border: medium solid #CCCCCC;
+        padding:10px;
+}
+
+
+</style>
+<%header%>
+
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $("#contentleft").resizable();
+        showtab('tab-1');
+        setprices(' ');
+
+  });
+  </script>
+
+<div id="contentleft">
+
+<script type="text/javascript" src="scripts/dtree/dtree.js"></script>
+
+<%navtree%>
+</div>
+
+<div id="contentright" >
+     <h1>Manage Products</h1>
+
+        <form action="content.php" enctype="multipart/form-data" method="post" id="dataform" >
+
+     <p>
+         <label for="productid" >Select:</label>
+         <select id="productid" name="productid" onchange="product_update();" >
+                <option value="-1">Add New....................</option>
+                <%productlistasoption%>
+        </select>
+        </p>
+        <p>
+        <label for="productcode" >Code: </label><input type="text" id="productcode" name="productcode" size="30" value="<%product_code%>"/> <small><%product_id%></small><br/>
+        </p>
+        <p>
+        <label>Title:</label><input type="text" id="producttitle" name="producttitle" size="40" value="<%product_title%>"/>
+        </p>
+        
+        
+        <div id="tabcontrol">
+        <ul>
+            <li class="buton"><a href="javascript:showtab('tab-1')">Description</a></li>
+            <li class="buton"><a href="javascript:showtab('tab-2')">Categories</a></li>
+            <li class="buton"><a href="javascript:showtab('tab-3')">Images</a></li>
+            <li class="buton"><a href="javascript:showtab('tab-4')">Detail</a></li>     
+            <li class="buton"><a href="javascript:showtab('tab-5')">Pricing</a></li>    
+            <li class="buton"><a href="javascript:showtab('tab-6')">Options</a></li>  			
+        </ul>
+        </div>
+        <div id="tabs">
+        <!-- TAB 1 -->
+        <div id="tab-1">
+                        <p>
+                        <label>Short Description:</label><input type="text" id="productshortdescription" name="productshortdescription" size="40" value="<%product_shortdescription%>"/>
+                        </p>
+                                    <div id="descriptionbox">
+                                                        <label>Description:</label>
+                                                        <textarea name="productdescription" id="productdescription" ><%product_description%></textarea> 
+                                        </div> <!-- description box -->
+        </div> <!-- tabs-1 -->                  
+                        
+        <div id="tab-2">
+                          <div id="manageparents" > 
+                                <table id="tblparents" >
+                                  <caption>
+                                  Category 
+                                  </caption>
+                                  <%product_parentsadmin%>
+                                </table>
+                                <br/>
+                                <select id="addproductcategory" name="addproductcategory" >
+                                                                        <option value="-1">Choose .......</option>
+                                                                                <%categorylist%>
+                                                                                                </select><input type="button" value="Add Category" onclick="addcategory('tblparents')" /><br/>
+                          </div>
+                          <!-- end manageparents -->
+         </div> <!-- tab 2 -->
+         
+         
+         <div id="tab-3">
+                          <div id="managemedia" > 
+                                <table id="tblmedia" >
+                                  <caption>
+                                  Images &amp; Media 
+                                  </caption>
+                                  <%product_mediaadmin%>
+                                </table>
+                                <br/>
+                                <input type="file" accept="image/jpeg" name="upload[0]"  id="upload" />
+                          </div> <!-- manage media -->  
+       </div> <!-- tab 3 -->
+
+        
+                        <!-- TAB 4 -->
+                        <div id="tab-4">
+                                        <p>
+                                                <label>Header:</label><input type="text" id="productheader" name="productheader" size="30" value="<%product_header%>"/>
+                                        </p>
+                                        <p>
+                                        <label>Footer:</label><input type="text" id="productfooter" name="productfooter" size="30" value="<%product_footer%>"/> 
+                                        </p>
+                                        <p>
+                                                <label>Position Order:</label><input type="text" id="productposition" name="productposition" size="30" value="<%product_position%>"/>
+                                        </p>
+                                        <p>
+                                        <label>Type:</label><select id="producttype" name="producttype" >
+                                                <%product_ptypeasoption%>
+                                        </select>
+                                        </p>                            
+                                        <p>
+                                        <label>Status:</label><select id="productstatus" name="productstatus" >
+                                                <%product_statusasoption%>
+                                        </select>       
+                                        </p>
+                        </div> <!-- tab-4 -->
+        
+                        <!-- TAB 5 -->
+                        <div id="tab-5">
+                        <p>
+                        <label>Net Price:</label><input type="text" id="productprice" name="productprice" value="<%product_price%>"  onchange="setprices()" />
+                        </p>
+                        <p>
+                        <label>Vat Code:</label>
+                        <select id="productvatcode" name="productvatcode"  onchange="setprices()">
+                          <%vatcodeasoption%>
+                        </select><span id="vatratetext">&nbsp;15%</span>
+                        </p>
+                        <p>
+                        <label>Gross Price:</label><input type="text" id="grossproductprice" name="grossproductprice" value="" onchange="setprices('gross')" />
+                        </p>    
+                        <p>
+                        <label>Allow VAT Exemption </label><select id="productvatexempt" name="productvatexempt"> <%product_vatexemptasoption%></select>
+                        </p>
+                        </div> <!-- tab-5 -->
+
+                        <!-- TAB 6 -->
+                        <div id="tab-6">
+                        <p>
+                        <label>Option Title:</label><select name="optiontitle" id="optiontitle">
+							<option value="New">New.....</option>
+							<%product_optiontitles%>
+						</select>
+                        </p>
+
+                        </div> <!-- tab-6 -->                        
+        </div> <!-- tabs -->
+        
+        <p><br/></p>
+      
+
+                
+                
+
+<br/>
+    
+  <div style="clear:both;position:relative;text-align:right;"> 
+    <hr/>
+  </div>
+        <p style="text-align:right;width:90%" >
+        <input type="submit" value="Update" id="btnupdate" />
+        <input type="hidden" value="templates/admin/manageproducts.html" name="template" />
+        <input type="hidden" value="updateproducts" name="action" />    
+        </form>
+        </p>
+
+<br/>
+</div><!-- content right -->
+<script language="javascript" type="text/livescript">
+
+</script>
+<%footer%>
+</html>

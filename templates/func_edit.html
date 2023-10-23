@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <script src='scripts/jquery/jquery.min.js'></script>
+		<script src='styles/bootstrap/js/bootstrap.min.js'></script>
+		<link rel="stylesheet" type="text/css" href='styles/bootstrap/css/bootstrap.min.css'>
+		<script type="text/javascript" src="scripts/tinymce/js/tinymce/tinymce.min.js"></script>
+
+
+<script language="javascript">
+var ridx=0;
+
+
+function getcontact(HTMLobj,source,target,vtype) {
+
+// source is the field name in the json object
+// target is the html object if blank then use HTMLobj
+
+// vtype is the type of html object i.e innerHtML or text value
+
+        if (target<' ') {
+           target = HTMLobj.name;
+        }
+
+        idx = HTMLobj.selectedIndex;
+        options = HTMLobj.options;
+        contactid= options[idx].value;
+
+
+// Assign handlers immediately after making the request,
+// and remember the jqxhr object for this request
+
+var jqxhr = $.getJSON( "content.php?action=json_contact&pid="+contactid, function(data) {
+        $.each( data, function( i, item ) {
+                if (i==source) {
+                     if (vtype=='html') {
+                        document.getElementById(target).innerHTML = item ;
+                     } else {
+                        document.getElementById(target).value = item ;
+                     }
+
+                }
+
+        });
+})
+
+.done(function(data) {
+
+    })
+
+.fail(function() {  })
+.always(function() {  });
+// perform other work here ...
+// Set another completion function for the request above
+jqxhr.complete(function() { });
+
+}
+
+
+
+$(document).ready(function() {
+    var x = new Date();
+    dd = x.getDate();
+    if (dd<10) {
+        dd='0'+dd;
+    }
+    mm = x.getMonth()+1;
+    if (mm<10) {
+        mm='0'+mm;
+    }
+
+            $('#timcrewboard').val('<%funcobjcrewboardingtime%>');
+            $('#timcrewsail').val('<%funcobjcrewsailtime%>');           
+            $('#timcateringdelivery').val('<%funcobjcateringdeliverytime%>');
+            $('#timguestboard').val('<%funcobjguestboardingtime%>');            
+            $('#timguestsail').val('<%funcobjguestboardingsailtime%>');
+            $('#timgueststop1').val('<%funcobjgueststopover1time%>');
+            $('#timgueststop1sail').val('<%funcobjgueststopover1sailtime%>');
+            $('#timgueststop2').val('<%funcobjgueststopover2time%>');
+            $('#timgueststop2sail').val('<%funcobjgueststopover2sailtime%>');
+            $('#timguestdisembark').val('<%funcobjguestdisembarktime%>');
+            $('#timguestdisembarksail').val('<%funcobjguestdisembarksailtime%>');
+            $('#timcrewdisembark').val('<%funcobjcrewdisembarktime%>');
+                                                                                                                                
+    if ($('#timcrewboard').val()=="") {
+            $('#timcrewboard').val('11:00');
+        }
+        if ( $('#timcrewsail').val()=="") {
+            $('#timcrewsail').val('11:00');
+        }
+        if ($('#timcateringdelivery').val()=="") {
+            $('#timcateringdelivery').val('11:00');
+        }
+        if ($('#timguestboard').val()=="") {
+            $('#timguestboard').val('11:00');
+        }
+        if ($('#timguestsail').val()=="") {
+            $('#timguestsail').val('11:00');
+        }
+        if ($('#timgueststop1').val()=="") {
+            $('#timgueststop1').val('11:00');
+        }
+        if ($('#timgueststop1sail').val()=="") {
+            $('#timgueststop1sail').val('11:00');
+        }
+        if ($('#timgueststop2').val()=="") {
+            $('#timgueststop2').val('11:00');
+        }
+        if ($('#timgueststop2sail').val()=="") {
+            $('#timgueststop2sail').val('11:00');
+        }
+        if ($('#timguestdisembark').val()=="") {
+            $('#timguestdisembark').val('11:00');
+        }
+        if ($('#timguestdisembarksail').val()=="") {
+            $('#timguestdisembarksail').val('11:00');
+        }
+        if ($('#timcrewdisembark').val()=="") {
+            $('#timcrewdisembark').val('11:00');
+        }
+
+         getcontact(document.getElementById('skipperid'),'telephone1','skippertelephone','html') ;
+         getcontact(document.getElementById('mateid'),'telephone1','matetelephone','html');
+         getcontact(document.getElementById('catererid'),'telephone1','caterertelephone','html');
+
+    $('#timcrewboard').timepicker({defaultTime: '11:00'});      
+    $('#timcrewsail').timepicker({defaultTime: '11:00'});
+    $('#timcateringdelivery').timepicker({defaultTime: '11:00'});       
+    $('#timguestboard').timepicker({defaultTime: '11:00'});     
+    $('#timguestsail').timepicker({defaultTime: '11:00'});
+    $('#timgueststop1').timepicker({defaultTime: '11:00'});
+    $('#timgueststop1sail').timepicker({defaultTime: '11:00'});                 
+    $('#timgueststop2').timepicker({defaultTime: '11:00'});
+    $('#timgueststop2sail').timepicker({defaultTime: '11:00'});
+    $('#timguestdisembark').timepicker({defaultTime: '11:00'});
+    $('#timguestdisembarksail').timepicker({defaultTime: '11:00'});     
+    $('#timcrewdisembark').timepicker({defaultTime: '11:00'});                          
+
+                        $('.mcetext').tinymce({
+                        // Location of TinyMCE script
+                        script_url : 'scripts/tiny_mce/tiny_mce.js',
+
+                        // General options
+                        theme : "advanced",
+                        plugins : "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,advlist",
+
+                        // Theme options
+                        theme_advanced_buttons1 : "bold,italic,underline,|,forecolor,backcolor,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist",
+                        theme_advanced_buttons2 : "",
+                        theme_advanced_buttons3 : "",
+                        theme_advanced_buttons4 : "",
+        //              theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
+//                      theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+//                      theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
+//                      theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,pagebreak",
+                        theme_advanced_toolbar_location : "bottom",
+                        theme_advanced_toolbar_align : "left",
+                        theme_advanced_statusbar_location : "bottom",
+                        theme_advanced_resizing : true,
+
+                        // Example content CSS (should be your site CSS)
+                        content_css : "styles/stylesheet.css",
+
+                        // Drop lists for link/image/media/template dialogs
+                        template_external_list_url : "lists/template_list.js",
+                        external_link_list_url : "lists/link_list.js",
+                        external_image_list_url : "lists/image_list.js",
+                        media_external_list_url : "lists/media_list.js",
+
+                        // Replace values for the template plugin
+                        template_replace_values : {
+                                username : "Some User",
+                                staffid : "991234"
+                        }
+
+                        });
+
+
+});
+
+</script>
+
+<%header%>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-2">
+		
+			<div id="sidenav" > 
+				<div id="sidemenu">
+					
+						<%sidemenu%>
+					
+				</div> <!-- side menu -->
+
+
+			</div> <!-- side nav --> 
+
+		</div> <!-- col-md-2 -->
+		
+		<div class="col-md-8">
+
+
+
+			<div class="row">
+				<div class="col-md-12" >
+					<h2>FUNCTION SHEET ( <%bookingid%> )</h2>	
+
+					<h3>
+						<label>Job:</label> <%bookingstartdatetime%> to 
+						 <%bookingenddatetime%> <br/><br/>		 
+					</h3>	
+					
+				</div>
+
+
+			</div> <!--row -->
+
+			<div id="booking" class="container" >
+
+				<div class="row" >
+
+					<div class="col-md-10">
+		
+						<form action="content.php?template=templates/func_print.html" enctype="multipart/form-data" method="post" >
+							<input type="hidden" value="<%bookingid%>" name="bookingid" />
+							<input type="hidden" value="updatefunc" name="action" />
+							<input type="hidden" value="templates/func_print.html" name="template" />
+
+							<fieldset id="crew" >
+								<legend>CREW DETAILS</legend>
+								<p>
+								<label>Skipper:</label> <select class="form-control" id="skipperid" name="funcobjskipperid" onchange="getcontact(this,'telephone1','skippertelephone','html');">
+												  <%contactsbycategory=Skipper|<%Skipper_contactid%>%>
+												  </select> <span id="skippertelephone" ></span> <br />
+
+								<label>Crew:</label> <select class="form-control" id="mateid" name="funcobjmateid"  onchange="getcontact(this,'telephone1','matetelephone','html');" >
+												  <%contactsbycategory=Mate|<%Mate_contactid%>%>
+												  </select> <span id="matetelephone" ></span><br />
+								</p>
+								<p>
+								<label>Boat:</label> <strong><%rentalobjtitle%></strong><br/>
+								<label>Owner:</label>  <%Owner_contacttitledisplay%> <%Owner_contactfirstname%> <%Owner_contactlastname%>   <%Owner_contacttelephone1%> <br/>
+								</p>
+								<p>
+								<label>Boat Location:</label>
+								<input class="form-control" name="funcobjcrewboardinglocationtext" id="locationcrewboardtext" value="<%funcobjcrewboardinglocationtext%>" size="30" /><br/><br/>
+								<label>Boarding time:</label>
+								<input class="form-control" name="funcobjcrewboardingtime" id="timcrewboard" type="text" size="5" value="<%funcobjcrewboardingtime%>"  /><br />
+
+								<label>Sail time:</label><input class="form-control" name="funcobjcrewsailtime" id="timcrewsail" type="text" size="5" value="<%funcobjcrewsailtime%>" /><br />
+								</p>
+								<p>
+								<label>Notes: </label>
+								<textarea  class="mcetext form-control"  id="crewremarks" name="funcobjcrewremarks" ><%funcobjcrewremarks%></textarea></p>
+								</p>
+							</fieldset>
+
+
+							<fieldset id="guest">
+								<legend>GUEST BOARDING DETAILS</legend>
+
+								<p>
+								<label>Client:</label> <%client_contactfirstname%> <%client_contactlastname%> , tel: <%client_contactmobile%>  <br/><br/>
+								<!-- label>Principle Guest:</label>  <select id="funcobjguestid" name="funcobjguestid">
+												  <%contactsbycategory=Principle|<%funcobjguestid>%>
+												  </select><br / -->
+								<label>No Of People:&nbsp; </label><%bookingnoofpeople%><br/><br/>
+								<label>Event:&nbsp; </label><%bookingrentaltype%>&nbsp;<input class="form-control" type="text" id="event" name="funcobjguestevent" value="<%funcobjguestevent%>" /><br /><br/>
+								<label>Pickup Location:&nbsp; </label><%bookingpickuplocationtext%>
+								<input class="form-control" name="funcobjguestboardinglocationtext" id="locationguestboardtext" value="<%funcobjguestboardinglocationtext%>" size="30" /><br/><br/>
+								<label>Dropoff Location:</label>
+								<%bookingdropofflocationtext%><br/><br/>
+
+								<label>Boarding time: </label>
+								<input class="form-control" name="funcobjguestboardingtime" id="timguestboard" type="text" size="5" value="<%funcobjguestboardingtime%>" /><br />
+								<label>Sail time: </label>
+								<input class="form-control" name="funcobjguestboardingsailtime" id="timguestsail" type="text" size="5" value="<%funcobjguestboardingsailtime%>" /><br />
+								</p>
+								<p>
+								<label>Notes:</label>
+
+								<textarea class="mcetext form-control" id="guestremarks" name="funcobjguestboardingremarks" ><%funcobjguestboardingremarks%></textarea><br />
+								</p>
+								<!-- label>Welcome Drink:</label><textarea id="guestwelcomedrink" name="funcobjdrinkremarks" ><%funcobjdrinkremarks%></textarea><br /-->
+
+								<!-- label>Welcome Meal:</label>
+								<textarea id="guestwelcomemeal" name="funcobjmeal1remarks"  ><%funcobjmeal1remarks%></textarea><br / -->
+
+							</fieldset>
+
+							<fieldset id="Drinkmeal" >
+								<legend>FOOD AND DRINK DETAILS</legend>
+								<p>
+								<label>Drinks</label>
+								<br/>
+								<div class="readonlytext" ><%bookingdrinknotes%></div>
+								<textarea  class="mcetext form-control"  id="guestwelcomedrink" name="funcobjdrinkremarks" ><%funcobjdrinkremarks%></textarea>
+								<br/><br/>
+								<label>Meal</label>
+								<div class="readonlytext" ><%bookingcateringnotes%></div>
+								<textarea  class="mcetext form-control"  id="guestwelcomemeal" name="funcobjmeal1remarks"  ><%funcobjmeal1remarks%></textarea><br/>
+								</p>
+
+								<p>
+								<label>Delivery time:</label>
+								<input class="form-control" name="funcobjcateringdeliverytime" id="timcateringdelivery" type="text"  size="5" value="<%funcobjcateringdeliverytime%>"  /><br />
+								<label>Location:</label>
+								<!--select name="funcobjcateringdeliverylocationid" id="locationcateringedlivery" >
+												<option value="-1">Please select a location ...</option>
+												<%locationsasoptions|id=<%funcobjcateringdeliverylocationid%>%>
+										</select><br /-->
+										<input class="form-control" name="funcobjcateringdeliverylocationtext" id="locationcateringdeliverytext" value="<%funcobjcateringdeliverylocationtext%>" /><br/>
+								<label>Contractor:</label>
+
+								<select class="form-control" id="catererid" name="funcobjcatererid" onchange="getcontact(this,'telephone1','caterertelephone','html');">
+												  <%contactsbycategory=Caterer|<%Caterer_contactid%>%>
+												  </select> <span id="caterertelephone" ></span> <br />
+
+								</select>
+								</p>
+
+							</fieldset>
+
+
+							<fieldset id="other">
+							<legend>OTHER NOTES</legend>
+							 <p>
+							<div class="readonlytext" ><%bookingothernotes%></div><br/>
+							<textarea class="form-control"  class="mcetext"  id="othernotes" name="funcobjnotes" ><%funcobjnotes%></textarea>
+							</p>
+							</fieldset>
+
+							<fieldset id="notifications">
+							<legend>SEND NOTIFICATIONS</legend>
+							 <p>
+							<label>Send Notification Emails</label> <input type="checkbox" id="funcsendnotification" name="funcobjsendnotification" value="1" />
+							</p>
+							</fieldset>
+							<input type="hidden" name="bookingid" value="<%bookingid%>" />
+							<input type="hidden" name="clientid" value="<%bookingclientid%>" />
+
+							<div id="buttonsection">
+									<p style="text-align:right;">
+									<input type="submit" value="Save Details" />
+									</p>
+
+							</div>
+
+						</form>
+						
+					</div> <!-- col-md-10 -->
+
+				</div> <!-- row -->
+				<div class="row" >
+					<div class="col-md-12" >
+						<%content%>					
+					</div>				
+				</div>
+			</div>  <!-- container -->
+
+		</div> <!-- col-md-8 -->
+		
+	</div> <!-- row -->
+	
+ </div> <!-- Container -->
+
+<%footer%>

@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<title>Maidenhead Chamber Of Commerce Events</title>
+
+
+
+
+<script language="JavaScript" src="scripts/ajax.js"></script>
+
+
+<!-- TinyMCE -->
+<script type="text/javascript" src="scripts/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript" src="scripts/tinymceinit.js"></script>
+<!-- /TinyMCE -->
+
+<script language="javascript" type="text/javascript" src="scripts/datetimepicker.js"> </script>
+<script language="javascript" type="text/javascript" src="scripts/dateunit.js"> </script>
+
+
+<script language="JavaScript">
+
+var ridx=0;
+
+function setnew() {
+
+document.getElementById( 'eventid' ).value="-1";
+document.getElementById( 'eventtitle' ).value="";
+document.getElementById( 'eventdescription' ).value="";
+document.getElementById( 'eventlocation' ).value="";
+document.getElementById( 'eventpostcode' ).value="";
+tinyMCE.get('eventdescription').setContent('');
+
+ tblobj = document.getElementById('eventdates');
+	for (rdx=1;rdx<tblobj.rows.length;rdx++) {
+	   tblobj.deleteRow(rdx);
+	}
+
+
+
+
+}
+
+
+function addeventdate() {
+ tblobj = document.getElementById('eventdates');
+ var newrow = tblobj.insertRow(tblobj.rows.length );
+ newrow.id="nr"+ridx;
+
+var c1=newrow.insertCell(0);
+var c2=newrow.insertCell(1);
+var c3=newrow.insertCell(2);
+var c4=newrow.insertCell(3);
+var c5=newrow.insertCell(4);
+var c6=newrow.insertCell(5);
+var c7=newrow.insertCell(6);
+
+c1.innerHTML='<input type="text" id="eventstart['+ridx+']" name="eventstart['+ridx+']" size="15" value=""/><a href="javascript:NewCal(\'eventstart['+ridx+']\',\'ddmmyyyy\',true,24)"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>';
+c2.innerHTML='<input type="text" id="eventend['+ridx+']" name="eventend['+ridx+']" size="15" value=""/><a href="javascript:NewCal(\'eventend['+ridx+']\',\'ddmmyyyy\',true,24)"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>';
+
+c3.innerHTML='<select id="eventdatestatus['+ridx+']" name="eventdatestatus['+ridx+']" ><option value="Active" >Active</option><option value="Hold" >Hold</option><option value="Fully Booked" >Fully Booked</option></select>';
+
+c4.innerHTML='<input type="text" id="eventcost['+ridx+']" name="eventcost['+ridx+']" size="6" value=""  />';
+c5.innerHTML='<input type="text" id="eventdisplaytext['+ridx+']" name="eventdisplaytext['+ridx+']" size="10" value=""  />';
+c6.innerHTML='<input type="hidden" id="eventavailability['+ridx+']" name="eventavailability['+ridx+']" size="3" value=""  />';
+
+
+c7.innerHTML='<input type="hidden" id="eventdateid[ni'+ridx+']" name="eventdateid['+ridx+']" /><a href="javascript:deleterow(\''+newrow.id+'\')">delete</a>';
+
+ ridx++;
+
+}
+
+function deleterow(row) {
+ tblobj = document.getElementById('eventdates');
+ tblobj.deleteRow(document.getElementById(row).rowIndex);
+
+}
+
+function propertiesrow(row) {
+
+ tblobj = document.getElementById('eventdates');
+ var pdx = document.getElementById(row).rowIndex;
+ var newDoc=window.open();
+ var txt='<html>';
+
+  txt=txt+'<body>';
+  txt=txt+ '<a href="javascript:self.opener.addproperty('+self+')">Add</a><br/>';
+  txt=txt+'<table id="properties" ></table>'+pdx;
+  txt=txt+'</body></html>';
+  newDoc.document.write(txt);
+//  newDoc.close();
+
+}
+
+function addproperty(win) {
+  var tobj = win.document.getElementById('properties');
+  alert (tobj.id);
+
+}
+
+
+function validate() {
+    va = new Array();
+
+        valid=true;
+        msg="";
+
+        for (i=0;i<va.length;i++)
+        {
+                if (document.getElementById( va[i] ).value<' ') {
+                        document.getElementById( va[i] ).style.backgroundColor="#FFCC80";
+                        msg=msg+va[i]+" - Required field needs completing\n";
+                        valid=false;
+                }
+        }
+        
+
+        if (valid) {
+                document.getElementById("memberregisterform").submit();
+        } else {
+                alert(msg);
+        }
+        
+}
+
+
+function setpicture() {
+        document.getElementById("dyna").innerHTML="<img src=\""+document.getElementById("picture").value+"\" height='100px' />";
+}
+
+
+
+
+</script>
+</head><noscript>
+</noscript>
+
+<%header%>
+			<h1>Events</h1>
+      <table id="eventstable">
+				<tr>
+				<th>Event Title</th><th>Event Location</th><th>Event Post Code</th><th>&nbsp;</th><th>&nbsp;</th>
+				</tr>
+				<%eventlist%>
+        </table>
+
+			<p><a href="javascript:setnew();"><strong>Add New Event</strong></a></p>
+
+<!-- showevent -->
+      
+      <form method='post' action="content.php" enctype="multipart/form-data"  id="offersform" >
+      <fieldset>
+        <input type='hidden' name='action' value='updateevents' />
+        <input type='hidden' name='eventid' id='eventid' value='<%eventid%>' />
+        <input type='hidden' name='template' value='<%template%>' />
+			<legend>Event Description</legend>
+<p>
+        <label for="eventtitle">Title:</label><input type="text" id="eventtitle" name="eventtitle" size="50" value="<%eventtitle%>" /> 
+</p>
+<p>
+        <label for="eventlocation">Location:</label><input type="text" id="eventlocation" name="eventlocation" size="50" value="<%eventlocation%>" />  
+</p>
+<p>
+        <label for="eventpostcode">PostCode:</label><input type="text" id="eventpostcode" name="eventpostcode" size="10" value="<%eventpostcode%>" />  
+		<input type="hidden" id="eventstatus" name="eventstatus"  value="active" />  
+</p>
+<p>
+        <label for="target">Target:</label><select id="eventtarget" name="eventtarget" ><%eventtargetasoption%></select>  
+</p>
+<p>
+        <label for="accept">Accept payment:</label><select id="eventacceptpayment" name="eventacceptpayment" ><%eventacceptpaymentasoption%></select>  
+</p>
+<p>
+        <label for="eventdescription">Description</label><br/>
+               <textarea id="eventdescription" name="eventdescription" ><%eventdescription%></textarea>
+</p>
+      </fieldset>
+
+        <fieldset>
+        <legend>Event Dates</legend>
+
+        <p><a href="javascript:addeventdate()">Add New Date</a></p>
+        <table id="eventdates">
+        <tr>
+                <th>Event Starts</th><th>Event Ends</th><th>Status</th><th>Cost</th><th>Display Text </th><th><!-- Max. Attendees --></th><th></th>
+        </tr>
+        <%eventdatelist%>
+<!--        <tr>
+                <td> <input type="text" id="offerstart" name="eventstart" size="10" value="<%eventstart%>"/>
+           <a href="javascript:NewCal('eventstart','ddmmyyyy',true,24)">
+               <img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>
+                </td>
+                <td>
+        <input type="text" id="eventexpires" name="eventexpires" size="15" value="<%eventexpires%>"/>
+           <a href="javascript:NewCal('eventexpires','ddmmyyyy',true,24)">
+               <img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>
+                </td>
+                <td>
+                <select id="eventdatestatus" name="eventdatestatus" >
+                        <%eventstatus%>
+                </select>
+                </td>
+        </tr>        -->
+        </table>
+
+
+        <p id='lblregsubmit'> 
+          <input type="submit" name="register" id="register" value="Update" tabindex="32"  />
+        </p>
+        </fieldset>
+      </form>
+
+  <%footer%></html>

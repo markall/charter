@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script language="javascript">
+
+function changecategory() {
+
+ ncategory  = document.getElementById('selcategory').value;
+  
+ nperpage   = document.getElementById('perpage').value;
+
+ noffset    = document.getElementById('offset').value;
+
+ nsearchstr = document.getElementById('searchstr').value;
+
+ nurl = 'content.php?template=templates/directory.html&categoryid='+ncategory+'&offset='+noffset+'&iperpage='+nperpage+'&searchstr='+nsearchstr;
+
+
+ document.location= nurl;
+
+}
+
+function dosearch() {
+  document.getElementById('offset').value='0';
+  document.getElementById('selcategory').value='all';
+  changecategory();
+}
+
+</script>
+
+<%header%>
+
+
+Hi Mark......
+    <p>&nbsp;</p>
+        <ul id="members">
+    <%contactsbycategory%>
+        </ul>
+  <%footer%>
+

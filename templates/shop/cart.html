@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<script type="text/javascript" src="scripts/cart.js" ></script>
+<script type="text/javascript" src="scripts/common.js" ></script>
+
+<style type="text/css">
+
+#content #vanimg {
+	text-align:center;
+	height:300px;
+}
+
+#cart table {
+      clear:right;
+}
+</style>
+<%header%>
+<p>Please remember if you are VAT exempt to complete the <a href="http://www.mobilitysupplies.com/content.php?template=templates/vat.html" title="VAT exemption" >VAT Exemption form</a> before shopping online.  Complete the form and VAT will be deducted before checkout.</p>
+
+								<div id="cart"> 
+								<script language="JavaScript" type="text/javascript">
+									onpageload();
+									document.write(showcart('scr','') );
+								</script>
+								</div>
+
+                                <form action="<%orderaction%>" method="post" enctype="multipart/form-data" name="order" id="order">
+                                  <input type="hidden" name="idescription" id="idescription" />
+                                  <input type="hidden" name="descriptionxml" id="descriptionxml" />								  
+                                  <input type="hidden" name="cost" id="cost" value="<%product_price%>" />
+								  
+                                  <input type="hidden" name="grossamount" id="grossamount" />								  
+                                  <input type="hidden" name="vatamount" id="vatamount" />								  
+                                  <input type="hidden" name="netamount" id="netamount" />								  
+                                  <input type="hidden" name="deliveryamount" id="deliveryamount" />								  
+								  
+
+                                </form>
+<%footer%>

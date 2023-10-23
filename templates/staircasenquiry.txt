@@ -1,0 +1,19 @@
+		  <form action="/cgi-bin/mailform.pl" method="post" name="form1" id="form1">
+                    <input type="hidden" name="subject" value="Website Staircase Enquiry " />
+                    <input type="hidden" name="recipient" value="enquiries@mobilitysupplies.com" />
+                    <input type="hidden" name="redirect" value="http://www.mobilitysupplies.com/content.php?template=templates/thankyou.html" />
+
+		    <label>Contact Name</label><input name="contactname" type="text" id="contactname" /><br/>
+
+		    <label>Email</label><input name="email" type="text" id="email" /><br/>
+
+		    <label>Telephone</label><input name="telephone" type="text" id="telephone" /><br/>
+
+		    <label>Postcode</label><input name="postcode" type="text" id="postcode" /><br/>
+
+		    <label>staircase Type</label><select name="staircasetype" id="staircasetype"><option value="straight">Straight</option><option value="curved">Curved</option></select><br/>
+
+		    <label>&nbsp;</label><input type="submit" name="Submit" value="Submit" />
+
+		    <input name="contactname" type="text" id="contactname" /><br/>
+                  </form>

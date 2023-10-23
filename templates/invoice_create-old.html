@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.8/jquery-ui.min.js"></script>
+<script type="text/javascript" src="scripts/datetime/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="scripts/tiny_mce/jquery.tinymce.js"></script>
+
+<link rel="stylesheet" type="text/css" media="screen" href="http://hotlink.jquery.com/jqueryui/themes/base/jquery.ui.all.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.8/themes/flick/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="scripts/datetime/jquery-ui-timepicker-addon.css" />
+
+
+<script language="javascript">
+var ridx=0;
+
+function calctotals() {
+    nettobj = document.getElementById('nettamount');
+    vatrteobj = document.getElementById('vatrate');
+    vatamtobj = document.getElementById('vatamount');
+    grossamtobj = document.getElementById('grossamount');
+
+    n = nettobj.value;
+    r = vatrteobj.value;
+
+    v = eval(n) * eval(r);
+    v = (Math.round(v*100)/100);
+    g = eval(v)+eval(n);
+
+    vatamtobj.value = v ;
+    grossamtobj.value=g;
+
+}
+
+$(document).ready(function() {
+    var x = new Date();
+    dd = x.getDate();
+    if (dd<10) {
+        dd='0'+dd;
+    }
+    mm = x.getMonth()+1;
+    if (mm<10) {
+        mm='0'+mm;
+    }
+
+    document.getElementById("invoicedate").value=    dd+'-'+mm+'-'+x.getFullYear();
+
+    $( "#invoicedate" ).datepicker( { dateFormat: 'dd-mm-yy', defaultDate: +7,autoSize: true, changeYear: true }  );
+
+    calctotals();
+                        $('textarea').tinymce({
+                        // Location of TinyMCE script
+                        script_url : 'scripts/tiny_mce/tiny_mce.js',
+
+                        // General options
+                        theme : "advanced",
+                        plugins : "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,advlist",
+
+                        // Theme options
+                        theme_advanced_buttons1 : "bold,italic,underline,|,forecolor,backcolor",
+                        theme_advanced_buttons2 : "justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,fontselect,fontsizeselect",
+                        theme_advanced_buttons3 : "",
+                        theme_advanced_buttons4 : "",
+        //              theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
+//                      theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+//                      theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
+//                      theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,pagebreak",
+                        theme_advanced_toolbar_location : "bottom",
+                        theme_advanced_toolbar_align : "left",
+                        theme_advanced_statusbar_location : "bottom",
+                        theme_advanced_resizing : true,
+
+                        // Example content CSS (should be your site CSS)
+                        content_css : "styles/stylesheet.css",
+
+                        // Drop lists for link/image/media/template dialogs
+                        template_external_list_url : "lists/template_list.js",
+                        external_link_list_url : "lists/link_list.js",
+                        external_image_list_url : "lists/image_list.js",
+                        media_external_list_url : "lists/media_list.js",
+
+                        // Replace values for the template plugin
+                        template_replace_values : {
+                                username : "Some User",
+                                staffid : "991234"
+                        }
+
+                        });
+
+
+});
+
+</script>
+<style type="text/css" media="screen">
+
+#invdte {
+        text-align: right;
+        padding-left: 60%;
+}
+#invdte table {
+        border: medium solid #333333;
+}
+#invdte table th, #invdte table td {
+        border: thin solid #333333;
+        margin: 0px;
+        padding: 0px;
+}
+
+#total th,#total td {
+ text-align:right;
+}
+.rightj {
+        width:80px;
+        text-align:right;
+}
+
+.total {
+        border: thin solid #000000;
+}
+
+#costs th {
+        text-align:right;
+        width:130px
+}
+
+
+</style>
+<%header%>
+<h2>Create Invoice</h2>
+
+<form action="content.php" id="frmbooking" method="post" >
+<input type="hidden" name="action" value="insertinvoice" />
+<input type="hidden" name="template" value="templates/invoice_print.html" />
+
+<div style="text-align:left;">
+<label> Invoice To:</label>
+        <table><tr><td>
+         <input type="hidden" name="invoicecontactid" value="<%client_contactid%>"      />
+         <input type="text" name="invoicecontacttitle" id="invoicecontacttitle" value="<%client_contacttitledisplay%>" size="6" />
+         <input type="text" name="invoicecontactfirstname" id="invoicecontactfirstname" value="<%client_contactfirstname%>" />
+         <input type="text" name="invoicecontactlastname" id="invoicecontactlastname" value="<%client_contactlastname%>" />      <br/>
+         <input type="text" name="invoicecontactcompany" id="invoicecontactcompany" value="<%client_contactcompany%>" /> <br/>
+         <input type="text" name="invoicecontactaddress1" id="invoicecontactaddress1" value="<%client_contactaddress1%>" /> <br/>
+         <input type="text" name="invoicecontactaddress2" id="invoicecontactaddress2" value="<%client_contactaddress2%>" /> <br/>
+        <input type="text" name="invoicecontacttown" id="invoicecontacttown" value="<%client_contacttown%>" /> <br/>
+          <input type="text" name="invoicecontactpostcode" id="invoicecontactpostcode" value="<%client_contactpostcode%>" /> <br/>
+          </td></tr></table>
+</div> <!-- client details -->
+
+<div id="invreferences" >
+<p>
+<label>Tax Date</label><input type="text" name="invoicedate" id="invoicedate" size="10" />
+</p>
+<p>
+<label>Client Ref.</label><input type="text" name="invoiceclientref" id="invoiceclientref" size="10" />
+</p>
+<p>
+<label>Our Ref.</label><input type="text" name="invoicereference" id="invoicereference" size="10" />
+</p>
+
+</div> <!-- invoice references -->
+
+<div id="invdescription">
+<label>Description:</label>
+<textarea id="invoicedescription" name="invoicedescription" >
+        Confirmed Booking ID: <%bookingid%><br/>
+<p>
+ <strong>Boat: </strong><%rentalobjtitle%>
+</p>
+<p>
+     <strong>From:</strong> <%bookingstartdatetime%> <strong>to</strong> <%bookingenddatetime%> ( <%bookingduration1%> hours)<br/>
+</p>
+  <table id="costs">
+    <tr>
+                  <th>Base Cost: </th>
+                  <td class="rightj">&pound;<%bookingbasecost%> </td>
+                  </tr>
+                  <tr>
+                  <th>Menu Cost: </th>
+                  <td class="rightj">&pound;<%bookingmenucost%></td>
+                  </tr>
+                  <tr>
+                  <th>Cost Adjustment: </th>
+                  <td class="rightj">&pound;<%bookingadditionalcost%></td>
+                  </tr>
+
+
+   </table>
+</textarea>
+
+
+
+</div> <!-- invdescription -->
+
+<div id="amounts" >
+<p>
+      <label>Nett Amount</label><input class="rightj" type="text" name="nettamount" id="nettamount" value="<%bookingtotalcost%>" />
+</p>
+
+<p>
+        <label>VAT Rate</label>
+                <select id="vatrate" name="vatrate" onchange="calctotals();" onblur="calctotals();"  class="rightj">
+                  <%vatcodesasoptions%>
+                </select>
+</p>
+<p>
+<label>VAT Amount</label><input class="rightj" type="text" id="vatamount" name="vatamount" value="0" />
+</p>
+<p>
+<label>Gross Amount</label><input class="rightj" type="text" id="grossamount" name="grossamount" value="0" />
+</p>
+<p>
+<label>Amount Paid</label><input class="rightj" type="text" id="paid" name="paid" value="<%bookingdeposit%>" />
+</p>
+
+</div>
+
+<input type="hidden" name="bookingid" value="<%bookingid%>" />
+<input type="hidden" name="clientid" value="<%bookingclientid%>" />
+
+<div id="buttonsection">
+        <p style="text-align:right;">
+        <input type="submit" value="Generate Invoice" />
+        </p>
+
+</div>
+
+</form>
+
+
+
+
+<%content%>
+
+<%footer%>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.8/jquery-ui.min.js"></script>
+<script type="text/javascript" src="scripts/datetime/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="scripts/tiny_mce/jquery.tinymce.js"></script>
+<link rel="stylesheet" type="text/css" media="screen" href="http://hotlink.jquery.com/jqueryui/themes/base/jquery.ui.all.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.8/themes/flick/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="scripts/datetime/jquery-ui-timepicker-addon.css" />
+<script language="javascript">
+var ridx=0;
+
+
+$(document).ready(function() {
+    var x = new Date();
+    dd = x.getDate();
+    if (dd<10) {
+        dd='0'+dd;
+    }
+    mm = x.getMonth()+1;
+    if (mm<10) {
+        mm='0'+mm;
+    }
+
+            $('#timcrewboard').val('<%funcobjcrewboardingtime%>');
+            $('#timcrewsail').val('<%funcobjcrewsailtime%>');           
+            $('#timcateringdelivery').val('<%funcobjcateringdeliverytime%>');
+            $('#timguestboard').val('<%funcobjguestboardingtime%>');            
+            $('#timguestsail').val('<%funcobjguestboardingsailtime%>');
+            $('#timgueststop1').val('<%funcobjgueststopover1time%>');
+            $('#timgueststop1sail').val('<%funcobjgueststopover1sailtime%>');
+            $('#timgueststop2').val('<%funcobjgueststopover2time%>');
+            $('#timgueststop2sail').val('<%funcobjgueststopover2sailtime%>');
+            $('#timguestdisembark').val('<%funcobjguestdisembarktime%>');
+            $('#timguestdisembarksail').val('<%funcobjguestdisembarksailtime%>');
+            $('#timcrewdisembark').val('<%funcobjcrewdisembarktime%>');
+                                                                                                                                
+    if ($('#timcrewboard').val()=="") {
+            $('#timcrewboard').val('11:00');
+        }
+        if ( $('#timcrewsail').val()=="") {
+            $('#timcrewsail').val('11:00');
+        }
+        if ($('#timcateringdelivery').val()=="") {
+            $('#timcateringdelivery').val('11:00');
+        }
+        if ($('#timguestboard').val()=="") {
+            $('#timguestboard').val('11:00');
+        }
+        if ($('#timguestsail').val()=="") {
+            $('#timguestsail').val('11:00');
+        }
+        if ($('#timgueststop1').val()=="") {
+            $('#timgueststop1').val('11:00');
+        }
+        if ($('#timgueststop1sail').val()=="") {
+            $('#timgueststop1sail').val('11:00');
+        }
+        if ($('#timgueststop2').val()=="") {
+            $('#timgueststop2').val('11:00');
+        }
+        if ($('#timgueststop2sail').val()=="") {
+            $('#timgueststop2sail').val('11:00');
+        }
+        if ($('#timguestdisembark').val()=="") {
+            $('#timguestdisembark').val('11:00');
+        }
+        if ($('#timguestdisembarksail').val()=="") {
+            $('#timguestdisembarksail').val('11:00');
+        }
+        if ($('#timcrewdisembark').val()=="") {
+            $('#timcrewdisembark').val('11:00');
+        }
+                
+    $('#timcrewboard').timepicker({defaultTime: '11:00'});      
+    $('#timcrewsail').timepicker({defaultTime: '11:00'});
+    $('#timcateringdelivery').timepicker({defaultTime: '11:00'});       
+    $('#timguestboard').timepicker({defaultTime: '11:00'});     
+    $('#timguestsail').timepicker({defaultTime: '11:00'});
+    $('#timgueststop1').timepicker({defaultTime: '11:00'});
+    $('#timgueststop1sail').timepicker({defaultTime: '11:00'});                 
+    $('#timgueststop2').timepicker({defaultTime: '11:00'});
+    $('#timgueststop2sail').timepicker({defaultTime: '11:00'});
+    $('#timguestdisembark').timepicker({defaultTime: '11:00'});
+    $('#timguestdisembarksail').timepicker({defaultTime: '11:00'});     
+    $('#timcrewdisembark').timepicker({defaultTime: '11:00'});                          
+
+                        $('textarea').tinymce({
+                        // Location of TinyMCE script
+                        script_url : 'scripts/tiny_mce/tiny_mce.js',
+
+                        // General options
+                        theme : "advanced",
+                        plugins : "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,advlist",
+
+                        // Theme options
+                        theme_advanced_buttons1 : "bold,italic,underline,|,forecolor,backcolor,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist",
+                        theme_advanced_buttons2 : "",
+                        theme_advanced_buttons3 : "",
+                        theme_advanced_buttons4 : "",
+        //              theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
+//                      theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+//                      theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
+//                      theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,pagebreak",
+                        theme_advanced_toolbar_location : "bottom",
+                        theme_advanced_toolbar_align : "left",
+                        theme_advanced_statusbar_location : "bottom",
+                        theme_advanced_resizing : true,
+
+                        // Example content CSS (should be your site CSS)
+                        content_css : "styles/stylesheet.css",
+
+                        // Drop lists for link/image/media/template dialogs
+                        template_external_list_url : "lists/template_list.js",
+                        external_link_list_url : "lists/link_list.js",
+                        external_image_list_url : "lists/image_list.js",
+                        media_external_list_url : "lists/media_list.js",
+
+                        // Replace values for the template plugin
+                        template_replace_values : {
+                                username : "Some User",
+                                staffid : "991234"
+                        }
+
+                        });
+
+
+});
+
+</script>
+
+<%header%>
+<form action="content.php?template=templates/func_print.html" enctype="multipart/form-data" method="post" >
+<input type="hidden" value="<%bookingid%>" name="bookingid" />
+<input type="hidden" value="updatefunc" name="action" />
+<input type="hidden" value="templates/func_print.html" name="template" />
+
+
+<h2>FUNCTION SHEET ( <%bookingid%> )</h2>
+<div id="booking">
+<p>
+<label>Job</label> <%bookingstartdatetime%> to <%bookingenddatetime%> <br/><br/>
+
+<label>Boat:</label> <strong><%rentalobjtitle%></strong><br/>
+
+<label>Client:</label> <%client_contactfirstname%> <%client_contactlastname%><br/>
+</p>
+
+
+<fieldset id="crew" >
+<legend>CREW DETAILS</legend>
+<p>
+<label>Skipper:</label> <select id="skipperid" name="funcobjskipperid">
+                  <%contactsbycategory=Skipper|<%funcobjskipperid>%>
+                  </select> <br />
+<label>Crew:</label> <select id="mateid" name="funcobjmateid">
+                  <%contactsbycategory=Mate|<%funcobjmateid>%>
+                  </select><br />
+                  
+<label>Steward:</label> <select id="stewardid" name="funcobjstewardid">
+                  <%contactsbycategory=Steward|<%funcobjstewardid>%>
+                  </select>
+</p>
+<p>
+<label>Boarding time:</label>
+<input name="funcobjcrewboardingtime" id="timcrewboard" type="text" size="5" value="<%funcobjcrewboardingtime%>"  /><br />
+
+<label>Location:</label>
+<!--select name="funcobjcrewboardinglocationid" id="locationcrewboardid"  >
+                <option value="-1">Please select a location ...</option>
+                <%locationsasoptions|id=<%funcobjcrewboardinglocationid%>%>
+        </select><br /-->
+<input name="funcobjcrewboardinglocationtext" id="locationcrewboardtext" value="<%funcobjcrewboardinglocationtext%>" /><br/>
+
+<label>Sail time:</label><input name="funcobjcrewsailtime" id="timcrewsail" type="text" size="5" value="<%funcobjcrewsailtime%>" /><br />
+</p>
+
+<p>
+<label>Remarks: </label>
+<textarea id="crewremarks" name="funcobjcrewremarks" ><%funcobjcrewremarks%></textarea></p>
+
+</fieldset>
+
+<fieldset id="caterer">
+<legend>CATERER DETAILS</legend>
+<p>
+<label>Delivery time:</label>
+<input name="funcobjcateringdeliverytime" id="timcateringdelivery" type="text"  size="5" value="<%funcobjcateringdeliverytime%>"  /><br />
+<label>Location:</label>
+<!--select name="funcobjcateringdeliverylocationid" id="locationcateringedlivery" >
+                <option value="-1">Please select a location ...</option>
+                <%locationsasoptions|id=<%funcobjcateringdeliverylocationid%>%>
+        </select><br /-->
+        <input name="funcobjcateringdeliverylocationtext" id="locationcateringdeliverytext" value="<%funcobjcateringdeliverylocationtext%>" /><br/>
+<label>Contractor:</label>
+<%contactsbycategory=Caterer|<%jobobjcaterer>%><br />
+
+</p>
+</fieldset>
+
+<fieldset id="guest">
+<legend>GUEST BOARDING DETAILS</legend>
+<p>
+<label>Principle Guest:</label>  <select id="funcobjguestid" name="funcobjguestid">
+                  <%contactsbycategory=Principle|<%funcobjguestid>%>
+                  </select><br />
+<label>Event</label>
+<input type="text" id="event" name="funcobjguestevent" value="<%funcobjguestevent%>" /><br />
+<label>Boarding time:</label>
+<input name="funcobjguestboardingtime" id="timguestboard" type="text" size="5" value="<%funcobjguestboardingtime%>" /><br />
+<label>Location:</label>
+<!--select name="funcobjguestboardinglocationid" id="locationguestboard"  >
+                <option value="-1">Please select a location ...</option>
+                <%locationsasoptions|id=<%funcobjguestboardinglocationid%>%>
+        </select><br /-->
+<input name="funcobjguestboardinglocationtext" id="locationguestboardtext" value="<%funcobjguestboardinglocationtext%>" /><br/>
+<label>Sail time: </label>
+<input name="funcobjguestboardingsailtime" id="timguestsail" type="text" size="5" value="<%funcobjguestboardingsailtime%>" /><br />
+</p>
+<label>Remarks:</label><textarea id="guestremarks" name="funcobjguestboardingremarks" ><%funcobjguestboardingremarks%></textarea><br />
+
+<label>Welcome Drink:</label><textarea id="guestwelcomedrink" name="funcobjdrinkremarks" ><%funcobjdrinkremarks%></textarea><br />
+
+<label>Welcome Meal:</label>
+<textarea id="guestwelcomemeal" name="funcobjmeal1remarks"  ><%funcobjmeal1remarks%></textarea><br />
+
+</fieldset>
+
+<fieldset id="stop1">
+<legend>STOPOVER 1</legend>
+<p>
+<label>Time:</label> <input name="funcobjgueststopover1time" id="timgueststop1" type="text" size="5" value="<%funcobjgueststopover1time%>" /><br />
+<label>Location:</label>
+<!--select name="funcobjstopover1locationid" id="locationgueststop1"  >
+                <option value="-1">Please select a location ...</option>
+                <%locationsasoptions|id=<%funcobjgueststopover1locationid%>%>
+        </select><%funcobjgueststopover1locationid%><br /-->
+<input name="funcobjgueststopover1locationtext" id="locationstopover1text" value="<%funcobjgueststopover1locationtext%>" /><br/>
+
+<label>Sail time:</label>
+<input name="funcobjgueststopover1sail" id="timgueststop1sail" type="text" size="5" value="<%funcobjgueststopover1sailtime%>" /><br />
+</p>
+<p>
+<label>&nbsp;</label>
+<textarea id="gueststop1remarks" name="funcobjgueststopover1remarks"  ><%funcobjgueststopover1remarks%></textarea>
+</p>
+<p>
+<label>Meal 2 remarks</label>
+<textarea id="guestmeal2remarks" name="funcobjmeal2remarks"  ><%funcobjmeal2remarks%></textarea><br />
+</p>
+
+</fieldset>
+
+<fieldset id="stop2">
+<legend>STOPOVER 2</legend>
+<p>
+<label>Time:</label> <input name="funcobjgueststopover2time" id="timgueststop2" type="text" size="5"  value="<%funcobjgueststopover2time%>" /><br />
+
+<label>Location:</label>
+<!--select name="funcobjstopover2locationid" id="locationgueststop2"  >
+                <option value="-1">Please select a location ...</option>
+                <%locationsasoptions|id=<%funcobjgueststopover2locationid%>%>
+        </select><%funcobjgueststopover2locationid%><br /-->
+<input name="funcobjgueststopover2locationtext" id="locationstopover2text" value="<%funcobjgueststopover2locationtext%>" /><br/>
+
+<label>Sail time:</label> <input name="funcobjgueststopover2sailtime" id="timgueststop2sail" type="text" size="5" value="<%funcobjgueststopover2sailtime%>" /><br />
+</p>
+<p>
+<label>&nbsp;</label>
+<textarea id="gueststop2remarks" name="funcobjgueststopover2remarks" ><%funcobjgueststopover2remarks%></textarea>
+</p>
+</fieldset>
+
+<fieldset id="guestdisembark">
+<legend>GUEST DISEMBARK</legend>
+<p>
+<label>Time:</label> <input name="funcobjguestdisembarktime" id="timguestdisembark" type="text" size="5" value="<%funcobjguestdisembarktime%>" /><br />
+<label>Location:</label>
+ <!--select name="funcobjguestdisembarklocationid" id="locationguestdisembark"  >
+                <option value="-1">Please select a location ...</option>
+                <%locationsasoptions|id=<%funcobjguestdisembarklocationid%>%>
+        </select><br /-->
+<input name="funcobjguestdisembarklocationtext" id="locationguestdisembarktext" value="<%funcobjguestdisembarklocationtext%>" /><br/>
+
+<label>Sail time:</label>
+ <input name="funcobjguestdisembarksailtime" id="timguestdisembarksail" type="text" size="5" value="<%funcobjguestdisembarksailtime%>" /><br />
+</p>
+<p>
+<label>&nbsp;</label>
+<textarea id="guestdisembarkremarks" name="funcobjguestdisembarkremarks" ><%funcobjguestdisembarkremarks%></textarea>
+</p>
+
+
+</fieldset>
+
+<fieldset id="crewdisembark">
+<legend>CREW DISEMBARK</legend>
+<p>
+<label>Time:</label> <input name="funcobjcrewdisembarktime" id="timcrewdisembark" type="text" size="5" value="<%funcobjcrewdisembarktime%>" /><br />
+
+<label>Location:</label>  <!--select name="funcobjcrewdisembarklocationid" id="locationcrewdisembark"  >
+                <option value="-1">Please select a location ...</option>
+                <%locationsasoptions|id=<%funcobjcrewdisembarklocationid%>%>
+        </select><br /-->
+<input name="funcobjcrewdisembarklocationtext" id="locationcrewdisembarktext" value="<%funcobjcrewdisembarklocationtext%>" /><br/>
+
+</p>
+<p>
+<label>&nbsp;</label><textarea id="crewdisembarkremarks" name="funcobjcrewdisembarkremarks" ><%funcobjcrewdisembarkremarks%></textarea>
+</p>
+
+</fieldset>
+</div>
+
+
+<input type="hidden" name="bookingid" value="<%bookingid%>" />
+<input type="hidden" name="clientid" value="<%bookingclientid%>" />
+
+<div id="buttonsection">
+        <p style="text-align:right;">
+        <input type="submit" value="Print Sheet" />
+        </p>
+
+</div>
+
+</form>
+
+
+
+
+<%content%>
+
+<%footer%>

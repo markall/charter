@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.8/jquery-ui.min.js"></script>
+<script type="text/javascript" src="scripts/datetime/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="scripts/tiny_mce/jquery.tinymce.js"></script>
+<link rel="stylesheet" type="text/css" media="screen" href="http://hotlink.jquery.com/jqueryui/themes/base/jquery.ui.all.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.8/themes/flick/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="scripts/datetime/jquery-ui-timepicker-addon.css" />
+<script language="javascript">
+var ridx=0;
+
+
+$(document).ready(function() {
+    var x = new Date();
+    dd = x.getDate();
+    if (dd<10) {
+        dd='0'+dd;
+    }
+    mm = x.getMonth()+1;
+    if (mm<10) {
+        mm='0'+mm;
+    }
+
+
+                
+                  
+
+
+
+
+});
+
+</script>
+
+<%header%>
+<form>
+
+<h2>FUNCTION SHEET ( <%bookingid%> )</h2>
+<div id="booking">
+
+<h2 style="margin-left:10%;" >
+<label>Job:</label> <%bookingstartdatetime%> to<br>
+<label>&nbsp;</label> <%bookingenddatetime%> <br/><br/>
+</h2>
+
+
+
+<fieldset id="crew" >
+<legend>Crew details</legend>
+<p>
+         <label>Skipper:</label> <%Skipper_contacttitledisplay%> <%Skipper_contacfirstname%> <%Skipper_contactlastname%>      <br/>
+         <label>Crew :</label> <%Mate_contacttitledisplay%> <%Mate_contacfirstname%> <%Mate_contactlastname%>      <br/>
+</p>
+
+<p>
+<label>Boat:</label> <strong><%rentalobjtitle%></strong><br/> <br/>
+<label>Owner:</label>  <%Owner_contacttitledisplay%> <%Owner_contacfirstname%> <%Owner_contactlastname%>  <br/><br/>
+</p>
+
+<p>
+<label>Location: </label>
+        <%funcobjcrewboardinglocationtext%><br />
+<label>Boarding time:</label>
+        <%funcobjcrewboardingtime%><br />
+<label>Sail time:</label>
+        <%funcobjcrewsailtime%><br />
+<label>Notes:</label>
+        <%funcobjcrewremarks%><br />
+
+</p>
+</fieldset>
+
+<fieldset id="guest" >   <legend>Guest Boarding Details</legend>
+<p>
+<label>Client:</label> <%client_contactfirstname%> <%client_contactlastname%> , tel: <%client_contacttelephone1%> <br/>
+<br />
+
+<label>Event:</label>
+        <%funcobjguestevent%><br />
+<label>Location:</label>
+        <%funcobjguestboardinglocationtext%><br />
+<label>Boarding time:</label>
+        <%funcobjguestboardingtime%><br />
+<label>Sail time:</label>
+        <%funcobjguestboardingsailtime%><br />
+<label>Notes:</label>
+        <%funcobjguestboardingremarks%><br />
+
+</p>
+
+</fieldset>
+
+<fieldset id="Drinkmeal" >
+<legend>Food and drink details</legend>
+<p>
+<label>Drinks</label>
+<%funcobjdrinkremarks%><br/><br/>
+</p>
+<p>
+<label>Meal</label>
+<%funcobjmeal1remarks%><br/><br/>
+</p>
+<p>
+<label>Meal Delivery Location</label><%funcobjcateringdeliverylocationtext%><br/><br/>
+
+<label>Meal Delivery Time:</label><%funcobjcateringdeliverytime%><br/><br/>
+
+<label>Contractor</label><%Caterer_contactlastname%>
+
+</p>
+</fieldset>
+
+
+
+
+
+<fieldset id="other" >   <legend>OTHER NOTES</legend>
+<%funcobjnotes%>
+
+</fieldset>
+
+
+
+
+</form>
+
+
+
+
+<%content%>
+
+<%footer%>

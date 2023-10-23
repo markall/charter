@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<%headerpre%>
+
+<script src='scripts/moment.js'></script>
+<script type="text/javascript" src="scripts/fullcalendar/fullcalendar.js"></script>
+<link rel='stylesheet' type='text/css' href='scripts/fullcalendar/fullcalendar.css' />
+<link rel='stylesheet' type='text/css' href='scripts/fullcalendar/fullcalendar.print.css' media='print' />
+
+
+<script type="text/javascript">
+
+function find() {
+
+s = document.getElementById('searchstr');
+
+document.location="content.php?template=templates/calendar.html&searchstr="+s.value;
+
+}
+
+</script>
+
+<script>
+
+$(document).ready(function() {
+
+    var date = new Date();
+                var d = date.getDate();
+                var m = date.getMonth();
+                var y = date.getFullYear();
+
+                $('#calendar').fullCalendar({
+                        editable: false,
+                        events: [
+                                <%bookingcalendar|fullcalendarevents=yes%>   
+                        ],
+			
+						eventRender: function(event, element) {	
+								sdate = new Date(event.start);
+								edate = new Date(event.end);
+								
+								content = 	'<div style="border-color:'+event.backgroundColor+'" >'+
+											'client: '+event.firstname+' '+event.lastname+'<br/>'+
+											'telephone: '+event.telephone1+'<br/>'+
+											'mobile: '+event.mobile+'<br/>'+
+											'start: '+sdate.getHours()+':'+sdate.getMinutes()+'<br/>'+
+											'end: '+edate.getHours()+':'+edate.getMinutes()+'<br/>'+
+											'</div>';
+											
+								element.popover({
+									title: event.rental,
+									trigger:'hover',
+									placement: 'auto',
+									content:  content ,
+									html:true
+								});
+								
+
+
+						}
+						
+					
+				})
+
+})
+
+</script>
+
+
+<%header%>
+<div class="container">
+	<div class="row">
+		<div class="col-md-2" >		
+			<%sidemenu%>
+		</div> <!-- col-md-2 -->
+		
+		<div class="col-md-9">
+
+					<div id="topmenu">
+						<ul class="list-unstyled list-inline">
+							<li><a href="content.php?template=templates/booking1.html" title="Bookings"><img src="images/icons/bookings.png" alt="Bookings"></a></li>
+							<li><a href="content.php?template=templates/calendar.html&editoptions=function|booking" title="Calendar"><img src="images/icons/calendar.png" alt="Calendar"></a></li>
+						</ul>
+					</div>
+					<div id="search" >
+						<p>
+							<label style="width:400px" >Search Bookings for Surname </label><input type="text" name="searchstr" id="searchstr" value=""size="30" /><input type="button" onclick="find()" value="Find" />
+						</p>
+					</div>
+
+					<div id='calendar'></div>
+
+		</div> <!-- col-md-10 -->
+		
+	</div> <!-- row -->
+</div> <!-- container-->	
+
+
+<%footer%>
+
+
+

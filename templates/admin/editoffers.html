@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Maidenhead Chamber Of Commerce Member Offers</title>
+
+
+<script language="JavaScript" src="scripts/ajax.js"></script>
+
+
+<!-- TinyMCE -->
+<script type="text/javascript" src="scripts/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript" src="scripts/tinymceinit.js"></script>
+<!-- /TinyMCE -->
+
+<script language="javascript" type="text/javascript" src="scripts/datetimepicker.js"> </script>
+<script language="javascript" type="text/javascript" src="scripts/dateunit.js"> </script>
+
+
+<script language="JavaScript">
+
+function setnew() {
+
+document.getElementById( 'offerid' ).value="-1";
+
+document.getElementById( 'offertitle' ).value=" ";
+document.getElementById( 'offerstart' ).value=" ";
+document.getElementById( 'offerexpires' ).value=" ";
+document.getElementById( 'offerdescription' ).value=" ";
+tinyMCE.get('offerdescription').setContent('');
+document.getElementById( 'vouchercode' ).value="";
+
+}
+
+
+
+function validate() {
+    va = new Array();
+
+        va[0] = "offertitle";
+        va[1] = "offerstart";
+        va[2] = "offerexpires";
+
+        valid=true;
+
+        msg="";
+
+        for (i=0;i<va.length;i++)
+        {
+                if (document.getElementById( va[i] ).value<' ') {
+                        document.getElementById( va[i] ).style.backgroundColor="#FFCC80";
+                        msg=msg+va[i]+" - Required field needs completing\n";
+                        valid=false;
+                }
+        }
+        
+
+        if (valid) {
+                document.getElementById("offersform").submit();
+        } else {
+                alert(msg);
+        }
+        
+}
+
+function setpicture() {
+        document.getElementById("dyna").innerHTML="<img src=\""+document.getElementById("picture").value+"\" height='100px' />";
+}
+
+
+
+
+</script>
+</head><noscript>
+</noscript>
+
+<%header%>
+
+      <table id="offerstable">
+<tr>
+<th>Offer Title</th><th>Offer Starts</th><th>Offer Expires</th><th>&nbsp;</th><th>&nbsp;</th>
+</tr>
+<%offerlist%>
+        </table>
+			<p><a href="javascript:setnew();">New</a></p>
+			<h2>Offers</h2>
+      <form method='post' action="content.php" enctype="multipart/form-data" id="offersform">
+      <fieldset>
+        <input type='hidden' name='action' id='action' value='updateoffers' />
+
+        <input type='hidden' name='offerid' id="offerid" value='<%offerid%>' />
+        <input type='hidden' name='template' id="template" value='<%template%>' />
+        <p>
+				<label for="offertitle">Title:</label>
+				<input type="text" id="offertitle" name="offertitle" size="50" value="<%offertitle%>"/>
+				</p>
+				<p>
+        <label for="offerdescription">Description:</label><br/>
+        <textarea id="offerdescription" name="offerdescription" ><%offerdescription%></textarea>
+        </p>
+				<p>
+				<label for="vouchercode">Voucher Code:</label>
+				<input type="text" id="vouchercode" name="vouchercode" value="<%offervouchercode%>" />
+				</p>
+				<p>
+        <label for="start">Start:</label>
+				<input type="text" id="offerstart" name="offerstart" size="10" value="<%offerstart%>"/>
+           <a href="javascript:NewCal('offerstart','ddmmyyyy',false,24)">
+               <img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date" /></a>
+				</p>
+				<p>
+				<label for="expires">Expires:</label>
+				<input type="text" id="offerexpires" name="offerexpires" size="10" value="<%offerexpires%>"/>
+           <a href="javascript:NewCal('offerexpires','ddmmyyyy',false,24)">
+               <img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date" /></a>
+				</p>
+				<p>
+				<label for="target" >Target:</label>
+        <select id="offertarget" name="offertarget" >
+                        <%offertarget%>
+                </select>
+				</p>
+				<p>
+				<label for="status" >Status:</label>
+        <select id="offerstatus" name="offerstatus" >
+                        <%offerstatus%>
+                </select>
+				</p>
+        <p id='lblregsubmit'> 
+          <input type="button" name="register" id="register" value="Update" tabindex="32" onclick="validate()"  />
+        </p>
+        </fieldset>
+      </form>
+
+<%footer%>
+
+</html>

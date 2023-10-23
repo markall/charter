@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+		</head>
+		<body>
+
+		<h2>Mobility Supplies thanks you for your valued order for £<%grossamount%></h2>		
+		Please Note your order Ref:   # <strong><%orderid%></strong>. 
+		<br/>Quote it should you need to contact us.<br/><br/>
+		   		
+		<table>
+		<tr>
+		<td style="width:250px;">
+				Your Address:<br/>
+						<%title%> <%firstname%> <%lastname%><br/>
+		                <%address1%><br/>
+						<%address2%><br/>
+                		<%address3%><br/>
+               			<%town%><br/>
+                		<%county%><br/>
+                		<%country%><br/>
+                		<%postcode%><br/><br/>		
+		</td>
+		<td style="width:200px;">
+		Delivery Address:<br/>
+		                <%daddress1%><br/>
+						<%daddress2%><br/>
+                		<%daddress3%><br/>
+               			<%dtown%><br/>
+                		<%dcounty%><br/>
+                		<%dcountry%><br/>
+                		<%dpostcode%><br/><br/><br/>		
+		</td>
+		</tr>
+		</table>
+		
+
+		<br/>
+		<%description%>
+ 		<br/>
+ 		<br/>
+
+						
+
+
+<br/>
+ <br/>
+		Yours sincerely<br/>
+		<br/>
+		<br/>
+		Mobility Supplies<br/>
+		</body>
+		</html>

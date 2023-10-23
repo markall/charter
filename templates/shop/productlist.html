@@ -1,0 +1,39 @@
+<li>
+
+<div style="float:left;width;200px;text-align:center;margin:10px;"><%product_mediathumb[0]%></div>
+<div style="display:relative;">
+<h3><%product_title%></h3>
+<%product_shortdescription%><br/>
+<p>
+<label>Quantity:</label>
+<input type="text" id="<%product_code%>_qty" name="<%product_code%>_qty" size="2" maxlength="2" value="1" onchange="setprice(self)" />
+</p>
+
+<p style="text-align:right;width:80%">
+Price Inc Vat: &pound; <%product_grossamount%><br/>
+Price Excl Vat: &pound; <%product_netamount%>
+
+</p>
+
+                                <form action="<%orderaction%>" method="post" enctype="multipart/form-data" name="order" id="order">
+                                  <input type="hidden" name="idescription" id="idescription" />
+                                  <input type="hidden" name="descriptionxml" id="descriptionxml" />								  
+                                  <input type="hidden" name="cost" id="cost" value="<%product_price%>" />
+								  
+                                  <input type="hidden" name="grossamount" id="grossamount" />								  
+                                  <input type="hidden" name="vatamount" id="vatamount" />								  
+                                  <input type="hidden" name="netamount" id="netamount" />								  
+                                  <input type="hidden" name="deliveryamount" id="deliveryamount" />								  
+								  
+	  		          <input type="button" value="Add to cart" onclick="addtocart('<%product_code%>','<%product_title%>', '<%product_price%>','<%product_vatrate%>','0','<%product_vatexempt%>' )" /> 
+				  <input type="button" value="Show cart" onclick="displaycart()" />
+
+
+                                  <input type="button" value="Quick Purchase" onclick="addtocart('<%product_code%>','<%product_title%>', '<%product_price%>','<%product_vatrate%>','0','<%product_vatexempt%>' );totalcart();checkout();" />
+                                </form>
+
+
+
+				<p style="text-align:right;width:80%"><a href="content.php?action=showproduct&productid=<%product_id%>&categoryid=<%category_id%>">More detail ...</a><br/></p>
+</div>
+</li>

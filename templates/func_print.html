@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <script src='scripts/jquery/jquery.min.js'></script>
+		<script src='styles/bootstrap/js/bootstrap.min.js'></script>
+		<link rel="stylesheet" type="text/css" href='styles/bootstrap/css/bootstrap.min.css'>
+		<script type="text/javascript" src="scripts/tinymce/js/tinymce/tinymce.min.js"></script>
+<script language="javascript">
+var ridx=0;
+
+
+$(document).ready(function() {
+    var x = new Date();
+    dd = x.getDate();
+    if (dd<10) {
+        dd='0'+dd;
+    }
+    mm = x.getMonth()+1;
+    if (mm<10) {
+        mm='0'+mm;
+    }
+
+
+                
+                  
+
+
+
+
+});
+
+</script>
+
+<%header%>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-2">
+
+		</div> <!-- col-md-2 -->
+		
+		<div class="col-md-8">
+
+			<div class="row" >
+				<div class="col-md-12" >
+					<h2>FUNCTION SHEET ( <%bookingid%> )</h2>
+					
+					<h3>
+						<label>Job:</label> <%bookingstartdatetime%> to 
+						 <%bookingenddatetime%> <br/><br/>		 
+					</h3>
+					
+				</div>		
+			</div>
+		
+
+			<div id="booking">
+				<form action="content.php" enctype="multipart/form-data" method="post" >
+					<input type="hidden" value="<%bookingid%>" name="bookingid" />
+					<input type="hidden" value="templates/func_edit.html" name="template" />
+
+						<fieldset id="crew" >
+							<legend>Crew details</legend>
+							<p>
+									 <label>Skipper:</label> <%Skipper_contacttitledisplay%> <%Skipper_contacfirstname%> <%Skipper_contactlastname%>  ( tel: <%Skipper_contacttelephone1%> )  <br/> <br/>
+									 <label>Crew :</label> <%Mate_contacttitledisplay%> <%Mate_contacfirstname%> <%Mate_contactlastname%>      ( tel: <%Mate_contacttelephone1%> )<br/>
+							</p>
+
+							<p>
+							<label>Boat:</label> <strong><%rentalobjtitle%></strong><br/> <br/>
+							<label>Owner:</label>  <%Owner_contacttitledisplay%> <%Owner_contacfirstname%> <%Owner_contactlastname%>  (tel: <%Owner_contacttelephone1%> ) <br/><br/>
+							</p>
+
+							<p>
+							<label>Location: </label>
+									<%funcobjcrewboardinglocationtext%><br />
+							<label>Boarding time:</label>
+									<%funcobjcrewboardingtime%><br />
+							<label>Sail time:</label>
+									<%funcobjcrewsailtime%><br />
+							<label>Notes:</label>
+									<%funcobjcrewremarks%><br />
+
+							</p>
+						</fieldset>
+
+						<fieldset id="guest" >   
+							<legend>Guest Boarding Details</legend>
+							<p>
+							<label>Client:</label> <%client_contactfirstname%> <%client_contactlastname%>  ( mobile: <%client_contactmobile%> tel: <%client_contacttelephone1%> ) <br/>
+							<br />
+							<label>No Of People:</label><%bookingnoofpeople%><br/><br/>
+							<label>Event:</label>
+									<%bookingrentaltype%>&nbsp;<%funcobjguestevent%><br />
+							<label>Location:</label>
+									<%bookingpickuplocationtext%>&nbsp;<%funcobjguestboardinglocationtext%><br />
+							<label>Dropoff Location:</label>
+									<%bookingdropofflocationtext%><br/><br/>		
+							<label>Boarding time:</label>
+									<%funcobjguestboardingtime%><br />
+							<label>Sail time:</label>
+									<%funcobjguestboardingsailtime%><br />
+							<label>Notes:</label>
+									<%funcobjguestboardingremarks%><br />
+
+							</p>
+						</fieldset>
+
+						<fieldset id="Drinkmeal" >
+							<legend>Food and drink details</legend>
+							<p>
+							<label>Drinks</label><br/>
+							<%bookingdrinknotes%><br/>
+							<%funcobjdrinkremarks%><br/>
+							</p>
+							<p>
+							<label>Meal</label><br/>
+							<%bookingcateringnotes%><br/>
+							<%funcobjmeal1remarks%><br/>
+							</p>
+							<p>
+							<label>Meal Delivery Location: </label><%funcobjcateringdeliverylocationtext%><br/><br/>
+
+							<label>Meal Delivery Time: </label><%funcobjcateringdeliverytime%><br/><br/>
+
+							<label>Contractor: </label><%Caterer_contacttitledisplay%> <%Caterer_contacfirstname%> <%Caterer_contactlastname%>  ( tel: <%Caterer_contacttelephone1%> )  <br/> <br/>
+
+							</p>
+						</fieldset>
+
+						<fieldset id="other" >   <legend>OTHER NOTES</legend>
+							<%funcobjnotes%>
+						</fieldset>
+
+						<input type="hidden" name="bookingid" value="<%bookingid%>" />
+						<input type="hidden" name="clientid" value="<%bookingclientid%>" />
+
+						<div id="buttonsection">
+								<p style="text-align:right;">
+								<input type="submit" value="Edit Sheet" />
+								</p>
+
+						</div>
+
+				</form>
+
+			</div> <!-- booking div -->
+
+
+			<%content%>
+
+
+		</div> <!-- col-md-8 -->
+		
+	</div> <!-- row -->
+	
+ </div> <!-- Container -->
+
+<%footer%>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script language="JavaScript" src="scripts/ajax.js"></script>
+
+<link rel="stylesheet" type="text/css" href='styles/bootstrap/css/bootstrap.min.css'>
+<script language="javascript" type="text/javascript" src="scripts/datetimepicker.js"> </script>
+<script language="javascript" type="text/javascript" src="scripts/dateunit.js"> </script>
+<script src='scripts/jquery/jquery.min.js'></script>
+<script src='styles/bootstrap/js/bootstrap.min.js'></script>
+
+<script type="text/javascript" src="scripts/tinymce/js/tinymce/tinymce.min.js"></script>
+
+<script language="JavaScript">
+var userexists=true;
+
+function loaded() {
+	document.getElementById('register').disabled=false;	
+}
+function testconfirm() {
+	document.getElementById('register').disabled=true;
+	if (document.getElementById('charter').checked) {
+		if (document.getElementById('privacy').checked) {
+		   if (userexists==false) {
+			document.getElementById('register').disabled=false;
+		   }
+		}
+	}
+}
+
+function validate() {
+    va = new Array();
+	va[0] = "firstname";
+	va[1] = "lastname";
+	va[2] = "email";
+
+	
+	valid=true;
+	msg="";
+
+	for (i=0;i<va.length;i++)
+	{
+		if (document.getElementById( va[i] ).value<' ') {
+			document.getElementById( va[i] ).style.backgroundColor="#FFCC80";
+			msg=msg+va[i]+" - Required field needs completing\n";
+			valid=false;
+		}
+	}
+	
+
+	if (valid) {
+		document.getElementById("memberregisterform").submit();
+	} else {
+		alert(msg);
+	}
+	
+}
+
+function setpicture() {
+	document.getElementById("dyna").innerHTML="<img src=\""+document.getElementById("picture").value+"\" height='100px' />";
+}
+
+function checkuser() {
+	url="content.php?checkuser="+document.getElementById("usernameI").value+"&rand="+Math.random(100)+1;
+	res = ajaxget(url,0) ;
+
+	if (res.indexOf("true")>0) {
+		document.getElementById("userwarning").innerHTML="Sorry this user exists try again";
+		userexists = true;
+	} else {
+		document.getElementById("userwarning").innerHTML="OK";	
+		userexists=false;
+	}
+	testconfirm();
+	
+}
+
+function setbusiness() {
+    document.getElementById('category').disabled=true;
+	if (document.getElementById('mtype').value=='Business' ) {
+			document.getElementById('category').disabled=false;	
+	}
+}
+
+</script>
+
+<%header%>
+
+<div class="row">
+		<div class="col-md-2">
+			<%sidemenu%>
+		</div> <!-- col-md-2 -->
+		
+		<div class="col-md-9">
+		
+			<h1>Update contact details</h1>
+			<form class="form-horizontal" method='post' action="content.php" enctype="multipart/form-data"  id="memberregisterform">
+				<input type='hidden' name='action' value='updateuser' />
+				<input type='hidden' name='template' value='<%template%>' />
+				<p class="req2">* Required Field</p>
+				<fieldset>
+				<legend>&nbsp;Main Contact&nbsp;</legend>
+				<div class="form-group">
+					<label class="control-label col-md-2" for="company">Company:</label>
+					<div class="col-md-10">
+						<input class="form-control" type="text" id="company" name="company" value="<%contactcompany%>" size="40" />
+					</div>
+				</div>
+				
+<div class="form-group">
+		
+    <label class="control-label col-md-2" for="title firstname lastname">Name<span>*</span>:</label>
+		<div class="col-md-2">
+          <select class="form-control" name='title' id='title' >
+				<%contacttitle%>
+          </select>
+		</div>
+		
+		<div class="col-md-4">
+          <input class="form-control" type="text" size="9" maxlength="20" name="firstname" id="firstname" value="<%contactfirstname%>" />
+		  <input class="form-control" type="hidden" size="1" maxlength="20" name="initials" id="initials" value="<%contactinitials%>"/>
+		</div>
+		
+		<div class="col-md-4">
+		  <input class="form-control" type='text' size="16" maxlength="20" name= "lastname" id="lastname" value="<%contactlastname%>"/>
+        </div>
+</div> <!--form-group-->
+
+        </fieldset>
+
+        <fieldset>
+        <legend>&nbsp;Address&nbsp;</legend>
+
+		<div class="form-group">
+          <label  class="control-label col-md-2" for="address1">Address 1:</label>
+			<div class="col-md-10">
+				<input class="form-control" type="text" id="address1" name="address1" value="<%contactaddress1%>" size="30" />
+			</div>
+		</div>
+
+		<div class="form-group">
+          <label  class="control-label col-md-2" for="address2">Address 2:</label>
+			<div class="col-md-10">
+				<input class="form-control" type="text" id="address2" name="address2" value="<%contactaddress2%>" />
+			</div>
+		</div>
+
+		<div class="form-group">
+          <label  class="control-label col-md-2" for="town">Town:</label>
+			<div class="col-md-10">
+				<input class="form-control" type="text" id="town" name="town" value="<%contacttown%>" />
+			</div>
+		</div>
+ 
+		<div class="form-group">
+          <label  class="control-label col-md-2" for="county">County:</label>
+			<div class="col-md-10">
+				<input class="form-control" type="text" id="county" name="county" value="<%contactcounty%>" />
+			</div>
+		</div>
+
+		<div class="form-group">
+          <label  class="control-label col-md-2" for="country">Country:</label>
+			<div class="col-md-10">
+				<input class="form-control" type="text" id="country" name="country" value="<%contactcountry%>" />
+			</div>
+		</div>
+
+		<div class="form-group">
+          <label  class="control-label col-md-2" for="postcode" >Postcode:</label>
+			<div class="col-md-10">
+				<input style="width:120px" class="form-control" type="text" id="postcode" name="postcode" size="10" value="<%contactpostcode%>" />
+			</div>
+		</div>
+		
+        </fieldset>
+		
+        <fieldset>
+		<legend>&nbsp;Contact&nbsp;</legend>
+		
+		<div class="form-group">
+          <label  class="control-label col-md-2" for="telephone1">Telephone:</label>
+			<div class="col-md-10">
+				<input class="form-control" type="text" id="telephone1" name="telephone1" size="30" value="<%contacttelephone1%>" />
+			</div>
+		</div>
+		
+		<div class="form-group">
+          <label  class="control-label col-md-2" for="telephone2">Fax:</label>
+			<div class="col-md-10">
+				<input class="form-control" type="text" id="telephone2" name="telephone2" size="30" value="<%contacttelephone2%>" />
+			</div>
+		</div>
+		
+		<div class="form-group">
+          <label  class="control-label col-md-2" for="mobile">Mobile:</label>
+			<div class="col-md-10">
+				<input class="form-control" type="text" id="mobile" name="mobile" size="30" value="<%contactmobile%>" />
+			</div>
+		</div>
+		
+		<div class="form-group">
+          <label  class="control-label col-md-2" for="email">Email Address:</label>
+			<div class="col-md-10">
+				<input class="form-control" type='text' size='40' name='email' id="email" value='<%contactemail%>'/>
+			</div>
+		</div>
+		
+		<div class="form-group">
+          <label  class="control-label col-md-2" for="webaddress">Web Address:</label>
+			<div class="col-md-10">
+				<input class="form-control" type='text' size='40' name='webaddress' id="webaddress" value='<%contactwebaddress%>'/>
+			</div>
+		</div>	
+		
+        </fieldset>
+
+          <input type="button" name="register" id="register" value="Update" tabindex="32" onclick="validate();" />
+
+      </form>
+	  
+		</div> <!-- col-md-9 -->
+		
+	
+ </div> <!-- row -->
+
+<%footer%>

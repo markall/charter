@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link rel="stylesheet" href="windowfiles/dhtmlwindow.css" type="text/css" />
+<script type="text/javascript" src="windowfiles/dhtmlwindow.js"></script>
+
+<script type="text/javascript" src="scripts/ajax.js" ></script>
+
+<script type="text/javascript" src="scripts/cart.js" ></script>
+<script type="text/javascript" src="scripts/common.js" ></script>
+
+
+<script type="text/javascript"><!--//--><![CDATA[//><!--
+
+
+//--><!]]></script>
+
+<title>Garage Doors online - <%pagetitle%>  supplied by Dynasty Doors Direct</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="Description" content="Garage Door <%pagetitle%> supplied by Dynasty Doors Direct,  part of the Dynasty Doors group provides an online method of buying your Garage Door direct from a company with a well established reputation for providing excellent service and comittment to Customer Satisfaction." />
+<link href="../styles/style-scr.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+<!--
+#cmiddle {
+	color:black;
+	margin:0px;
+}
+
+#cmiddle p {
+	margin:10px;
+	text-align:justify;
+}
+
+-->
+</style>
+</head>
+<body onload="setprice();onpageload();" >
+<div id="header">
+	<img src="../images/logo.png" alt="Dynasty Doors Direct" /><h1>Dynasty Doors Direct</h1><div id="menuouter">	  
+    <%menu%>
+  </div>  <!-- menu outer -->
+</div> <!-- header -->
+
+<div id="content">
+	<div id="contentbody" >
+		<%sidemenu%>
+		<div id="contenttopright" style="text-align:left;" >
+                <div id="contenttop">
+                                <div id="nav1">
+                                                        <div style="float:left;display:inline;"> <a href="javascript:history.go(-1)">Go Back | </a></div> 
+                                                        You are here :<%category_parentnav%> <%category_header%> 
+                                        </div>
+                                <%childlist%>
+               </div> <!-- content top -->
+			   
+                <div id="productlist" style="font-size:70%;" >
+                        <img src="<%category_media[0]%>" alt="<%category_title%>" style="float:left;margin:10px;" name="img1" id="img1" />
+                        <h2><%category_header%></h2>  
+                       <div id="pdetail">Converter</div>              
+				</div> <!-- productlist -->
+				<br/><a href="<%category_attributes[1]value%>" target="_blank()"><%category_attributes[1]description%> </a>   <br/> 
+
+		</div> <!-- contenttopright -->
+
+		<div style="clear:both"><p><br/></p></div>
+
+		<div id="contentbottom">
+			<div id="ctop"><br/></div>
+			<div id="cmiddle" style="text-align:left;margin-right:10px;" >
+						All prices shown include VAT<br/><br/>
+                       <div class="itemlbl">
+                        <img class="itemhlpimg" src="../images/help.gif" onclick="javascript:help('<%category_code%>','size' );"  alt="help" />
+                        Size (width mm x height mm):</div>
+                     <select id="products" name="products" onchange="setprice(self)" >
+                     <%productlist%>
+                      </select><br/>
+
+                      <div class="itemlbl">
+                        <img class="itemhlpimg" src="../images/help.gif" onclick="javascript:help('<%category_code%>','frame' );"  alt="help" />
+                        Frame Finish:</div>
+                      <select id="frames" name="frames"  onchange="setprice(self)" >
+                     <option value="00000| None|0.00|0">None( &pound;0.00 )</option>
+                     <%product_option[Frame]%>
+                      </select>  <br/>
+
+                       <div class="itemlbl">
+                        <img class="itemhlpimg" src="../images/help.gif"  onclick="javascript:help('<%category_code%>','finish' );" alt="help" />
+                        Finish:
+                        </div>
+                      <select id="finish" name="finish"  onchange="setprice(self)" >
+                     <option value="00000| None|0.00|0">None( &pound;0.00 )</option>
+                     <%product_option[Finish]%>
+                      </select><br/>
+
+                       <div class="itemlbl">
+                        <img class="itemhlpimg" src="../images/help.gif"  onclick="javascript:help('<%category_code%>','glazing' );" alt="help" />
+                        Glazing:</div>
+                      <select id="glazing" name="glazing"  onchange="setprice(self)" >
+                     <option value="00000| None|0.00|0 ">None( &pound;0.00 )</option>
+                     <%product_option[Glazing]%>
+                      </select><br/>
+
+                       <div class="itemlbl">
+                        <img class="itemhlpimg" src="../images/help.gif"  onclick="javascript:help('<%category_code%>','opener' );" alt="help" />
+                        Opener:</div>
+                      <select id="opener" name="opener"  onchange="setprice(self)" >
+                     <option value="00000| None|0.00|0 ">None( &pound;0.00 )</option>
+                     <%product_option[Opener]%>
+                      </select>
+
+                                          <br/>                                                                           
+                      <div class="itemlbl">
+                        <img class="itemhlpimg" src="../images/help.gif"  onclick="javascript:help('<%category_code%>','quantity' );" alt="help" />
+Quantity:</div>
+                                        <input type="text" id="quantity" name="quantity" size="2" maxlength="2" value="1" onchange="setprice(self)" />
+                                        
+                                          <br/>                                                                           
+                      <div class="itemlbl">
+                        <img class="itemhlpimg" src="../images/help.gif" onclick="javascript:help('<%category_code%>','delivery' );" alt="help" />
+Carriage Extra:</div>
+                      <select id="delivery" name="delivery" onchange="setprice(self)" >
+                      <option value="EnglandWales|Std|52.88">England/Wales &pound;52.88</option>
+                      </select>  <br/><br />
+
+					  <input type="hidden" value="<%category_title%>" name="itemtitle" id="itemtitle" />
+					
+                      <div class="cost" >Item Cost: <span id="itemcost"></span></div>
+                                <form action="<%orderaction%>" method="post" enctype="multipart/form-data" name="order" id="order">
+                                  <input type="hidden" name="idescription" id="idescription" />
+                                  <input type="hidden" name="descriptionxml" id="descriptionxml" />								  
+                                  <input type="hidden" name="cost" id="cost" />
+								  
+                                  <input type="hidden" name="grossamount" id="grossamount" />								  
+                                  <input type="hidden" name="vatamount" id="vatamount" />								  
+                                  <input type="hidden" name="netamount" id="netamount" />								  
+                                  <input type="hidden" name="deliveryamount" id="deliveryamount" />								  
+								  
+	 							   <input type="button" value="Add to cart" onclick="addtocart()" /> <input type="button" value="Show cart" onclick="displaycart()" />
+                                  <input type="button" value="Quick Purchase" onclick="addtocart();totalcart();checkout();" />
+                                </form>
+
+                        <p></p>
+   
+                                                <div id="cattext">
+                                                <%categorytext_1%>
+                                                </div><br/>
+
+
+
+<div id="downloads">
+<h4>Downloads:</h4>
+&nbsp;<a href="<%category_attributes[0]value%>" target="_blank()" ><%category_attributes[0]description%> </a>   <br/>
+&nbsp;<a href="<%category_attributes[2]value%>" target="_blank()" ><%category_attributes[2]description%> </a>
+</div>
+
+
+<div id="enquire">
+            <p> 
+            <form action="/cgi-bin/mailform.pl"  method="post" name="FrontPage_Form1" id="theform" method="post"  >
+              <input type="hidden" name="recipient" value="direct@dynastydoors.co.uk,mark@merchantmakers.co.uk" >
+              <input type="hidden" name="redirect" value="http://www.dynastydoorsdirect.co.uk/thankyou.shtml" >
+              <input type="hidden" name="required" value="email,name" >
+   	      <input type="hidden" name="subject" value="GDD Website Enquiry Contact page <%category_title%> " />
+ 	      <input type="hidden" name="door" value=" <%category_title%>" />
+              <fieldset>
+              <br />
+              <label for="name" style="width:90px;float:left;">Name</label>
+              <input name="name" id="name" type="text" size="30"/>
+              <br />
+              <label for="email" style="width:90px;float:left;">eMail</label>
+              <input name="email" id="email" type="text" size="30"/>
+              <br />
+              <label for="telephone" style="width:90px;float:left;">Telephone</label>
+              <input name="telephone" id="telephone" type="text" size="30"/>
+              <br />
+              <label for="message" style="width:90px;float:left;">Message</label>
+              <textarea id="message" name="message" cols="40" rows="10" >
+                        </textarea>
+              <label for="submit" style="width:90px;">&nbsp;</label>
+              <input type="submit" id="submit" name="submit" value="Send" />
+              </fieldset>
+            </form>
+
+</p>
+			<br/>
+</div> <!-- enquire -->
+<div id="cartdisplay"></div>					
+					
+			</div> <!-- cmiddle -->
+			<div id="cbottom"><br/>
+				<!-- filler to put round edges on box -->
+			</div> <!-- cbottom -->	
+
+		</div> <!-- content bottom -->
+	</div> <!-- contentbody -->
+	<%footermenu%>
+
+</div> <!-- content -->
+<script type="text/javascript">
+
+var helperwin=dhtmlwindow.open("helper", "iframe", "/images/topimages.png", "Help", "width=300px,height=300px,resize=1,scrolling=1,center=1", "recal")
+helperwin.hide();
+
+helperwin.onclose=function(){ //Run custom code when window is being closed (return false to cancel action):
+helperwin.hide();
+return false
+}
+
+var cartwin=dhtmlwindow.open("idisplay", "div", "cartdisplay", "Shopping cart", "width=600px,height=300px,resize=1,scrolling=1,center=0", "recal")
+cartwin.hide();
+
+cartwin.onclose=function(){ //Run custom code when window is being closed (return false to cancel action):
+cartwin.hide();
+return false
+}
+
+</script>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-203230-2");
+pageTracker._trackPageview();
+</script>
+</body>
+</html>

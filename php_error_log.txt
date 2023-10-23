@@ -1,0 +1,6 @@
+[23-Sep-2016 23:38:13 Europe/London] PHP Parse error:  syntax error, unexpected '$username_connection' (T_VARIABLE) in /i-data/bcfb1cd4/web/charter/charter/Connections/connection.php on line 12
+[23-Sep-2016 23:38:14 Europe/London] PHP Parse error:  syntax error, unexpected '$username_connection' (T_VARIABLE) in /i-data/bcfb1cd4/web/charter/charter/Connections/connection.php on line 12
+[23-Sep-2016 23:38:17 Europe/London] PHP Parse error:  syntax error, unexpected '$username_connection' (T_VARIABLE) in /i-data/bcfb1cd4/web/charter/charter/Connections/connection.php on line 12
+[23-Sep-2016 23:41:24 Europe/London] PHP Parse error:  syntax error, unexpected '$username_connection' (T_VARIABLE) in /i-data/bcfb1cd4/web/charter/charter/Connections/connection.php on line 13
+[23-Sep-2016 23:41:26 Europe/London] PHP Parse error:  syntax error, unexpected '$username_connection' (T_VARIABLE) in /i-data/bcfb1cd4/web/charter/charter/Connections/connection.php on line 13
+[23-Sep-2016 23:42:29 Europe/London] PHP Parse error:  syntax error, unexpected '$username_connection' (T_VARIABLE) in /i-data/bcfb1cd4/web/charter/charter/Connections/connection.php on line 13

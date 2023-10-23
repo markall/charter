@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<script src="scripts/common.js" type="text/javascript"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+
+sfHover = function() {
+        var sfEls = document.getElementById("sidemenu").getElementsByTagName("LI");
+        for (var i=0; i<sfEls.length; i++) {
+                sfEls[i].onmouseover=function() {
+                        this.className+=" sfhover";
+                }
+                sfEls[i].onmouseout=function() {
+                        this.className=this.className.replace(new RegExp(" sfhover\\b"), "");
+                }
+        }
+}
+if (window.attachEvent) window.attachEvent("onload", sfHover);
+
+sfHover1 = function() {
+        var sfEls = document.getElementById("menu").getElementsByTagName("LI");
+        for (var i=0; i<sfEls.length; i++) {
+                sfEls[i].onmouseover=function() {
+                        this.className+=" sfhover1";
+                }
+                sfEls[i].onmouseout=function() {
+                        this.className=this.className.replace(new RegExp(" sfhover1\\b"), "");
+                }
+        }
+}
+if (window.attachEvent) window.attachEvent("onload", sfHover1);
+
+function setprice(self) {
+        size_data=document.getElementById("products").value.split('|');
+        frame_data=document.getElementById("frames").value.split('|');
+        finish_data=document.getElementById("finish").value.split('|');
+        delivery_data=document.getElementById("delivery").value.split('|');
+        size_price=size_data[3];
+        frame_price=frame_data[2];
+        finish_price=finish_data[2];
+        delivery_price=delivery_data[2];
+    total_price=eval(size_price)+eval(frame_price)+eval(finish_price)+eval(delivery_price);
+        document.getElementById("totalcost").innerHTML="&pound;"+total_price;
+        
+}
+
+function validate() {
+   if ( checkCC(document.getElementById("cardnumber").value )==true) {
+           document.getElementById("orderf").submit();
+   }
+}
+
+
+//--><!]]></script>
+<title>Dynasty Doors Direct</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="../styles/style.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+<!--
+
+#orderform  {
+	background-color: #FFFFFF;
+	width:100%;
+
+}
+
+#contact {
+	float:left;
+	width:25em;
+}
+#orderdescription {
+	background-color: #FFFFFF;
+	width:100%;
+	text-align: left;
+}
+label {
+        float:left;
+        width:7em;
+        font-size: 0.8em;
+        text-align: left;
+}
+
+#contact input {
+        font-size: 0.8em;
+}
+#trust {
+	background-color: #FFFFFF;
+	clear: left;
+
+
+}
+-->
+</style>
+</head>
+
+<body>
+<div class="center">
+<div id="container">
+
+<div id="header">
+        <img src="../images/3dbar.png" alt="Dynasty Doors " /><br />
+        <img src="../images/topimages.png" alt="Gargage Doors Direct" style="float:left;display:inline;" />
+        <div class="toptext" >A better place to buy your garage doors</div>
+</div> <!-- header -->
+<%menu%>
+ <!-- menu -->
+<div style="clear:both;"></div>
+<div id="main">
+<%sidemenu%>
+<!-- side menu -->
+
+        <div id="content">
+                <div id="contenttop">
+                   <h2>Dynasty Doors Direct</h2>
+                </div> <!-- content top -->
+
+                <div id="orderform" style="text-align:left;">
+                <form action="" method="post" id="orderf" >
+                <div style="display:block;height:250px">
+                <div id="contact">
+                  <h4>Your Details</h4>
+                  <label for="title">Title</label><input type="text" size="10" id="title" name="title" value="<%title%>" /><br/>
+                  <label for="firstname">First Name</label><input type="text" size="20" id="firstname" name="firstname" class="<%cl_firstname%>" value="<%firstname%>" /><br/>
+                  <label for="surname">Surname</label><input type="text" size="30" id="surname" name="surname" class="<%cl_surname%>" value="<%surname%>" /><br/>
+                  <br/>
+                  <label for="address1">Address</label><input type="text" size="30" id="address1" name="address1" class="<%cl_address1%>" value="<%address1%>" /><br/>
+                  <label for="address2">&nbsp;</label><input type="text" size="30" id="address2" name="address2" value="<%address2%>"/><br/>
+                  <label for="town">Town</label><input type="text" size="30" id="town" name="town" value="<%town%>"/><br/>
+                  <label for="county">County</label><input type="text" size="20" id="county" name="county" value="<%county%>" /><br/>
+                  <label for="postcode">PostCode</label><input type="text" size="10" id="postcode" name="postcode" class="<%cl_postcode%>" value="<%postcode%>" /><br/>
+                  <label for="telephone">Telephone</label><input type="text" size="30" id="telephone" name="telephone" class="<%cl_telephone%>" value="<%telephone%>" /><br/>
+                  <label for="email">Email</label><input type="text" size="30" id="email" name="email" class="<%cl_email%>" value="<%email%>" /><br/>
+                </div> <!-- contact -->
+                <div id="delivery">
+                  <h4>Delivery Details</h4>
+
+                  <label for="daddress1">Address</label><input type="text" size="30" id="daddress1" name="daddress1" value="<%daddress1%>" /><br/>
+                  <label for="daddress2">&nbsp;</label><input type="text" size="30" id="daddress2" name="daddress2" value="<%daddress2%>" /><br/>
+                  <label for="dtown">Town</label><input type="text" size="30" id="dtown" name="dtown" value="<%dtown%>" /><br/>
+                  <label for="dcounty">County</label><input type="text" size="30" id="dcounty" name="dcounty" value="<%dcounty%>" /><br/>
+                  <label for="dpostcode">PostCode</label><input type="text" size="10" id="dpostcode" name="dpostcode" value="<%dpostcode%>" /><br/>
+                </div> <!-- delivery -->
+                 </div>
+                <div id="notes" style="display:block;" >
+                        <label for="tnotes">Notes:</label><br/>
+                        <textarea id="tnotes" cols="50"  name="tnotes" value="<%tnotes%>" ></textarea>                  
+                        <input type="hidden" name="idescription" value="<%description%>" />
+                        <input type="hidden" name="idescriptionxml" value="<%descriptionxml%>" />						
+                        <input type="hidden" name="cost" value="<%cost%>" />
+                        <input type="hidden" name="action" value="processorder" />
+                </div>
+<br/>
+                <div id="paymentmethod"  >
+                        <hr/>
+                        <table>
+                        <tr>
+                        <td>
+                        <label for="paymenttype">Payment type</label>
+                        <select id="paymenttype" name="paymenttype">
+                        <option value="Visa">Visa</option>
+                        <option value="Mastercard">Mastercard</option>
+                        <option value="Delta">Delta</option>
+                        <option value="Maestro">Maestro</option>
+                        <option value="Switch">Switch</option>
+                        <option value="Other">Other</option>
+                        </select>
+                        </td>
+                        <td>
+                        <label for="cardnumber">Card Number</label><input type="text" size="17"  id="cardnumber" name="cardnumber" maxlength="16" class="<%cl_cardnumber%>" value="<%cardnumber%>"/>
+                        </td>
+						<td rowspan="3">
+                                <div id="cost">
+                                <h3>Cost: &pound;<%cost%></h3>
+                                <input type="button" id="payb" onclick="validate();" value="Pay" />
+				                </div>						
+						</td>
+						<td rowspan="3">
+						</td>
+                        </tr>
+                        <tr>
+                        <td>
+                        <label for="startdate">Start Date</label><input type="text"   id="startdate" name="startdate" size="5" maxlength="5" value="<%startdate%>"/><br/>
+                        </td>
+                        <td>
+                        <label for="expirydate">Expiry Date</label><input type="text"   id="expirydate" name="expirydate" size="5" maxlength="5" value="<%expirydate%>" /><br/>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>
+                        <label for="issueno">Issue No.</label><input type="text"  id="issueno" name="issueno" value="<%issueno%>" /><br/>
+                        </td>
+                        <td>
+                        <label for="securitynumber">Security Code</label><input type="text"   id="securitynumber" name="securitynumber" size="3" maxlength="3" value="<%securitynumber%>" /><br/>
+                        </td>
+						<td></td>
+						<td>
+						</td>
+                        </tr>
+                        </table>
+                        <hr/>
+                                                <br/>
+                </div>
+			
+				<!-- hiiden fields -->
+					<input type='hidden' name='deliveryreference' value='GDD' />
+					<input type='hidden' name='orderreference' value='GDD' />
+					<input type='hidden' name='currency' value='GBP' />
+					<input type='hidden' name='netamount' value='0' />
+					<input type='hidden' name='deliveryamount' value='0' />					
+					<input type='hidden' name='grossamount' value='<%cost%>' />
+					<input type='hidden' name='shopid' value='<%shopid%>' />					
+															
+                </form>
+
+                </div> <!-- orderform -->
+<br/>
+				                <div id="orderdescription" >
+                                <h4>Your Order</h4>
+								<%description%>
+                                </div>
+								
+                <div id="trust">
+                                        <h2>Why You Can Trust Us?</h2>
+                                        With 25 years worth of reputation at stake it is important to us that you can confidently buy from this site.<br/>
+                                        In order to do this we promise that:
+
+                                        <ul>
+                                                <li>Your details are encrypted and given only to those that require them to complete your order.<br/><br/></li>
+                                                <li><p>Once you place the order you will receive confirmation via email that the order has been placed.</p></li>
+                                                <li><p>The order will arrive at our sales desk where one of our sales team will check that it is correct. If something seems out of place or incomplete then they will contact you with their query.</p></li>
+                                                <li><p>Within 5 working days of you placing this order you will receive a delivery date, via email, for the week in which delivery can take place.</p></li>
+                                                <li><p>You will have a cooling off period of 7 days from placement of the order. Within this time the order can be cancelled.</p></li>
+                                                <li><p>The week of delivery you will be contacted by the driver he will expect help to unload the door.
+                                                        Our driver cannot unload on his own so please ensure you have help before ordering.    </p></li>
+                                                <li><p>If on delivery you are not satisfied with your order then it can be returned at that time.</p></li>
+                                                <li>The items on this site have a manufacturers guarantee which can be as much as ten years</li>
+                                        </ul>
+
+                                        <br/>
+                                        
+
+                                        <br/>
+
+
+                </div>
+
+        </div> <!-- content --><br />
+</div> <!-- main -->
+
+<div id="footer" >
+<img src="../images/3dbar.png" alt="Dynasty Doors" /><br />
+<div id="footertext">
+        <a href="../tandc.html#privacy" >Privacy Statement</a> &middot;
+        <a href="../tandc.html#tandc">Terms and conditions</a>
+</div> <!-- footer text -->
+
+</div> <!-- footer -->
+
+
+</div> <!-- container -->
+</div> <!-- div class center -->
+</body>
+</html>

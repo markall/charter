@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <script src='scripts/jquery/jquery.min.js'></script>
+		<script src='styles/bootstrap/js/bootstrap.min.js'></script>
+		<link rel="stylesheet" type="text/css" href='styles/bootstrap/css/bootstrap.min.css'>
+		<script type="text/javascript" src="scripts/tinymce/js/tinymce/tinymce.min.js"></script>
+		
+<script language="javascript">
+var ridx=0;
+
+$(document).ready(function() {
+       // ready code goes here
+
+});
+
+</script>
+
+<%header%>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-2">
+		
+			<div id="sidenav" > 
+				<div id="sidemenu">
+					
+						<%sidemenu%>
+					
+				</div> <!-- side menu -->
+
+
+			</div> <!-- side nav --> 
+
+		</div> <!-- col-md-2 -->
+		
+		<div class="col-md-8">
+		
+<h2>Confirmed Booking ID: <%bookingid%> </h2>
+ <div id="bookingheader" >
+<p>
+ <strong>Boat: </strong><%rentalobjtitle%>
+</p>
+<p>
+     <strong>From:</strong> <%bookingstartdatetime%> <strong>to</strong> <%bookingenddatetime%> ( <%bookingduration%> hours)<br/>
+</p>     
+       <p>
+                <h3>Client Information</h3>
+          <%client_contacttitledisplay%> <%client_contacfirstname%> <%client_contactlastname%>      <br/>
+          <%client_contactcompany%> <br/>
+          <%client_contactaddress1%> <br/>
+          <%client_contactaddress2%> <br/>
+          <%client_contacttown%> <br/>
+          <%client_contactpostcode%><br/>
+       </p>
+       <p>
+          Telephone: <%client_contacttelephone1%> <br/>
+          Mobile: <%client_contactmobile%>  <br/>
+          Email: <%client_contactemail%>  <br/>
+       </p>
+                <h3>Charter Details</h3>
+                <p>
+                No. Of People:<%bookingnoofpeople%><br />
+                Type of Party: <%bookingrentaltype%><br />
+                </p>
+            <p>
+                        Pick up location : <%bookingpickuplocationtext%><br />
+                        Drop off location:<%bookingdropofflocationtext%><br />
+            </p>
+                
+                <p>
+                <h3>Costs</h3>
+                  
+  <table id="costs">
+    <tr>
+                  <th>Base Cost: </th>
+                  <td class="rightj">&pound;<%bookingbasecost%> </td>
+                  </tr>
+                  <tr>
+                  <th>Menu Cost: </th>
+                  <td class="rightj">&pound;<%bookingmenucost%></td>
+                  </tr>
+                  <tr>
+                  <th>Additional Cost: </th>
+                  <td class="rightj">&pound;<%bookingadditionalcost%></td>
+                  </tr>
+                  
+    <tr style="border: thin solid #000000;" > 
+      <th><u>Total Cost:</u> </th>
+                  
+      <td  class="rightj"><u>&pound; 
+        <%bookingtotalcost%></u>
+      </td>
+                  </tr>
+                  <tr>
+                  <th>Deposit Taken: </th>
+                  <td class="rightj">&pound;<%bookingdeposit%></td>
+                  </tr>
+                  </table>
+
+                </p>
+
+                <p>
+                <h3>Contacts</h3>
+                        <%booking_contacts%>
+                </p>
+                
+                <h3>Catering Notes</h3>  
+                 <%bookingcateringnotes%><br/>
+
+                <h3>Drink Notes</h3>
+                <%bookingdrinknotes%>
+
+                <h3>Other Notes</h3>
+                        <%bookingothernotes%><br/>
+
+                <h3>Admin Notes</h3>
+                        <%bookingadminnotes%><br/>
+						
+                <strong>Taken By: </strong><%Admin_contacttitledisplay%> <%Admin_contactfirstname%> <%Admin_contactlastname%>      <br/>
+ </div>
+<div id="buttonsection">
+<form action="content.php?template=templates/booking1.html" id="frmbooking" method="post" name="frmemail" >
+
+        <p style="text-align:right;">
+        <input type="button" value="Print" onclick="print();"/>
+        <input type="submit" value="Finish...." />
+        <input type="button" value="Function Sheet" onclick="javascript:document.location='content.php?template=templates/func_edit.html&bookingid=<%bookingid%>'" />
+        </p>
+ </form>
+        <form action="content.php?template=templates/booking1.html" id="frmemail" name="frmemail" method="post" >
+                <input type="hidden" value="emailcontacts" name="action" />
+                <input type="submit" value="Send Emails" />
+        </form>
+</div>
+
+		</div> <!-- col-md-8 -->
+		
+	</div> <!-- row -->
+	
+ </div> <!-- Container -->
+
+<%footer%>

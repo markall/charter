@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>
+<%SITE_NAME%>  Rates         
+</title>
+<!-- TinyMCE -->
+<script src='scripts/jquery/jquery.min.js'></script>
+<script src='styles/bootstrap/js/bootstrap.min.js'></script>
+<link rel="stylesheet" type="text/css" href='styles/bootstrap/css/bootstrap.min.css'>
+<script type="text/javascript" src="scripts/tinymce/js/tinymce/tinymce.min.js"></script>
+<!-- /TinyMCE -->
+
+<script language="javascript">
+var ridx=0;
+function setrate() {
+        rateid = document.getElementById('rates').options[document.getElementById('rates').selectedIndex].value;
+        document.location = "content.php?template=templates/admin/managerates.html&action=adminedit&rateid="+rateid;
+}
+
+
+function deletelocation(id) {
+        locationid = document.getElementById('rates').options[document.getElementById('rates').selectedIndex].value;
+        url = "content.php?template=templates/admin/managerates.html&action=deleterate&pid="+rateid;
+        document.location=url;
+}
+
+
+var bkColor = "FFAAAA";
+
+function getEvent(e){  
+        if(window.event != null) {    
+                return event;  }
+return e;
+}
+function setBKColor(e){
+ e = getEvent(e); var src =  e.srcElement || e.target; if(src != null) {
+   src.style.bkColor = src.style.backgroundColor;
+   src.style.backgroundColor = bkColor;
+ }
+}
+function reSetBKColor(e){
+ e = getEvent(e); var src =  e.srcElement || e.target; if(src != null) {
+   src.style.backgroundColor = src.style.bkColor;
+ }
+}
+
+function attachEvent(name,element,callBack) {
+    if (element.addEventListener) {
+      element.addEventListener(name, callBack,false);
+    } else if (element.attachEvent) {
+      element.attachEvent('on' + name, callBack);
+    }
+  }
+
+function setListner(eve,func) {
+   var nl = document.getElementsByTagName("form");
+
+   if (nl.length>0) {
+      var ele = document.getElementsByTagName("form")[0].elements; // document.forms[0].elements;
+      for(var i = 0; i <ele.length;i++) {
+         element = ele[i];
+         if (element.type) {
+            switch (element.type) {
+             case 'checkbox':
+             case 'radio':
+             case 'password':
+             case 'text':
+             case 'textarea':
+             case 'select-one':
+             case 'select-multiple':
+               attachEvent(eve,element,func);
+           }
+        }
+      }
+        }
+}
+
+setListner("focus",setBKColor);
+setListner("blur",reSetBKColor);
+
+
+function showfind(show) {
+         findform=document.getElementById('findrate');
+         if (show) {
+                findform.style.visibility = 'visible';
+         } else {
+
+                findform.style.visibility = 'hidden';
+         }
+}
+
+function addrate() {
+        showfind(false);
+        document.getElementById("rateid").value=-1;
+        document.getElementById("ratetitle").value=' ';
+        document.getElementById("rateamount").value='0';                
+}
+
+
+
+
+function addratecat(tableid) {
+
+ parentobj = document.getElementById('category');
+
+ pdx = parentobj.selectedIndex;
+
+ tblobj = document.getElementById(tableid);
+ var newrow = tblobj.insertRow(tblobj.rows.length );
+ newrow.id="nr"+ridx;
+
+var c1=newrow.insertCell(0);
+var c2=newrow.insertCell(1);
+parentobj.options[pdx].text; 
+
+c1.innerHTML= parentobj.options[pdx].text;
+c2.innerHTML= "<a href=\"javascript:removerow('"+tableid+"','"+newrow.id+"');\">remove</a>"+
+              "<input type=\"hidden\" value=\""+parentobj.options[pdx].value+"\" id=\"nri"+ridx+"\" name=\"p_categoryparentidlist[]\" />";
+
+
+ ridx++;
+
+}
+
+function removerow( tableid, id ) {
+ tblobj = document.getElementById(tableid);
+ did = 'd'+id;
+ 
+ if (id.substr(0,2)=='nr') {
+   tblobj.deleteRow(document.getElementById(id).rowIndex);
+ } else {
+   if (document.getElementById(did).value=='1') {
+                tblobj.rows[document.getElementById(id).rowIndex].style.backgroundColor="";  
+                document.getElementById(did).value='0';          
+   } else {
+                tblobj.rows[document.getElementById(id).rowIndex].style.backgroundColor="#FF0000";
+ //  tblobj.rows[document.getElementById(id).rowIndex].disabled=true;
+                document.getElementById(did).value='1';
+   }
+
+ }
+  
+}
+
+
+$(document).ready(function() {
+
+		tinymce.init({
+			selector:   "textarea",
+			width:      '100%',
+			height:     270,
+			plugins:    "link",
+			statusbar:  false,
+			menubar:    false,
+			toolbar:    [
+				"newdocument bold italic underline strikethrough alignleft aligncenter alignright alignjustify styleselect formatselect fontselect fontsizeselect cut",
+				"copy paste bullist numlist outdent indent blockquote undo redo removeformat subscript superscript"
+				]
+				
+		});
+
+		$(document).on('focusin', function(e) {
+			if ($(e.target).closest(".mce-window").length) {
+				e.stopImmediatePropagation();
+			}
+		});
+     		
+		
+		
+		
+
+});
+
+</script>
+
+<%header%>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-2">
+			
+			<div id="sidenav" > 
+				<div id="sidemenu">
+					
+						<%sidemenu%>
+					
+				</div> <!-- side menu -->
+
+
+			</div> <!-- side nav --> 
+
+		</div> <!-- col-md-2 -->
+		
+		<div class="col-md-8">
+
+<h1>Manage Rates</h1>
+        <div id="actionmenu" />
+			<div class="row">
+				<div class="col-md-2">
+					<a href="javascript:showfind(true);" title="Find Rate"><span class="glyphicon glyphicon-search"></span> <br />Find Rate</a>
+				</div>
+				<div class="col-md-2">
+					<a href="javascript:addrate();" title="Add Rate" ><span class="glyphicon glyphicon-gbp"></span> <br />Add Rate</a>
+				</div>
+			</div>
+                <div style="clear:both;"></div>
+                
+
+
+<div id="findrate" > 
+  <select id="rates" name="rates" onchange="setrate()">
+    <option value="-1">Please select a rate ...</option>
+    <%ratessasoptions%>
+  </select>
+</div>
+<br/>
+
+<div id="ratedetails">
+  <form method='post' action="content.php" enctype="multipart/form-data" id="manageratesform">
+    <fieldset id="ratedisplay" >
+    <p>
+      <label for="ratetitle">Rate Title (Boat or Menu):</label>
+      <input class="form-control" type='text' size='40' maxlength="40" name= "ratetitle" id="ratetitle" value="<%ratetitle%>"  />
+      <br />
+      <label for="baseprice">Base price</label>
+      <input class="form-control" type="text" id="ratebaseprice" name="ratebaseprice" value="<%ratebaseprice%>" />
+      <br/>
+      <label for="baseunit">Base unit</label>
+      <input class="form-control" type="text" id="ratebaseunit" name="ratebaseunit" value="<%ratebaseunit%>" />
+      <br/>       
+      <label for="rateamount">Price per unit</label>
+      <input class="form-control" type="text" id="rateapriceperunit" name="ratepriceperunit" value="<%ratepriceperunit%>" />
+      <br />
+      <br />
+      <label for="rateincludesvat">Price Includes VAT</label>
+        <input type="checkbox" <%rateincludesvatascheck%> name="rateincludesvat" id="rateincludesvat" />
+        <br/>
+        <br/>
+      <label for="ratevatcode">VAT Rate</label>
+      <select class="form-control" id="ratevatcode" name="ratevatcode" >
+        <%vatcodesasoptions%>
+      </select>
+        <br/>
+        <br/>
+
+      <label for="ratetype">Type</label>
+      <select class="form-control" id="ratetype" name="ratetype" >
+        <%ratetypeasoptions%>
+      </select>
+      <br />
+      <br />
+
+    </p>
+    </fieldset>
+    <p>
+      <input type="hidden" name="rateid" id="rateid" value="<%rateid%>" />
+      <input type='hidden' name='action' value='updaterate' />
+      <input type='hidden' name='template' value='<%template%>' />
+      <input type="hidden" name="prefix" value="" />
+      <input type="submit" value="Add/Update" />
+    </p>
+  </form>
+  <hr/>
+  <form method='post' action="content.php" enctype="multipart/form-data" id="manageratetableform">
+  <table>
+  <tr><th>ID</th><th>Title</th><th>Base Price</th><th>Base Unit</th><th>Price per Unit</th><th>Type</th><th>Includes<br/>VAT</th><th>VAT %</th><th>Delete</th></tr>
+  <%ratesastable%>
+  </table>
+    <p>
+      <input type='hidden' name='action' value='updateratetable' />
+      <input type='hidden' name='template' value='<%template%>' />
+      <input type="hidden" name="prefix" value="" />
+      <input type="submit" value="Update Table" />
+    </p>
+  </form>
+  </hr>
+</div>
+<script language="javascript">
+                showfind(false);
+                setListner("focus",setBKColor);
+                setListner("blur",reSetBKColor);
+
+</script>
+
+		</div> <!-- col-md-8 -->
+		
+	</div> <!-- row -->
+	
+ </div> <!-- Container -->
+
+<%footer%>
+</html>

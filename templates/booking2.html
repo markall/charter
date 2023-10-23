@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <script src='scripts/jquery/jquery.min.js'></script>
+		<script src='styles/bootstrap/js/bootstrap.min.js'></script>
+		<link rel="stylesheet" type="text/css" href='styles/bootstrap/css/bootstrap.min.css'>
+		<script type="text/javascript" src="scripts/tinymce/js/tinymce/tinymce.min.js"></script>
+                
+<script language="JavaScript">
+$(document).ready(function() {
+        if ( document.getElementById("pid").value=="-1" ) {
+                document.getElementById("action").value="insertuser";
+
+        }
+});
+</script>
+<%header%>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-2">
+		
+			<div id="sidenav" > 
+				<div id="sidemenu">
+					
+						<%sidemenu%>
+					
+				</div> <!-- side menu -->
+
+
+			</div> <!-- side nav --> 
+
+		</div> <!-- col-md-2 -->
+		
+		<div class="col-md-8">
+
+ <div id="bookingheader" >
+ <h2>Booking Details</h2>
+ Boat: <%rentalobjtitle%> From: <%timerentfrom%> to  <%timerentto%> ( <%timeduration%> ) <br/>
+ </div>
+ <div id="booking" >
+<div id="customersection">
+<form action="content.php?template=templates/booking3.html" id="frmbooking" method="post" >
+
+<input type="hidden" name="p_contactid" value="<%p_contactid%>" />
+       <p><label>Name</label>
+          <select class="form-control" name='p_title' id='title' >
+          <%p_contacttitle%>
+          </select>  <input class="form-control" type="text" size="10" maxlength="20" name="p_firstname" id="firstname" value="<%p_contactfirstname%>"  />
+          <input class="form-control" type="hidden" name="p_initials" id="initials" value="<%p_contactinitials%>" />
+          <input class="form-control" type='text' size='20' maxlength="20" name= "p_lastname" id="lastname" value="<%p_contactlastname%>"/><br/>
+          <label for="company">Company:</label> <input class="form-control" type="text" size="50" maxlength="50" name="p_company" id="company" value="<%p_contactcompany%>" /><br/>    <br/>
+        </p>
+        <p>
+          <label for="address1">Address1:</label> <input class="form-control" type="text" size="50" maxlength="50" name="p_address1" id="address1" value="<%p_contactaddress1%>" /><br/>
+          <label for="address2">Address2:</label> <input class="form-control" type="text" size="50" maxlength="50" name="p_address2" id="address2" value="<%p_contactaddress2%>" /><br/>
+          <label for="town">Town:</label> <input class="form-control" type="text" size="50" maxlength="50" name="p_town" id="town" value="<%p_contacttown%>" /><br/>
+          <label for="county">County:</label> <input class="form-control" type="text" size="20" maxlength="20" name="p_county" id="county" value="<%p_contactcounty%>" /><br/>
+          <label for="postcode">PostCode:</label> <input class="form-control" type="text" size="10" maxlength="10" name="p_postcode" id="postcode" value="<%p_contactpostcode%>" /><br/>
+        </p>
+        <p>
+            <label for="telephone1">Telephone:</label>
+                <input class="form-control" type="text" size="30" maxlength="30" name="p_telephone1" id="telephone1" value="<%p_contacttelephone1%>" />  <br/>
+            <label for="telephone1">Mobile:</label>
+                <input class="form-control" type="text" size="30" maxlength="30" name="p_mobile" id="mobile" value="<%p_contactmobile%>" /> <br/>
+        </p>
+        <p>
+            <label for="email">Email:</label>
+                <input class="form-control" type="text" size="50" maxlength="50" name="p_email" id="email" value="<%p_contactemail%>" />
+        </p>
+
+                <input class="form-control" type="hidden" id="failed" name="failed" value="templates/booking2.html" />
+                <input class="form-control" type="hidden" id="status" name="p_status" value="active" />
+        <input type="hidden" id="rateid" name="rateid" value="<%rateid%>" />
+        <input type="hidden" id="maincost" name="maincost" value="<%maincost%>" />
+        <input type="hidden" id="rentalobjid" name="rentalobjid" value="<%rentalobjid%>" />
+        <input type="hidden" id="timerentfrom" name="timerentfrom" value="<%timerentfrom%>" />
+        <input type="hidden" id="timerentto" name="timerentto" value="<%timerentto%>"   />
+        <input type="hidden" id="timeduration" name="timeduration" value="<%timeduration%>"   />
+        <input type='hidden' id="action" name='action' value='updateuser' />
+        <input type="hidden" id="prefix" name="prefix" value="p_" />
+        <input type="hidden" id="pid" name="pid" value="<%p_encryptedcontactid%>" />
+        <input type="hidden" id="categorybyname" name="categorybyname" value="Client" />
+
+        <p style="text-align:right;">
+        <input type="button" value="Previous...." onclick="javascript:history.go(-1);"/>
+        <input type="submit" value="Next...." />
+        </p>
+ </form>
+</div> <!-- customer section -->
+</div>  <!-- booking -->
+<%content%>
+
+		</div> <!-- col-md-8 -->
+		
+	</div> <!-- row -->
+	
+ </div> <!-- Container -->
+
+<%footer%>

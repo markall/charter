@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title><%SITE_NAME%></title>
+<script language="javascript">
+function processform(todate, subid, expires ) {
+
+switch (subid) {
+case 1:
+	mclass='<%contactdetailmclass%>';
+	description='Membership renewal';
+	break;
+case 2:
+    mclass='Z';
+	description='Hyperlink renewal';
+	break;
+}
+
+ eday = new Date();
+
+ if (expires>' ') {
+	 d = expires.substr(0,2);
+	 m = expires.substr(3,2);
+	 y = expires.substr(6,4);
+         eday.setFullYear( y,m-1,d);
+ 
+ } else {
+       //
+ }
+ 
+
+
+
+
+ d = todate.substr(0,2);
+ m = todate.substr(3,2);
+ y = todate.substr(6,4);
+ 
+ sageform=document.getElementById('SagePayForm');
+ 
+ tday = new Date();  
+
+ subto = new Date();
+ subto.setFullYear(y,m,d);
+
+// if (tday<eday) {
+//    eday=tday;
+//  }
+
+ difdte = subto-eday;
+
+ partsub=Math.round( (difdte/1000/60/60/24/30)-1 ) ;
+
+var yearamount=0;
+switch (mclass) {
+case 'A':
+    yearamount=40;
+	break;
+
+case 'B':
+    yearamount=70;
+	break;
+
+case 'C':
+    yearamount=95;
+	break;
+case 'Z':
+    yearamount=10;
+	break;
+}
+
+perc=(partsub/12)*100;
+
+partamt = (yearamount/100)*perc;
+
+partamt = Math.round(partamt*100)/100;
+
+d = eday.getDate();
+m = eday.getMonth()+1;
+
+if (d.length<1) {
+  d= '0'+d;
+}
+
+if (m<9) {
+  sm= '0'+m;
+} else {
+  sm=m;
+}
+
+
+
+document.getElementById('productid').value=subid;
+document.getElementById('description').value=description+' to '+todate;
+document.getElementById('price').value=partamt;
+document.getElementById('subscribefrom').value=d+'-'+sm+'-'+eday.getFullYear();
+
+document.getElementById('subscribeto').value=todate;
+//document.getElementById('oderdesc').value=desc; 
+
+document.getElementById('buildorder').submit();
+
+}
+</script>
+
+<%header%>
+
+	
+	</head><h1>Payment screen</h1>
+	<h2>Subscriptions</h2>
+
+        <%subscription1%><br/> <input type="button" value="renew to <%subscriptionr1%>" id="fs1" onclick="processform('<%subscriptionr1%>',<%subscriptionproductid1%>,'<%subscriptionexpires1%>' )" /> <br/>
+<hr/>
+        <%subscription2%><br/><input type="button" value="renew to <%subscriptionr2%>" id="fs2" onclick="processform('<%subscriptionr2%>',<%subscriptionproductid2%>,'<%subscriptionexpires2%>' )" /> <br/>
+<hr/>
+	
+	<form id="buildorder" action="content.php?template=templates/sageform.html" enctype="multipart/form-data" method="post" title="Sage Form Processor">
+	<input type="hidden" id="paytype" name="paytype" value="S" />
+	<input type="hidden" id="productid" name="productid" value="" />
+	<input type="hidden" id="contactid" name="contactid" value="<%contactid%>" />
+	<input type="hidden" id="description" name="description" value="" />
+	<input type="hidden" id="price" name="price" value="0" />
+	<input type="hidden" id="qty" name="qty" value="1" />
+	<input type="hidden" id="tax" name="tax" value="0" />
+	<input type="hidden" id="subscribefrom" name="subscribefrom" value="0" />
+	<input type="hidden" id="subscribeto" name="subscribeto" value="0" />
+	<input type="hidden" id="action" name="action" value="sagepay" />
+		
+	</form>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+
+<%footer%>
+</html>

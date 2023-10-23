@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<script type="text/javascript"><!--//--><![CDATA[//><!--
+
+function mousedown() {
+var targ;
+if (!e)
+  {
+  var e = window.event;
+  }
+if (e.target)
+  {
+  targ = e.target;
+  }
+else if (e.srcElement)
+  {
+  targ = e.srcElement;
+  }
+if (targ.nodeType == 3) // defeat Safari bug
+  {
+  targ = targ.parentNode;
+  }
+var tname;
+tname=targ.tagValue;
+
+alert("You clicked on a " + tname + " element.");
+
+}
+sfHover = function() {
+        var sfEls = document.getElementById("sidemenu").getElementsByTagName("LI");
+        for (var i=0; i<sfEls.length; i++) {
+                sfEls[i].onmouseover=function() {
+                        this.className+=" sfhover";
+                }
+                sfEls[i].onmouseout=function() {
+                        this.className=this.className.replace(new RegExp(" sfhover\\b"), "");
+                }
+        }
+}
+if (window.attachEvent) window.attachEvent("onload", sfHover);
+
+sfHover1 = function() {
+        var sfEls = document.getElementById("menu").getElementsByTagName("LI");
+        for (var i=0; i<sfEls.length; i++) {
+                sfEls[i].onmouseover=function() {
+                        this.className+=" sfhover1";
+                }
+                sfEls[i].onmouseout=function() {
+                        this.className=this.className.replace(new RegExp(" sfhover1\\b"), "");
+                }
+        }
+}
+if (window.attachEvent) window.attachEvent("onload", sfHover1);
+
+function help ( category, field ) {
+        x=eval(event.clientX+20);
+        y=event.clientY;
+                
+                if (category.toLowerCase().indexOf('horman')>0) {
+                        manufact = 'hormann';
+                }
+                if (category.toLowerCase().indexOf('cardale')>0) {
+                        manufact = 'cardale';
+                }
+                
+        document.getElementById("helper").style.left=x+"px";
+        document.getElementById("helper").style.top=y+"px";
+        document.getElementById("helpercontent").src = "../help/"+manufact+"_"+field+".htm"; 
+
+}
+
+function hidehelp() {
+        document.getElementById("helper").style.left="-999px";
+}
+function setprice(self) {
+        itemdesc="<%category_parents%> <%category_title%>";
+        size_data=document.getElementById("products").value.split('|');
+
+        frame_data=document.getElementById("frames").value.split('|');
+        finish_data=document.getElementById("finish").value.split('|');
+        glazing_data=document.getElementById("glazing").value.split('|');
+        opener_data=document.getElementById("opener").value.split('|');
+
+        delivery_data=document.getElementById("delivery").value.split('|');
+        size_price=size_data[3];
+        frame_price=frame_data[2];
+        finish_price=finish_data[2];
+        glazing_price=glazing_data[2];
+        opener_price=opener_data[2];
+        delivery_price=delivery_data[2];
+
+        size_rrp=size_data[4];
+        frame_rrp=frame_data[3];
+        finish_rrp=finish_data[3];
+        glazing_rrp=glazing_data[3];
+        opener_rrp=opener_data[3];
+
+
+                qty = document.getElementById("quantity").value;
+
+    total_price=((eval(size_price)+eval(frame_price)+eval(finish_price)+eval(glazing_price)+eval(opener_price))*qty)+eval(delivery_price);
+    total_price = Math.round((total_price*100)+.4)/100;
+    total_rrp =((eval(size_rrp)+eval(frame_rrp)+eval(finish_rrp)+eval(glazing_rrp)+eval(opener_rrp))*qty);
+    total_rrp = Math.round((total_rrp*100)+.4)/100;
+    setinfo(size_data[1],size_data[2],total_price,total_rrp );
+
+    document.getElementById("totalcost").innerHTML="&pound;"+total_price;
+    desc=itemdesc+"<br/>size: w:"+size_data[1]+" h:"+size_data[2]+" &pound;"+size_data[3]+
+                     "<br/>Frame: "+frame_data[1]+" &pound;"+frame_data[2]+
+                     "<br/>Finish: "+finish_data[1]+" &pound;"+finish_data[2]+
+                     "<br/>Glazing: "+glazing_data[1]+" &pound;"+glazing_data[2]+
+                     "<br/>Opener: "+opener_data[1]+" &pound;"+opener_data[2]+
+                                         "<br/>Quantity: "+qty;
+
+    document.getElementById("idescription").value=desc;
+    document.getElementById("cost").value=total_price;
+
+
+}
+
+function setinfo(h,w,p,rrp) {
+  pdetailtext = document.getElementById("pdetail");
+  h_ft = Math.round( 0.0032808399 * h *100)/100;
+  w_ft = Math.round( 0.0032808399 * w *100) /100;
+
+  dotidx = (h_ft+"").indexOf('.');
+  if (dotidx>0) {
+    meas = (h_ft+"").split('.');
+        h_inch = meas[1];
+        h_ft = meas[0];
+        h_ft=h_ft+"ft "+Math.round((eval("."+h_inch)*12)-0.49)+"in ";
+  } else {
+    h_ft=h_ft+"ft ";
+  }
+  dotidx = (w_ft+"").indexOf('.');
+  if (dotidx>0) {
+    meas = (w_ft+"").split('.');
+        w_inch = meas[1];
+        w_ft = meas[0];
+        w_ft=w_ft+"ft "+Math.round((eval("."+w_inch)*12)-0.49)+"in ";
+  } else {
+        w_ft=w_ft+"ft ";
+  }
+  saver = Math.round((eval(rrp)-eval(p))*100)/100;
+  pdetailtext.innerHTML='<br/><h3>Current Size '+h_ft+' x '+w_ft+'<br/><br/>'+'<span class="save">You save &pound;'+saver+'</span></h3>';
+  
+  
+
+}
+
+
+<!--
+/*Credit JavaScript Kit www.javascriptkit.com*/
+var dragapproved=false
+var z,x,y
+function move(){
+if (event.button==1&&dragapproved){
+z.style.pixelLeft=temp1+event.clientX-x
+z.style.pixelTop=temp2+event.clientY-y
+return false
+}
+}
+function drags(){
+if (!document.all)
+return
+if (event.srcElement.className=="drag"){
+dragapproved=true
+z=event.srcElement
+temp1=z.style.pixelLeft
+temp2=z.style.pixelTop
+x=event.clientX
+y=event.clientY
+document.onmousemove=move
+}
+}
+document.onmousedown=drags
+document.onmouseup=new Function("dragapproved=false")
+//-->
+
+
+//--><!]]></script>
+<title>Dynasty Doors Direct</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="../styles/style.css" rel="stylesheet" type="text/css" />
+<style type="text/css" media="screen">
+#helper {
+        left: -999px;
+        top: 0px;
+        height:300px;
+        width:300px;
+        border: thin inset #0099FF;
+        position: absolute;
+        background-color: #FFFFFF;
+        visibility: visible;
+}
+#helpercontent {
+        height:290px;
+        width:290px;
+        overflow: scroll;
+        visibility: visible;
+}
+.close {
+        font-weight: bold;
+        color: #FFFFFF;
+        text-decoration: none;
+        background-color: #FF0000;
+
+        
+}
+</style>
+</head>
+
+
+<body onload="setprice(self)">
+<div class="center">
+<div id="container">
+
+<div id="header">
+        <img src="../images/3dbar.png" alt="Dynasty Doors " /><br />
+        <img src="../images/topimages.png" alt="Gargage Doors Direct" style="float:left;display:inline;" />
+        <div class="toptext" >A better place to buy your garage doors</div>
+</div> <!-- header -->
+
+<%menu%>
+ <!-- menu -->
+<div style="clear:both;"></div>
+<div id="main">
+
+<%sidemenu%>
+
+<!-- side menu -->
+
+        <div id="content">
+                <div id="contenttop">
+          <div id="nav1"><div style="float:left;display:inline;"> <a href="javascript:history.go(-1)">Go Back | </a></div>You are here : <%category_parentnav%> <%category_title%> (<%category_id%> <%category_code%>)</div>
+                        </div> <!-- content top -->
+                <div style="clear:both;" ></div>
+                <div id="productlist" style="text-align:left;">
+                        <img src="<%category_media[0]%>" alt="<%category_title%>" style="float:left;" />
+                        <h2><%category_header%></h2>
+                       <div style="float:left;width:200px;text-align:left;margin-left:10px;">
+                        <img src="../images/help.gif" class="drag" onclick="javascript:help('<%category_code%>','size' );" style="border:none;width:16px;" alt="help" />
+                        Size (width mm x height mm):</div>
+                     <select id="products" name="products" onchange="setprice(self)" >
+                     <%productlist%>
+                      </select><br/>
+
+                      <div style="float:left;width:200px;text-align:left;margin-left:10px;">
+                        <img src="../images/help.gif" class="drag" onclick="javascript:help('<%category_code%>','frame' );" style="border:none;width:16px;" alt="help" />
+                        Frame:</div>
+                      <select id="frames" name="frames"  onchange="setprice(self)" >
+                     <option value="00000| None|0.00|0">None( &pound;0.00 )</option>
+                     <%product_option[Frame]%>
+                      </select>  <br/>
+
+                       <div style="float:left;width:200px;text-align:left;margin-left:10px;">
+                        <img src="../images/help.gif" class="drag" onclick="javascript:help('<%category_code%>','finish' );" style="border:none;width:16px;" alt="help" />
+                        Finish:
+                        </div>
+                      <select id="finish" name="finish"  onchange="setprice(self)" >
+                     <option value="00000| None|0.00|0">None( &pound;0.00 )</option>
+                     <%product_option[Finish]%>
+                      </select><br/>
+
+                       <div style="float:left;width:200px;text-align:left;margin-left:10px;">
+                        <img src="../images/help.gif" class="drag" onclick="javascript:help('<%category_code%>','glazing' );" style="border:none;width:16px;" alt="help" />
+                        Glazing:</div>
+                      <select id="glazing" name="glazing"  onchange="setprice(self)" >
+                     <option value="00000| None|0.00|0 ">None( &pound;0.00 )</option>
+                     <%product_option[Glazing]%>
+                      </select><br/>
+
+                       <div style="float:left;width:200px;text-align:left;margin-left:10px;">
+                        <img src="../images/help.gif" class="drag" onclick="javascript:help('<%category_code%>','opener' );" style="border:none;width:16px;" alt="help" />
+                        Opener:</div>
+                      <select id="opener" name="opener"  onchange="setprice(self)" >
+                     <option value="00000| None|0.00|0 ">None( &pound;0.00 )</option>
+                     <%product_option[Opener]%>
+                      </select>
+
+                                          <br/>                                                                           
+                      <div style="float:left;width:200px;text-align:left;margin-left:10px;">
+                        <img src="../images/help.gif" class="drag" onclick="javascript:help('<%category_code%>','delivery' );" style="border:none;width:16px;" alt="help" />
+Quantity:</div>
+                                        <input type="text" id="quantity" name="quantity" size="2" maxlength="2" value="1" onchange="setprice(self)" />
+                                        
+                                          <br/>                                                                                   
+                      <div style="float:left;width:200px;text-align:left;margin-left:10px;">
+                        <img src="../images/help.gif" class="drag" onclick="javascript:help('<%category_code%>','delivery' );" style="border:none;width:16px;" alt="help" />
+Delivery:</div>
+                      <select id="delivery" name="delivery" onchange="setprice(self)" >
+                      <option value="EnglandWales|Std|50">England/Wales &pound;50.00</option>
+                      </select>  <br/><br />
+
+                      <div class="cost">Total Cost: <span id="totalcost"></span></div>
+                                <form action="<%orderaction%>" method="post" enctype="multipart/form-data" name="order">
+                                  <input type="hidden" name="idescription" id="idescription" />
+                                  <input type="hidden" name="cost" id="cost" />
+                                  <input type="submit" value="Purchase" />
+                                </form>
+                        <p></p>
+                        <div id="pdetail">Converter</div>
+                                                <div id="cattext">
+                                                <%categorytext_1%>
+                                                </div>
+
+
+
+                </div>
+                <div style="clear:both;"></div>
+                
+
+<div id="downloads">
+<h4>Downloads</h4>
+<a href="<%category_attributes[0]value%>" ><%category_attributes[0]description%> </a>   <br/> <br/>
+<a href="<%category_attributes[1]value%>" ><%category_attributes[1]description%> </a>   <br/><br/>
+<a href="<%category_attributes[2]value%>" ><%category_attributes[2]description%> </a>
+</div>
+
+        </div> <!-- content --><br />
+</div> <!-- main -->
+
+<div id="footer" >
+<img src="../images/3dbar.png" alt="Dynasty Doors" /><br />
+<div id="footertext">
+        <a href="../tandc.html#privacy" >Privacy Statement</a> &middot;
+        <a href="../tandc.html#tandc">Terms and conditions</a>
+</div> <!-- footer text -->
+
+</div> <!-- footer -->
+
+
+</div> <!-- container -->
+</div> <!-- div class center -->
+
+<div id="helper" > 
+<div style="height:10px;width:100%" onmousedown="mousedown();" id="topbar"></div>
+<div style="float:right;width:10px"><a class="close" href="javascript:hidehelp()">X</a></div>
+<iframe src="" id="helpercontent" ></iframe>
+
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-203230-2");
+pageTracker._trackPageview();
+</script>
+</body>
+
+</html>

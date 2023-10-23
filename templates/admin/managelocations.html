@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title> 
+<%SITE_NAME%>
+</title>
+<!-- TinyMCE -->
+<script src='scripts/jquery/jquery.min.js'></script>
+<script src='styles/bootstrap/js/bootstrap.min.js'></script>
+<link rel="stylesheet" type="text/css" href='styles/bootstrap/css/bootstrap.min.css'>
+<!-- JQuery -->
+<script type="text/javascript" src="scripts/tinymce/jquery.tinymce.min.js"></script>
+<!-- /TinyMCE -->
+
+<script language="javascript">
+var ridx=0;
+function setlocation() {
+        locationid = document.getElementById('locations').options[document.getElementById('locations').selectedIndex].value;
+        document.location = "content.php?template=templates/admin/managelocations.html&action=adminedit&locationid="+locationid;
+}
+
+
+function deletelocation(id) {
+        locationid = document.getElementById('locations').options[document.getElementById('locations').selectedIndex].value;
+        url = "content.php?template=templates/admin/managelocations.html&action=deletelocation&pid="+locationid;
+        document.location=url;
+}
+
+
+var bkColor = "FFAAAA";
+
+function getEvent(e){  
+        if(window.event != null) {    
+                return event;  }
+return e;
+}
+function setBKColor(e){
+ e = getEvent(e); var src =  e.srcElement || e.target; if(src != null) {
+   src.style.bkColor = src.style.backgroundColor;
+   src.style.backgroundColor = bkColor;
+ }
+}
+function reSetBKColor(e){
+ e = getEvent(e); var src =  e.srcElement || e.target; if(src != null) {
+   src.style.backgroundColor = src.style.bkColor;
+ }
+}
+
+function attachEvent(name,element,callBack) {
+    if (element.addEventListener) {
+      element.addEventListener(name, callBack,false);
+    } else if (element.attachEvent) {
+      element.attachEvent('on' + name, callBack);
+    }
+  }
+
+function setListner(eve,func) {
+   var nl = document.getElementsByTagName("form");
+
+   if (nl.length>0) {
+      var ele = document.getElementsByTagName("form")[0].elements; // document.forms[0].elements;
+      for(var i = 0; i <ele.length;i++) {
+         element = ele[i];
+         if (element.type) {
+            switch (element.type) {
+             case 'checkbox':
+             case 'radio':
+             case 'password':
+             case 'text':
+             case 'textarea':
+             case 'select-one':
+             case 'select-multiple':
+               attachEvent(eve,element,func);
+           }
+        }
+      }
+        }
+}
+
+setListner("focus",setBKColor);
+setListner("blur",reSetBKColor);
+
+
+function showfind(show) {
+         findform=document.getElementById('findlocation');
+         if (show) {
+                findform.style.visibility = 'visible';
+         } else {
+
+                findform.style.visibility = 'hidden';
+         }
+}
+
+function addlocation() {
+        showfind(false);
+        document.getElementById("locationid").value=-1;
+        document.getElementById("location").value=' ';
+}
+
+
+
+
+function addlocationcat(tableid) {
+
+ parentobj = document.getElementById('category');
+
+ pdx = parentobj.selectedIndex;
+
+ tblobj = document.getElementById(tableid);
+ var newrow = tblobj.insertRow(tblobj.rows.length );
+ newrow.id="nr"+ridx;
+
+var c1=newrow.insertCell(0);
+var c2=newrow.insertCell(1);
+parentobj.options[pdx].text; 
+
+c1.innerHTML= parentobj.options[pdx].text;
+c2.innerHTML= "<a href=\"javascript:removerow('"+tableid+"','"+newrow.id+"');\">remove</a>"+
+              "<input type=\"hidden\" value=\""+parentobj.options[pdx].value+"\" id=\"nri"+ridx+"\" name=\"p_categoryparentidlist[]\" />";
+
+
+ ridx++;
+
+}
+
+function removerow( tableid, id ) {
+ tblobj = document.getElementById(tableid);
+ did = 'd'+id;
+ 
+ if (id.substr(0,2)=='nr') {
+   tblobj.deleteRow(document.getElementById(id).rowIndex);
+ } else {
+   if (document.getElementById(did).value=='1') {
+                tblobj.rows[document.getElementById(id).rowIndex].style.backgroundColor="";  
+                document.getElementById(did).value='0';          
+   } else {
+                tblobj.rows[document.getElementById(id).rowIndex].style.backgroundColor="#FF0000";
+ //  tblobj.rows[document.getElementById(id).rowIndex].disabled=true;
+                document.getElementById(did).value='1';
+   }
+
+ }
+  
+}
+
+</script>
+
+<%header%>
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-2">
+			<%sidemenu%>
+		</div> <!-- col-md-2 -->
+		
+		<div class="col-md-8">
+
+			<h1>Manage Locations</h1>
+
+			<div id="actionmenu" >
+				<div class="row">
+					<div class="col-md-2">
+						<a href="javascript:showfind(true);" title="Find Location"><span class="glyphicon glyphicon-search"></span> <br />Find Location</a>
+					</div>
+					<div class="col-md-2">
+						<a href="javascript:addlocation();" title="Add Location" ><span class="glyphicon glyphicon-home"></span> <br />Add Location</a>
+					</div>
+				</div>
+			</div>
+                
+			<div id="findlocation" >
+				<select id="locations" name="locations" onchange="setlocation()">
+						<option value="-1">Please select a location ...</option>
+						<%locationsasoptions%>
+				</select>
+			</div>
+				
+<br/>
+
+		<div id="locationdetails">
+
+				<form method='post' action="content.php" enctype="multipart/form-data" id="managelocationsform">
+
+				<fieldset id="locationdisplay" >
+			   
+						   <label for="location">Location:</label>
+							<input class="form-control" type='text' size='40' maxlength="40" name= "location" id="location" value="<%location%>"  /><br />
+							<div class="form-group" >
+								<label for="pickup">Pickup</label>
+								<input type="checkbox" id="pickup" value="true" name="pickup" <%locationpickup%> />							
+							</div>
+							<div class="form-group">
+								<label for="pickup">Drop off</label>
+								<input type="checkbox" id="dropoff" value="true" name="dropoff" <%locationdropoff%> /><br />							
+							</div>
+							<div class="form-group">
+								<label for="pickup">Status</label>
+								<select class="form-control" name="status" id="status" >
+									<%locationstatusaoptions%>            
+								</select>							
+							</div>
+
+			
+						
+				
+				</fieldset>             
+
+				<p>
+
+						<input type='hidden' name='action' value='updatelocation' />
+						<input type='hidden' name='template' value='<%template%>' />
+						<input type="hidden" name="prefix" value="" />
+					<input type="hidden" name="locationid" id="locationid" value="<%locationid%>" />
+					<input type="submit" value="Update" />
+				</p>
+
+				</form>
+				<hr/>
+
+		</div>
+<script language="javascript">
+                showfind(false);
+                setListner("focus",setBKColor);
+                setListner("blur",reSetBKColor);
+
+</script>
+</div> <!-- col-md-8 -->
+
+	</div> <!-- row -->
+	
+ </div> <!-- Container -->
+<%footer%>
+

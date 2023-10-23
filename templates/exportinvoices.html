@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<script src='scripts/jquery/jquery.min.js'></script>
+<script src='styles/bootstrap/js/bootstrap.min.js'></script>
+<link rel="stylesheet" type="text/css" href='styles/bootstrap/css/bootstrap.min.css'>
+<script type="text/javascript" src="scripts/tinymce/js/tinymce/tinymce.min.js"></script>
+<script type="text/javascript" src="scripts/datetime/jquery-ui-timepicker-addon.js"></script>
+
+<script>
+
+
+$(document).ready(function() {
+
+    var dte = "<%datefrom%>";
+
+    if (dte.length<1)    {
+
+        var d=new Date();
+
+        mm=(d.getMonth()+1);
+        if (mm<10) {
+          mm='0'+mm;
+        }
+
+        dd = d.getDate();
+        if (dd<10) {
+           dd='0'+dd;
+        }
+
+        yy = d.getFullYear();
+
+        hh = d.getHours();
+        if (hh<10) {
+                hh='0'+hh;
+        }
+        mn = d.getMinutes();
+        if (mn<10) {
+                mn='0'+mn;
+        }
+
+
+        s= dd+'-'+mm+'-'+yy;
+    
+        document.getElementById("datefrom").value=s;
+
+        yy = d.getFullYear()+1;
+        s= dd+'-'+mm+'-'+yy;
+
+        document.getElementById("dateto").value=s;
+    }
+
+
+
+    $( "#datefrom" ).datepicker( { dateFormat: 'dd-mm-yy', defaultDate: +7,autoSize: true, changeYear: true }  );
+
+    $( "#dateto" ).datepicker( { dateFormat: 'dd-mm-yy', defaultDate: +7,autoSize: true, changeYear: true }  );
+
+
+});
+
+
+</script>
+
+<%header%>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-2">
+			
+			<div id="sidenav" > 
+				<div id="sidemenu">
+					
+						<%sidemenu%>
+					
+				</div> <!-- side menu -->
+
+
+			</div> <!-- side nav --> 
+
+		</div> <!-- col-md-2 -->
+		
+		<div class="col-md-8">
+<h1>Export Invoices</h1>
+
+<div id="daterange">
+<p>
+
+<form action="content.php" method="post" >
+<input type="hidden" name="action" value="exportinvoices" />
+<input type="hidden" name="template" value="templates/exportinvoices.html" />
+<input type="hidden" name="editoptions" value="<%exportinvoiceseditoptions%>" />
+&nbsp;From <input type="text" name="datefrom" id="datefrom" value="<%datefrom%>" /> To <input type="text" name="dateto" id="dateto" value="<%dateto%>" />
+
+                <input type="submit" value="Refresh" />
+<br />
+
+
+</form>
+</p>
+</div>
+
+		</div> <!-- col-md-8 -->
+		
+	</div> <!-- row -->
+	
+ </div> <!-- Container -->
+
+<%footer%>
